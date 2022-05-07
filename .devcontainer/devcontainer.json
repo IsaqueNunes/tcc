@@ -21,12 +21,13 @@
 	"extensions": [
 		"nrwl.angular-console",
 		"dbaeumer.vscode-eslint",
-		"EditorConfig.EditorConfig"
+		"EditorConfig.EditorConfig",
+		"styled-components.vscode-styled-components"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// This can be used to network with other containers or with the host.
-	"forwardPorts": [5432],
+	"forwardPorts": [5432, 4200],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	"postCreateCommand": "yarn install",
