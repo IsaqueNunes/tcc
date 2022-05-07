@@ -418,7 +418,11 @@ export function NxWelcome({ title }: { title: string }) {
           <div id="welcome">
             <h1>
               <span> Hello there, </span>
-              Welcome {title} 👋
+              Welcome
+              {' '}
+              {title}
+              {' '}
+              👋
             </h1>
           </div>
 
@@ -695,7 +699,8 @@ export function NxWelcome({ title }: { title: string }) {
                   rel="noreferrer"
                 >
                   {' '}
-                  What is Nx Cloud?{' '}
+                  What is Nx Cloud?
+                  {' '}
                 </a>
               </div>
               <a

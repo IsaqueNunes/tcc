@@ -1,11 +1,23 @@
 {
   "root": true,
-  "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "prettier"],
-  "extends": ["prettier"],
+  "ignorePatterns": [
+    "**/*"
+  ],
+  "plugins": [
+    "@nrwl/nx",
+    "prettier"
+  ],
+  "extends": [
+    "prettier"
+  ],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": [
+        "*.ts",
+        "*.tsx",
+        "*.js",
+        "*.jsx"
+      ],
       "rules": {
         "@nrwl/nx/enforce-module-boundaries": [
           "error",
@@ -15,7 +27,9 @@
             "depConstraints": [
               {
                 "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "onlyDependOnLibsWithTags": [
+                  "*"
+                ]
               }
             ]
           }
@@ -24,8 +38,13 @@
     },
     {
       "parser": "@typescript-eslint/parser",
-      "files": ["*.ts", "*.tsx"],
-      "plugins": ["@typescript-eslint/eslint-plugin"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
+      "plugins": [
+        "@typescript-eslint/eslint-plugin"
+      ],
       "extends": [
         "plugin:@nrwl/nx/typescript",
         "plugin:@typescript-eslint/recommended"
@@ -33,32 +52,54 @@
       "rules": {}
     },
     {
-      "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
+      "files": [
+        "*.js",
+        "*.jsx"
+      ],
+      "extends": [
+        "plugin:@nrwl/nx/javascript"
+      ],
       "rules": {}
     },
     {
-      "files": ["*.js", "*.ts"],
+      "files": [
+        "*.js",
+        "*.ts"
+      ],
       "extends": [
         "airbnb-base"
       ],
-      "overrides": [{
-        "files": ["*.ts"],
-        "extends": ["airbnb-typescript/base"]
-      }]
+      "overrides": [
+        {
+          "files": [
+            "*.ts"
+          ],
+          "extends": [
+            "airbnb-typescript/base"
+          ]
+        }
+      ]
     },
     {
-      "files": ["*.jsx", "*.tsx"],
+      "files": [
+        "*.jsx",
+        "*.tsx"
+      ],
       "extends": [
-        "airbnb", "airbnb/hooks"
+        "airbnb",
+        "airbnb/hooks"
       ],
       "rules": {
         "react/react-in-jsx-scope": "off"
       },
       "overrides": [
         {
-          "files": ["*.tsx"],
-          "extends": ["airbnb-typescript"]
+          "files": [
+            "*.tsx"
+          ],
+          "extends": [
+            "airbnb-typescript"
+          ]
         }
       ]
     }

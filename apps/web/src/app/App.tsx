@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import NxWelcome from './nx-welcome';
-
 import { Route, Routes, Link } from 'react-router-dom';
+import NxWelcome from './nx-welcome';
 
 const StyledApp = styled.div`
   // Your style here
@@ -31,20 +30,21 @@ export function App() {
       <Routes>
         <Route
           path="/"
-          element={
+          element={(
             <div>
-              This is the generated root route.{' '}
+              This is the generated root route.
+              {' '}
               <Link to="/page-2">Click here for page 2.</Link>
             </div>
-          }
+          )}
         />
         <Route
           path="/page-2"
-          element={
+          element={(
             <div>
               <Link to="/">Click here to go back to root page.</Link>
             </div>
-          }
+          )}
         />
       </Routes>
       {/* END: routes */}
