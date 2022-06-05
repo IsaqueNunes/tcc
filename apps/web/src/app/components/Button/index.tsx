@@ -13,6 +13,6 @@ export default function Button({
   label, onClick, type,
 }: ButtonProps) {
   return (
-    <button className="button-style" onClick={onClick} type={type}>{label}</button>
+    <button id="button" className="button-style" onClick={onClick} type={type}>{label}</button>
   );
 }
