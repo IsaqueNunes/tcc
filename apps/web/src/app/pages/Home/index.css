@@ -1,0 +1,85 @@
+.main-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.background-home {
+  height: 100%;
+}
+
+.conhecer-instituicao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40% fit-content;
+}
+
+.conteudo-informativo {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 40px;
+  width: 60%;
+}
+
+.conteudo-informativo h1,
+.conteudo-informativo h3,
+.conteudo-informativo h5 {
+  width: fit-content;
+  text-align: end;
+}
+
+h2,
+h6 {
+  text-align: center;
+}
+
+.logo-container {
+  width: fit-content;
+}
+
+.center-image {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.background-home {
+  overflow-y: hidden;
+}
+
+.new-here {
+  width: fit-content;
+  margin-top: 30px;
+  margin-bottom: 10px
+}
+
+.card-redirect-ifms-site {
+  display: flex;
+  background-color: #0f0f0f;
+  color: #fff;
+  padding: 25px 40px;
+  border: 0;
+  cursor: pointer;
+}
+
+
+@media (max-width: 768px) {
+  .conhecer-instituicao {
+    display: none;
+  }
+
+  .conteudo-informativo {
+    align-items: center;
+  }
+
+  .conteudo-informativo h1,
+  .conteudo-informativo h3,
+  .conteudo-informativo h5 {
+    width: fit-content;
+    text-align: center;
+  }
+}
