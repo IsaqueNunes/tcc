@@ -21,7 +21,7 @@
     4200,
     3333
   ],
-  "postCreateCommand": "yarn install",
+  "postCreateCommand": "yarn install && yarn husky install",
   "remoteUser": "node",
   "features": {
     "docker-from-docker": "latest",
