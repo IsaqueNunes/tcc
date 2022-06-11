@@ -2,7 +2,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100%;
   width: 100%;
 }
 
@@ -38,17 +37,9 @@ h6 {
   text-align: center;
 }
 
-.logo-container {
-  width: fit-content;
-}
-
 .center-image {
   width: fit-content;
   margin: 0 auto;
-}
-
-.background-home {
-  overflow-y: hidden;
 }
 
 .new-here {
@@ -57,16 +48,6 @@ h6 {
   margin-bottom: 10px
 }
 
-.card-redirect-ifms-site {
-  display: flex;
-  background-color: #0f0f0f;
-  color: #fff;
-  padding: 25px 40px;
-  border: 0;
-  cursor: pointer;
-}
-
-
 @media (max-width: 768px) {
   .conhecer-instituicao {
     display: none;
@@ -74,6 +55,7 @@ h6 {
 
   .conteudo-informativo {
     align-items: center;
+    width: 100%;
   }
 
   .conteudo-informativo h1,
