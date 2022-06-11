@@ -19,7 +19,6 @@ export default function Home() {
       <Row className="background-home">
         <section className="main-content">
           <div className="conhecer-instituicao">
-            { /** Logo da instituição com nome */}
             <div className="logo-container">
               <div className="center-image">
                 <Image source="home-ifms-logo.svg" width="100px" height="150px" nameLazyLoad="Ifms Logo" />
