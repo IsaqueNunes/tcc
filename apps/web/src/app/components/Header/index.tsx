@@ -4,12 +4,12 @@ import Image from '../Image';
 import Row from '../Row';
 import Button from '../Button';
 
-export default function Header() {
+function Login() {
   const navigate = useNavigate();
-  const Login = (): void => {
-    navigate('/login');
-  };
+  navigate('/login');
+}
 
+function LoginDefaultHeader() {
   return (
     <header className="header-content">
       <Row id="oficial-logo">
@@ -20,7 +20,33 @@ export default function Header() {
           Mato Grosso do Sul
         </p>
       </Row>
-      <Button type="button" label="Entrar" onClick={Login} />
+      <Button type="button" label="Entrar" onClick={Login} buttonClassStyle="button-login" />
     </header>
   );
+}
+
+function ModifyHeader() {
+  return (
+    <header className="header-content">
+      <p>teste</p>
+    </header>
+  );
+}
+
+type HeaderProps = {
+  typeOfHeader: 'modify' | 'default';
+};
+
+export default function Header({ typeOfHeader }: HeaderProps) {
+  switch (typeOfHeader) {
+    case 'modify':
+      return (
+        <ModifyHeader />
+      );
+    case 'default':
+      return (
+        <LoginDefaultHeader />
+      );
+    // no default
+  }
 }

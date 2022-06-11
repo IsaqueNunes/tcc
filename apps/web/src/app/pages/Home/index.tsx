@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 
 import './index.css';
 import Footer from '../../components/Footer';
+import Button from '../../components/Button';
 
 export default function Home() {
   // const navigate = useNavigate();
@@ -15,11 +16,10 @@ export default function Home() {
 
   return (
     <>
-      <Header />
+      <Header typeOfHeader="default" />
       <Row className="background-home">
         <section className="main-content">
           <div className="conhecer-instituicao">
-            { /** Logo da instituição com nome */}
             <div className="logo-container">
               <div className="center-image">
                 <Image source="home-ifms-logo.svg" width="100px" height="150px" nameLazyLoad="Ifms Logo" />
@@ -30,13 +30,12 @@ export default function Home() {
 
             <p className="new-here">Novo por aqui?</p>
 
-            <button
-              className="card-redirect-ifms-site"
-              type="button"
+            <Button
+              label="Conhecer a instituicao"
               onClick={RedirectToIfms}
-            >
-              Conhecer a instituição
-            </button>
+              type="button"
+              buttonClassStyle="card-redirect-ifms-site"
+            />
           </div>
           <div className="conteudo-informativo">
             <h1>
@@ -50,9 +49,7 @@ export default function Home() {
             <h5>
               Clique no botão à direita superior
               <br />
-              para entrar com sua conta de estudante
-              <br />
-              e faça a sua reclamação.
+              realizar a sua reclamação.
             </h5>
           </div>
         </section>

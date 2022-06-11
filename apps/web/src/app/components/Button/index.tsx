@@ -7,12 +7,13 @@ type ButtonProps = {
   label: string;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   type: ButtonType;
+  buttonClassStyle: string;
 };
 
 export default function Button({
-  label, onClick, type,
+  label, onClick, type, buttonClassStyle,
 }: ButtonProps) {
   return (
-    <button id="button" className="button-style" onClick={onClick} type={type}>{label}</button>
+    <button id="button" className={buttonClassStyle} onClick={onClick} type={type}>{label}</button>
   );
 }
