@@ -1,0 +1,76 @@
+.login-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.card-login {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  padding: 1em;
+  border-radius: 4px;
+  width: 500px;
+}
+
+.title-login {
+  font-size: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px
+}
+
+.subtitle-login {
+  color: #666666;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.card-oauth-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  /* width: 80%; */
+  margin-top: 20px;
+  padding: 0.5em;
+  border: 3px solid #c4c4c4;
+  border-radius: 4px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px;
+
+}
+
+.divider::after,
+.divider::before {
+  content: "";
+  border: 1px solid #c4c4c4;
+  flex: 1;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 0.25em;
+}
+
+.input-controller {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-style {
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  padding: 20px;
+  border: 3px solid #c4c4c4;
+  border-radius: 4px;
+}
