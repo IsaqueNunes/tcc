@@ -3,7 +3,7 @@ import Row from '../../components/Row';
 import Image from '../../components/Image';
 import Header from '../../components/Header';
 
-import './index.css';
+import './home.css';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 
@@ -24,8 +24,8 @@ export default function Home() {
               <div className="center-image">
                 <Image source="home-ifms-logo.svg" width="100px" height="150px" nameLazyLoad="Ifms Logo" />
               </div>
-              <h2>Instituto Federal</h2>
-              <h6>Mato Grosso do Sul</h6>
+              <h2 className="center-logo-style">Instituto Federal</h2>
+              <h6 className="center-logo-style">Mato Grosso do Sul</h6>
             </div>
 
             <p className="new-here">Novo por aqui?</p>

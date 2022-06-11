@@ -4,12 +4,11 @@ import Image from '../Image';
 import Row from '../Row';
 import Button from '../Button';
 
-function Login() {
-  const navigate = useNavigate();
-  navigate('/login');
-}
-
 function LoginDefaultHeader() {
+  const navigate = useNavigate();
+  const Login = () => {
+    navigate('/login');
+  };
   return (
     <header className="header-content">
       <Row id="oficial-logo">
@@ -20,7 +19,7 @@ function LoginDefaultHeader() {
           Mato Grosso do Sul
         </p>
       </Row>
-      <Button type="button" label="Entrar" onClick={Login} buttonClassStyle="button-login" />
+      <Button type="button" label="Entrar" onClick={Login} buttonClassStyle="button-login-home" />
     </header>
   );
 }

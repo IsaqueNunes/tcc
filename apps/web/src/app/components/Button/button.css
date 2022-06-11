@@ -1,5 +1,5 @@
 /* Button Login specs */
-.button-login {
+.button-login-home {
   padding: 20px 40px;
   border: 0;
   background-color: transparent;
@@ -9,12 +9,12 @@
   cursor: pointer;
 }
 
-.button-login:hover {
+.button-login-home:hover {
   border-color: #a39f9f;
   color: #a39f9f;
 }
 
-.button-login:active {
+.button-login-home:active {
   background-color: rgba(0, 0, 0, 0.15);
 }
 
@@ -27,4 +27,29 @@
   padding: 25px 40px;
   border: 0;
   cursor: pointer;
+}
+
+/* Button login specs */
+.button-login {
+  background-color: #3B7DED;
+  border-radius: 4px;
+  width: 100%;
+  color: white;
+  padding: 20px 40px;
+  margin-top: 20px;
+  border: 0;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: box-shadow, transform;
+  transition-property: box-shadow, transform;
+}
+
+.button-login:hover {
+  background-color: #2f67c9;
+}
+
+.button-login:active {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
