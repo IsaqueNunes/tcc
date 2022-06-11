@@ -33,12 +33,14 @@
 .button-login {
   background-color: #3B7DED;
   border-radius: 4px;
-  width: 100%;
+  width: 45%;
   color: white;
   padding: 20px 40px;
   margin-top: 20px;
   border: 0;
   cursor: pointer;
+  text-transform: uppercase;
+  font-weight: bold;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
@@ -46,10 +48,20 @@
   transition-property: box-shadow, transform;
 }
 
+
 .button-login:hover {
+  transition: 0.1s ease-in;
   background-color: #2f67c9;
 }
 
 .button-login:active {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.button-back-home {
+  background-color: #C82733;
+}
+
+.button-back-home:hover {
+  background-color: #a72b33;
 }
