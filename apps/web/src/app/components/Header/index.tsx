@@ -29,9 +29,15 @@ function ModifyHeader() {
   const Logout = () => {
     navigate('/');
   };
+
+  const RedirectToUserPage = () => {
+    navigate('/user');
+  };
   return (
     <header className="header-content logged">
-      <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
+      <div className="redirectToFirstPage" onClick={RedirectToUserPage} role="button" aria-hidden="true">
+        <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
+      </div>
       <Row className="list-items">
         <Link className="list-item" to="list-tickets">Listagem</Link>
         <div className="vertical-line" />

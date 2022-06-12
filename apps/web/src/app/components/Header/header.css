@@ -44,3 +44,7 @@ Row p {
   text-decoration: none;
   color: #0f0f0f;
 }
+
+.redirectToFirstPage {
+  cursor: pointer;
+}
