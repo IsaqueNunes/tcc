@@ -1,5 +1,5 @@
 import './header.css';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Image from '../Image';
 import Row from '../Row';
 import Button from '../Button';
@@ -25,9 +25,21 @@ function LoginDefaultHeader() {
 }
 
 function ModifyHeader() {
+  const navigate = useNavigate();
+  const Logout = () => {
+    navigate('/');
+  };
   return (
-    <header className="header-content">
-      <p>teste</p>
+    <header className="header-content logged">
+      <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
+      <Row className="list-items">
+        <Link className="list-item" to="list-tickets">Listagem</Link>
+        <div className="vertical-line" />
+        <Link className="list-item" to="create-ticket">Reclamar</Link>
+        <div className="vertical-line" />
+        <Link className="list-item" to="/about">Sobre</Link>
+        <Button label="Sair" buttonClassStyle="button-logout" onClick={Logout} type="button" />
+      </Row>
     </header>
   );
 }
