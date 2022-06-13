@@ -39,11 +39,11 @@ function ModifyHeader() {
         <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
       </div>
       <Row className="list-items">
-        <Link className="list-item" to="list-tickets">Listagem</Link>
+        <Link className="list-item" to="my-tickets">Minhas Reclamações</Link>
         <div className="vertical-line" />
         <Link className="list-item" to="create-ticket">Reclamar</Link>
         <div className="vertical-line" />
-        <Link className="list-item" to="/about">Sobre</Link>
+        <Link className="list-item" to="/about">Sobre nós</Link>
         <Button label="Sair" buttonClassStyle="button-logout" onClick={Logout} type="button" />
       </Row>
     </header>

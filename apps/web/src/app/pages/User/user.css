@@ -1,0 +1,20 @@
+.ticket-list-content {
+  display: flex;
+  align-items: center;
+  /* flex-direction: column; */
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 40%;
+  margin: 0 auto;
+  padding-top: 10em;
+}
+
+.ticket-title {
+  font-size: 32px;
+}
+
+@media(max-width: 900px) {
+  .ticket-list-content {
+    flex-direction: column;
+  }
+}

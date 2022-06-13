@@ -37,14 +37,26 @@ Row p {
 .list-items {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .list-item {
   text-decoration: none;
   color: #0f0f0f;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.list-item:hover {
+  background-color: #c4c4c4;
 }
 
 .redirectToFirstPage {
   cursor: pointer;
+}
+
+@media(max-width: 768px) {
+  .list-items {
+    display: none;
+  }
 }

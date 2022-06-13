@@ -82,3 +82,19 @@
   margin-left: 20px;
   font-weight: bold;
 }
+
+.button-logout:hover {
+  background-color: rgba(147, 38, 48, 0.1);
+  transition: 0.15s ease-in;
+}
+
+/* Button Add Ticket specs */
+
+.button-login.ticket:before {
+  content: "Nova Reclamação";
+}
+
+.button-login.ticket {
+  max-width: fit-content;
+  margin: 0;
+}
