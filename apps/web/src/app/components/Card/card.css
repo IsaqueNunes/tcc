@@ -1,0 +1,25 @@
+.card-content {
+  background-color: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
+  padding: 10px 10px;
+  border-radius: 4px;
+  border-left: 4px solid #21B4E2;
+}
+
+.hex-status-circle {
+  width: 11px;
+  height: 11px;
+  border-radius: 10px;
+}
+
+.card-body {
+  margin-top: 25px;
+}
+
+.card-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 10px;
+  gap: 5px;
+}

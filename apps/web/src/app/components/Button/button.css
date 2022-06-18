@@ -91,10 +91,10 @@
 /* Button Add Ticket specs */
 
 .button-login.ticket:before {
-  content: "Nova Reclamação";
+  /* content: "Nova Reclamação"; */
 }
 
 .button-login.ticket {
-  max-width: fit-content;
+  /* max-width: fit-content; */
   margin: 0;
 }
