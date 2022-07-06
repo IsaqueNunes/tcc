@@ -19,7 +19,7 @@ Row p {
 }
 
 .vertical-line {
-  border-left: 2px solid black;
+  border-left: 2px solid #2F9E41;
   height: 50px;
 }
 
@@ -30,8 +30,8 @@ Row p {
 }
 
 .header-content.logged {
-  background-color: transparent;
-  border-bottom: 2px solid black;
+  background-color: white;
+  border-bottom: 2px solid #2F9E41;
 }
 
 .list-items {

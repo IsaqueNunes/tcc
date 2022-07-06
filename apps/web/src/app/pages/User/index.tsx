@@ -37,6 +37,61 @@ export default function User() {
             hexColorStatus="#FAE52D"
             nameStatus="Em análise"
           />
+          <Card
+            titleCard="Título da reclamação"
+            subtitle="Subtítulo, se necessário"
+            bodyContent="Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut  labore et dolore magna
+            aliqua. Neque laoreet suspendisse interdum
+            consectetur libero id faucibus nisl tincidunt.."
+            hexColorStatus="#FAE52D"
+            nameStatus="Em análise"
+          />
+          <Card
+            titleCard="Título da reclamação"
+            subtitle="Subtítulo, se necessário"
+            bodyContent="Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut  labore et dolore magna
+            aliqua. Neque laoreet suspendisse interdum
+            consectetur libero id faucibus nisl tincidunt.."
+            hexColorStatus="#FAE52D"
+            nameStatus="Em análise"
+          />
+          <Card
+            titleCard="Título da reclamação"
+            subtitle="Subtítulo, se necessário"
+            bodyContent="Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut  labore et dolore magna
+            aliqua. Neque laoreet suspendisse interdum
+            consectetur libero id faucibus nisl tincidunt.."
+            hexColorStatus="#FAE52D"
+            nameStatus="Em análise"
+          />
+          <Card
+            titleCard="Título da reclamação"
+            subtitle="Subtítulo, se necessário"
+            bodyContent="Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut  labore et dolore magna
+            aliqua. Neque laoreet suspendisse interdum
+            consectetur libero id faucibus nisl tincidunt.."
+            hexColorStatus="#FAE52D"
+            nameStatus="Em análise"
+          />
+          <Card
+            titleCard="Título da reclamação"
+            subtitle="Subtítulo, se necessário"
+            bodyContent="Lorem ipsum dolor sit amet,
+            consectetur adipiscing elit, sed do eiusmod
+            tempor incididunt ut  labore et dolore magna
+            aliqua. Neque laoreet suspendisse interdum
+            consectetur libero id faucibus nisl tincidunt.."
+            hexColorStatus="#FAE52D"
+            nameStatus="Em análise"
+          />
         </div>
       </div>
     </section>

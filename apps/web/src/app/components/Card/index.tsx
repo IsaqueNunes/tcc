@@ -11,8 +11,10 @@ type CardProps = {
 export default function Card({
   titleCard, subtitle, bodyContent, hexColorStatus, nameStatus,
 }: CardProps) {
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+
   return (
-    <div className="card-content">
+    <div className="card-content" style={{ borderLeftColor: `#${randomColor}` }}>
       <div className="card-title">
         <h1>{titleCard}</h1>
         <h5>{subtitle}</h5>

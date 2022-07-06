@@ -67,6 +67,9 @@
 
 .list-card {
   margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
 }
 
 @media(max-width: 900px) {
