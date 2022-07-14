@@ -14,7 +14,7 @@
     "nrwl.angular-console",
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
-    "styled-components.vscode-styled-components"
+    "Prisma.prisma"
   ],
   "forwardPorts": [
     5432,

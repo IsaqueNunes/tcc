@@ -67,6 +67,8 @@
     "lint-staged": ">=10",
     "nx": "14.1.4",
     "prettier": "^2.5.1",
+    "prettier-plugin-prisma": "^4.1.0",
+    "prisma": "^4.0.0",
     "react-test-renderer": "18.1.0",
     "ts-jest": "27.1.4",
     "ts-node": "9.1.1",
