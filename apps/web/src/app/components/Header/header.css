@@ -56,7 +56,7 @@ Row p {
 }
 
 @media(max-width: 768px) {
-  .list-items {
+  .header-content.logged .list-items {
     display: none;
   }
 }

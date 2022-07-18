@@ -7,6 +7,7 @@ import User from '../pages/User';
 import ListTickets from '../components/ListTickets';
 import CreateTicket from '../components/CreateTicket';
 import About from '../components/About';
+import Dashboard from '../pages/Dashboard';
 
 export default function RoutesNavigator() {
   return (
@@ -17,6 +18,7 @@ export default function RoutesNavigator() {
       <Route path="/user/my-tickets" element={<ListTickets />} />
       <Route path="/user/create-ticket" element={<CreateTicket />} />
       <Route path="/about" element={<About />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }
