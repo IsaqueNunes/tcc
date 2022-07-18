@@ -40,3 +40,7 @@
 .user-name {
   margin-top: 20px;
 }
+
+.charts-container {
+  display: flex;
+}
