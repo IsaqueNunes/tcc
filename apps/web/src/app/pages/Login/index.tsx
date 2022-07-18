@@ -1,13 +1,15 @@
+/* eslint-disable jsx-a11y/no-autofocus */ // Permite auto focus
 import './login.css';
-// import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Image from '../../components/Image';
 import Button from '../../components/Button';
 
 export default function Login() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const CheckLogin = () => {
-    console.log('Ok');
+    navigate('/user');
   };
+  const GoogleAuth = () => { };
 
   return (
     <section className="login-content">
@@ -17,26 +19,31 @@ export default function Login() {
           <h6 className="subtitle-login">Preencha seus dados para entrar</h6>
         </div>
         <div className="card-body">
-          { /** OAuth do google */}
-          <div className="card-oauth-google">
+          <div className="card-oauth-google" onClick={GoogleAuth} role="button" aria-hidden="true">
             <Image source="google-logo.svg" width="25px" height="25px" nameLazyLoad="Google logo" />
             <span>
-              Entrar com o
-              <strong> Google</strong>
+              Entrar com o Google
             </span>
           </div>
           <div className="divider"> Ou </div>
           <div className="input-controller">
-            <input className="input-style" type="text" placeholder="Cpf/E-mail" />
+            <input className="input-style" autoFocus type="text" placeholder="Cpf/E-mail" />
             <input className="input-style" type="text" placeholder="Senha" />
           </div>
-
-          <Button
-            label="Conhecer a instituicao"
-            onClick={CheckLogin}
-            type="button"
-            buttonClassStyle="button-login"
-          />
+          <div className="button-container">
+            <Button
+              label="Entrar"
+              onClick={CheckLogin}
+              type="button"
+              buttonClassStyle="button-login"
+            />
+            <Button
+              label="Voltar"
+              onClick={() => navigate('/')}
+              type="button"
+              buttonClassStyle="button-login button-back-home"
+            />
+          </div>
         </div>
       </div>
     </section>

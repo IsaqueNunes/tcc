@@ -17,3 +17,46 @@
 Row p {
   margin-left: 20px;
 }
+
+.vertical-line {
+  border-left: 2px solid #2F9E41;
+  height: 50px;
+}
+
+.logged {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-content.logged {
+  background-color: white;
+  border-bottom: 2px solid #2F9E41;
+}
+
+.list-items {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.list-item {
+  text-decoration: none;
+  color: #0f0f0f;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.list-item:hover {
+  background-color: #c4c4c4;
+}
+
+.redirectToFirstPage {
+  cursor: pointer;
+}
+
+@media(max-width: 768px) {
+  .header-content.logged .list-items {
+    display: none;
+  }
+}
