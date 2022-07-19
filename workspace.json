@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "user": "libs/user",
     "web": "apps/web"
   }
 }

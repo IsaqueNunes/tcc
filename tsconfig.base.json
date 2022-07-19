@@ -17,7 +17,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@tcc/user": [
+        "libs/user/src/index.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
