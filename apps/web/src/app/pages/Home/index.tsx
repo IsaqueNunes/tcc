@@ -1,4 +1,3 @@
-// import { useNavigate } from 'react-router-dom';
 import Row from '../../components/Row';
 import Image from '../../components/Image';
 import Header from '../../components/Header';
@@ -8,8 +7,6 @@ import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 
 export default function Home() {
-  // const navigate = useNavigate();
-
   const RedirectToIfms = () => {
     window.location.href = 'https://www.ifms.edu.br/';
   };
