@@ -2,6 +2,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "tickets": "libs/tickets",
     "user": "libs/user",
     "web": "apps/web"
   }

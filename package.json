@@ -12,11 +12,8 @@
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
-<<<<<<< HEAD
-    "@prisma/client": "^4.0.0",
-=======
+    "@prisma/client": "^4.1.0",
     "chart.js": "^3.8.0",
->>>>>>> 67997375096036c331aa972231a20e760ebfa186
     "core-js": "^3.6.5",
     "react": "18.1.0",
     "react-chartjs-2": "^4.3.1",
@@ -76,7 +73,7 @@
     "nx": "14.1.4",
     "prettier": "^2.5.1",
     "prettier-plugin-prisma": "^4.1.0",
-    "prisma": "^4.0.0",
+    "prisma": "^4.1.0",
     "react-test-renderer": "18.1.0",
     "ts-jest": "27.1.4",
     "ts-node": "9.1.1",
