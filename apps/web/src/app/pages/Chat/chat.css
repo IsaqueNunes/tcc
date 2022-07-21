@@ -1,0 +1,37 @@
+.ticket-chat-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 50%;
+  margin: 0 auto;
+  padding-top: 10em;
+}
+
+.first-message {
+  padding-top: 30px;
+}
+
+.ticket-chat-page-content {
+  width: 100%
+}
+
+.first-message {
+  padding: 10px;
+  border: 1px solid rgba(196, 196, 196, 0.5);
+}
+
+.top-content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.body-content {
+  margin-top: 25px;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}

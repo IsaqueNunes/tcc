@@ -1,9 +1,7 @@
 .ticket-list-content {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   flex-direction: column;
-  /* flex-wrap: wrap; */
   width: 40%;
   margin: 0 auto;
   padding-top: 10em;
@@ -19,7 +17,6 @@
 .ticket-list-search-content {
   display: flex;
   justify-content: space-between;
-  /* flex-wrap: wrap; */
   width: 100%;
   gap: 10px;
   margin-top: 10px;
@@ -68,14 +65,13 @@
 .list-card {
   margin-top: 25px;
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 50px;
 }
 
 @media(max-width: 900px) {
-  .ticket-list-content {
-    /* flex-direction: column; */
-  }
+  .ticket-list-content {}
 
   .ticket-title {
     margin: 0 auto;

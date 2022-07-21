@@ -23,7 +23,7 @@ function AdminHeader() {
         <div className="vertical-line" />
         <Link className="list-item" to="my-tickets">Visualizar Reclamações</Link>
         <div className="vertical-line" />
-        <Link className="list-item" to="/about">Sobre nós</Link>
+        <Link className="list-item" to="/profile">Perfil</Link>
         <Button label="Sair" buttonClassStyle="button-logout" onClick={Logout} type="button" />
       </Row>
     </header>
@@ -65,11 +65,11 @@ function ModifyHeader() {
         <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
       </div>
       <Row className="list-items">
-        <Link className="list-item" to="my-tickets">Minhas Reclamações</Link>
+        <Link className="list-item" to="/user/my-tickets">Minhas Reclamações</Link>
         <div className="vertical-line" />
-        <Link className="list-item" to="create-ticket">Reclamar</Link>
+        <Link className="list-item" to="/user/create-ticket">Reclamar</Link>
         <div className="vertical-line" />
-        <Link className="list-item" to="/about">Sobre nós</Link>
+        <Link className="list-item" to="/user/profile">Perfil</Link>
         <Button label="Sair" buttonClassStyle="button-logout" onClick={Logout} type="button" />
       </Row>
     </header>
