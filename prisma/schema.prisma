@@ -11,11 +11,12 @@ datasource db {
 }
 
 model User {
-  id       String   @id @default(uuid()) @db.Uuid
+  id       String    @id @default(uuid()) @db.Uuid
   name     String
-  email    String   @unique
+  email    String    @unique
   password String
   Ticket   Ticket[]
+  Message  Message[]
 }
 
 model Ticket {
@@ -27,4 +28,18 @@ model Ticket {
   closedAt  DateTime?
   user      User      @relation(fields: [userId], references: [id])
   userId    String    @db.Uuid
+  Message   Message[]
+}
+
+model Message {
+  id               Int       @id @default(autoincrement())
+  content          String
+  time             DateTime  @default(now())
+  user             User      @relation(fields: [userId], references: [id])
+  userId           String    @db.Uuid
+  ticket           Ticket    @relation(fields: [ticketId], references: [id])
+  ticketId         Int
+  repliedMessage   Message?  @relation("MessageHistory", fields: [repliedMessageId], references: [id])
+  Message          Message[] @relation("MessageHistory")
+  repliedMessageId Int?
 }

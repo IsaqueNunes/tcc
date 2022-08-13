@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@tcc/message": ["libs/message/src/index.ts"],
       "@tcc/tickets": ["libs/tickets/src/index.ts"],
       "@tcc/user": ["libs/user/src/index.ts"]
     }
