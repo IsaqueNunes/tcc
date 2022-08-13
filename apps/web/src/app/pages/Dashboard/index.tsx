@@ -125,10 +125,10 @@ export default function Dashboard() {
         </div>
       </div>
       <div className="charts-container">
-        <div style={{ width: 900 }}>
+        <div style={{ width: '50%' }}>
           <LineChart chartData={userData} />
         </div>
-        <div style={{ width: 400 }}>
+        <div style={{ width: '30%' }}>
           <PieChart chartData={userData} />
         </div>
       </div>

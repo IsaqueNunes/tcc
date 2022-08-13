@@ -1,7 +1,8 @@
 .dashboard-main-content {
   display: flex;
+  width: 85%;
   justify-content: space-between;
-  gap: 40px;
+  margin: 0 auto;
   padding-top: 10em;
   padding-right: 20px;
   padding-left: 20px;

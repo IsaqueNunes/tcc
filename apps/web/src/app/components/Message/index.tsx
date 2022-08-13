@@ -8,7 +8,7 @@ export default function Message() {
           <h3><strong>Felipe Araújo</strong></h3>
           <span>felipe.araujo@estudante.ifms.edu.br</span>
         </div>
-        <h5>17/07/2022 às 16:30</h5>
+        <h5 className="no-wrap">17/07/2022 às 16:30</h5>
       </div>
       <div className="body-content">
         Durante uma aula de engenharia de software,

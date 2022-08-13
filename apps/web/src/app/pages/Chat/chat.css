@@ -8,6 +8,19 @@
   padding-top: 10em;
 }
 
+.title-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+#status-select {
+  border: 2px solid #c4c4c4;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
 .first-message {
   padding-top: 30px;
 }
@@ -33,5 +46,31 @@
 .message-list {
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
   gap: 40px;
+}
+
+.button-add-message-container {
+  justify-content: space-between;
+}
+
+.button-add-message-container,
+.type-new-message-for-response {
+  display: flex;
+}
+
+.type-new-message-for-response {
+  flex-direction: column;
+  margin-top: 2em;
+
+}
+
+#message {
+  resize: none;
+  border: 2px solid #c4c4c4;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 16px;
+  height: 100px;
+  outline: none;
 }
