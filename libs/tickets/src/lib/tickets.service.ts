@@ -10,7 +10,6 @@ export class TicketsService {
   }
 
   public update(id: number, updatedTicket: Prisma.TicketUncheckedUpdateInput): Promise<Ticket> {
-    console.log(updatedTicket);
     return this.prisma.ticket.update({
       where: { id },
       data: { ...updatedTicket },
@@ -35,7 +34,7 @@ export class TicketsService {
   }
 
   public find(id: number): Promise<Ticket> {
-    return this.prisma.ticket.findUnique({ where: { id } });
+    return this.prisma.ticket.findUnique({ where: { id }, include: { Message: true } });
   }
 
   public list(): Promise<Ticket[]> {
