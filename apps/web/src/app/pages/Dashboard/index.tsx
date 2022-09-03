@@ -8,43 +8,73 @@ import './dashboard.css';
 export const UserData = [
   {
     id: 1,
-    year: 2016,
-    userGain: 80000,
-    userLost: 823,
+    month: 'Janeiro',
+    ticketCounting: 15,
   },
   {
     id: 2,
-    year: 2017,
-    userGain: 45677,
-    userLost: 345,
+    month: 'Fevereiro',
+    ticketCounting: 5,
   },
   {
     id: 3,
-    year: 2018,
-    userGain: 78888,
-    userLost: 555,
+    month: 'Março',
+    ticketCounting: 22,
   },
   {
     id: 4,
-    year: 2019,
-    userGain: 90000,
-    userLost: 4555,
+    month: 'Abril',
+    ticketCounting: 13,
   },
   {
     id: 5,
-    year: 2020,
-    userGain: 4300,
-    userLost: 234,
+    month: 'Maio',
+    ticketCounting: 18,
+  },
+  {
+    id: 6,
+    month: 'Junho',
+    ticketCounting: 15,
+  },
+  {
+    id: 7,
+    month: 'Julho',
+    ticketCounting: 3,
+  },
+  {
+    id: 8,
+    month: 'Agosto',
+    ticketCounting: 7,
+  },
+  {
+    id: 9,
+    month: 'Setembro',
+    ticketCounting: 0,
+  },
+  {
+    id: 10,
+    month: 'Outubro',
+    ticketCounting: 26,
+  },
+  {
+    id: 11,
+    month: 'Novembro',
+    ticketCounting: 10,
+  },
+  {
+    id: 12,
+    month: 'Dezembro',
+    ticketCounting: 34,
   },
 ];
 
 export default function Dashboard() {
   const [userData] = useState({
-    labels: UserData.map((data) => data.year),
+    labels: UserData.map((data) => data.month),
     datasets: [
       {
-        label: 'Users Gained',
-        data: UserData.map((data) => data.userGain),
+        label: 'Reclamações Totais',
+        data: UserData.map((data) => data.ticketCounting),
         backgroundColor: [
           'rgba(75,192,192,1)',
           '#ecf0f1',
@@ -83,21 +113,22 @@ export default function Dashboard() {
               titleCard="Título da reclamação"
               subtitle="Subtítulo, se necessário"
               bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
+              consectetur adipiscing elit, sed do eiusmod
+              tempor incididunt ut  labore et dolore magna
+              aliqua. Neque laoreet suspendisse interdum
+              consectetur libero id faucibus nisl tincidunt.."
               hexColorStatus="#FAE52D"
               nameStatus="Em análise"
+              onClickCard={() => { }}
             />
           </div>
         </div>
       </div>
       <div className="charts-container">
-        <div style={{ width: 900 }}>
+        <div style={{ width: '50%' }}>
           <LineChart chartData={userData} />
         </div>
-        <div style={{ width: 400 }}>
+        <div style={{ width: '30%' }}>
           <PieChart chartData={userData} />
         </div>
       </div>

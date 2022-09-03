@@ -1,3 +1,9 @@
+// import { User as UserModel } from '@prisma/client';
+// import { useEffect, useState } from 'react';
+
+import { Ticket } from '@prisma/client';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 import Card from '../../components/Card';
 import Header from '../../components/Header';
@@ -5,13 +11,31 @@ import Image from '../../components/Image';
 import './user.css';
 
 export default function User() {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const navigate = useNavigate();
+
+  const RedirectToCreateTicket = () => {
+    navigate('create-ticket');
+  };
+
+  const RedirectToTicketContent = (ticketId: number) => {
+    const ticketIdConverted = ticketId.toString();
+    navigate('/chat/'.concat(ticketIdConverted));
+  };
+
+  useEffect(() => {
+    fetch('/api/tickets')
+      .then((_) => _.json())
+      .then(setTickets);
+  }, []);
+
   return (
     <section className="user-main-content">
       <Header typeOfHeader="modify" />
       <div className="ticket-list-content">
         <div className="ticket-title-content">
           <h1 className="ticket-title">Reclamações</h1>
-          <Button type="button" onClick={() => { }} label="Nova Reclamação" buttonClassStyle="button-login ticket" />
+          <Button type="button" onClick={RedirectToCreateTicket} label="Nova Reclamação" buttonClassStyle="button-login ticket" />
         </div>
         <div className="ticket-list-search-content">
           <input type="search" placeholder="Procure pela sua reclamação" className="input-search" />
@@ -26,72 +50,16 @@ export default function User() {
           </div>
         </div>
         <div className="list-card">
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
-          <Card
-            titleCard="Título da reclamação"
-            subtitle="Subtítulo, se necessário"
-            bodyContent="Lorem ipsum dolor sit amet,
-            consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut  labore et dolore magna
-            aliqua. Neque laoreet suspendisse interdum
-            consectetur libero id faucibus nisl tincidunt.."
-            hexColorStatus="#FAE52D"
-            nameStatus="Em análise"
-          />
+          {tickets.map((ticket: Ticket) => (
+            <Card
+              key={ticket.id}
+              titleCard={ticket.title}
+              bodyContent={ticket.content}
+              hexColorStatus="#FAE52D"
+              nameStatus={ticket.status}
+              onClickCard={() => RedirectToTicketContent(ticket.id)}
+            />
+          ))}
         </div>
       </div>
     </section>

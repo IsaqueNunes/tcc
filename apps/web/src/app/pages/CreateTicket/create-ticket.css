@@ -1,0 +1,44 @@
+.main-ticket-content {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 50%;
+  padding-top: 10em;
+}
+
+.ticket-create-title {
+  align-self: flex-start;
+}
+
+.input-ticket-style,
+.ticket-create-title {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  /* gap: 20px; */
+  width: 100%;
+}
+
+.input-ticket-style {
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  padding: 10px 10px;
+  border: 3px solid #c4c4c4;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.button-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.width-adjust-100 {
+  width: 100%;
+}

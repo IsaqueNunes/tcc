@@ -8,5 +8,5 @@ interface ImageProps {
 }
 
 export default function LineChart({ chartData }: ImageProps) {
-  return <Line data={chartData} />;
+  return <Line style={{ overflowX: 'scroll' }} data={chartData} />;
 }

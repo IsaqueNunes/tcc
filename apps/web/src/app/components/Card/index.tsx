@@ -7,15 +7,16 @@ type CardProps = {
   bodyContent: string;
   hexColorStatus: string;
   nameStatus: string;
+  onClickCard: React.MouseEventHandler<HTMLDivElement> | undefined;
 };
 
 export default function Card({
   titleCard, subtitle, bodyContent, hexColorStatus, nameStatus, isFromDashboard,
+  onClickCard,
 }: CardProps) {
-  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
   if (!isFromDashboard) {
     return (
-      <div className="card-content" style={{ borderLeftColor: `#${randomColor}` }}>
+      <div className="card-content" aria-hidden="true" onClick={onClickCard} style={{ borderLeftColor: `${hexColorStatus}` }}>
         <div className="card-title">
           <h1>{titleCard}</h1>
           <h5>{subtitle}</h5>
@@ -34,7 +35,7 @@ export default function Card({
     );
   }
   return (
-    <div className="admin-card-content" style={{ borderLeftColor: `#${randomColor}` }}>
+    <div className="admin-card-content" style={{ borderLeftColor: `${hexColorStatus}` }}>
       <div className="card-title">
         <h1 className="admin-card-title">{titleCard}</h1>
         <h5 className="admin-card-subtitle">{subtitle}</h5>
