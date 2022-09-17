@@ -10,7 +10,10 @@ export class MessageService {
   }
 
   public findMessage(id: number) {
-    return this.prisma.message.findUnique({ where: { id } });
+    return this.prisma.message.findUnique({
+      where: { id },
+      include: { user: true },
+    });
   }
 
   public findLastUserMessage(userId: string) {

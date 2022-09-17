@@ -39,7 +39,7 @@ export class TicketsService {
   public find(id: number): Promise<Ticket> {
     return this.prisma.ticket.findUnique({
       where: { id },
-      include: { Message: true, user: true },
+      include: { Message: { include: { user: true } }, user: true },
     });
   }
 

@@ -1,4 +1,4 @@
-import { Message as MessageType, Prisma, User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
@@ -14,9 +14,26 @@ type TicketMessage = {
   createdAt: Date
   closedAt: Date | null
   userId: string
-  Message: MessageType[];
+  Message: MessageWithUser[];
   user: User;
 };
+
+type MessageWithUser = {
+  id: number
+  content: string
+  time: Date
+  user: User
+  userId: string
+  ticketId: number
+  repliedMessageId: number | null
+};
+
+function ConvertDate(data: string): string {
+  const date = new Date(data).toLocaleDateString();
+  const time = new Date(data).toLocaleTimeString();
+
+  return `${date} ${time}`;
+}
 
 export default function Chat() {
   const { id } = useParams();
@@ -33,7 +50,7 @@ export default function Chat() {
   const AddMessage = () => {
     const message: Prisma.MessageUncheckedCreateInput = {
       content: description,
-      userId: '04b3109e-2b82-49fc-b4f4-0f94c5148907',
+      userId: '156de89d-5458-45c7-9939-170ed851aea2',
       repliedMessageId: ticket?.Message.length === 0 ? null
         : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
       ticketId: Number(id),
@@ -59,7 +76,9 @@ export default function Chat() {
             </h1>
             <select name="status" id="status-select" aria-label="status-select">
               <option disabled defaultValue="">Selecione um status</option>
-              <option value="1">teste</option>
+              <option value="1">Aberto</option>
+              <option value="2">Em análise</option>
+              <option value="3">Concluído</option>
             </select>
           </div>
           <div className="message-list">
@@ -69,7 +88,7 @@ export default function Chat() {
                   <h3><strong>{ticket?.user?.name}</strong></h3>
                   <span>{ticket?.user?.email}</span>
                 </div>
-                <h5 className="no-wrap">{ticket?.createdAt?.toString()}</h5>
+                <h5 className="no-wrap">{ConvertDate(ticket?.createdAt.toString() as string)}</h5>
               </div>
               <div className="body-content">
                 <strong>
@@ -77,11 +96,13 @@ export default function Chat() {
                 </strong>
               </div>
             </div>
-            {ticket?.Message.map((message: MessageType) => (
+            {ticket?.Message.map((message: MessageWithUser) => (
               <Message
                 key={message.id}
                 messageContent={message.content}
-                messageCreatedDate={message.time.toString()}
+                messageCreatedDate={ConvertDate(message.time.toString())}
+                messageAuthorName={message.user.name}
+                messageEmailAuthor={message.user.email}
               />
             ))}
           </div>
