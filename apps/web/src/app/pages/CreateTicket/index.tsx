@@ -15,7 +15,7 @@ export default function CreateTicket() {
   const ticket: Prisma.TicketUncheckedCreateInput = {
     title,
     content,
-    userId: 'c9668c52-40ce-4fd9-bc6d-555c6e8dbce9',
+    userId: '04b3109e-2b82-49fc-b4f4-0f94c5148907',
   };
 
   const addTicket = () => {
