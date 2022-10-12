@@ -10,8 +10,8 @@ export class UserController {
   constructor(private userService: UserService) { }
 
   @Post()
-  public create(@Body() { name, email, password }: Prisma.UserCreateInput) {
-    return this.userService.create({ name, email, password });
+  public create(@Body() { name, email }: Prisma.UserCreateInput) {
+    return this.userService.create({ name, email });
   }
 
   @Get(':id')
