@@ -19,13 +19,20 @@ export default function Home() {
           <div className="conhecer-instituicao">
             <div className="logo-container">
               <div className="center-image">
-                <Image source="home-ifms-logo.svg" width="100px" height="150px" nameLazyLoad="Ifms Logo" />
+                <Image
+                  source="home-ifms-logo.svg"
+                  width="100px"
+                  height="150px"
+                  nameLazyLoad="Ifms Logo"
+                />
               </div>
               <h2 className="center-logo-style">Instituto Federal</h2>
               <h6 className="center-logo-style">Mato Grosso do Sul</h6>
             </div>
 
-            <p className="new-here">Novo por aqui?</p>
+            <p className="new-here">
+              Novo por aqui?
+            </p>
 
             <Button
               label="Conhecer a instituicao"

@@ -2,6 +2,7 @@ import {
   Body, Controller, Get, Param, Patch, Post, Put,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { FilterTicketDto } from '../../../models/filter-ticket-dto';
 import { TicketsService } from './tickets.service';
 
 @Controller('tickets')
@@ -11,6 +12,11 @@ export class TicketsController {
   @Post()
   public create(@Body() { title, content, userId }: Prisma.TicketUncheckedCreateInput) {
     return this.ticketsService.create({ title, content, userId });
+  }
+
+  @Post('filter')
+  public filterTicketsByFilterChoosed(@Body() { filter, contentToSearch }: FilterTicketDto) {
+    return this.ticketsService.filterTicketsByFilterChoosed({ filter, contentToSearch });
   }
 
   @Put(':id')
@@ -26,6 +32,16 @@ export class TicketsController {
   @Get(':id')
   public find(@Param('id') id: string) {
     return this.ticketsService.find(+id);
+  }
+
+  @Post('by-user/:id')
+  public findByUser(@Param('id') id: string) {
+    return this.ticketsService.findByUser(id);
+  }
+
+  @Get('admin-dashboard-information/:id')
+  public adminDashboardInformation(@Param('id') id: string) {
+    return this.ticketsService.adminDashboardInformation(id);
   }
 
   @Get()

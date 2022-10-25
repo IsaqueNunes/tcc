@@ -11,11 +11,13 @@ export default function CreateTicket() {
   const [title, setTitle] = useState<string>('');
   const [content, setDescription] = useState<string>('');
   const [tickets, setTickets] = useState<Ticket[]>([]);
+  // const isNotAdminUser = false;
+  // TODO: verify if logged user is not admin, and it's, redirect to normal admin page
 
   const ticket: Prisma.TicketUncheckedCreateInput = {
     title,
     content,
-    userId: '04b3109e-2b82-49fc-b4f4-0f94c5148907',
+    userId: '156de89d-5458-45c7-9939-170ed851aea2',
   };
 
   const addTicket = () => {
@@ -31,12 +33,12 @@ export default function CreateTicket() {
         setTickets([...tickets, newTicket]);
       });
 
-    navigate('/user');
+    navigate('/user/my-tickets');
   };
 
   return (
     <>
-      <Header typeOfHeader="modify" />
+      <Header typeOfHeader="user" />
       <div className="main-ticket-content">
         <h1 className="ticket-create-title">Registrar reclamação</h1>
         <form className="input-group">
@@ -70,7 +72,7 @@ export default function CreateTicket() {
           />
           <Button
             label="Voltar"
-            onClick={() => navigate('/user')}
+            onClick={() => navigate('/user/my-tickets')}
             type="button"
             buttonClassStyle="button-login button-back-home"
           />

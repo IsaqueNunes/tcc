@@ -19,13 +19,14 @@ type TicketMessage = {
 };
 
 type MessageWithUser = {
-  id: number
+  id?: number | undefined
   content: string
-  time: Date
-  user: User
+  time?: string | Date | undefined;
+  user?: User
   userId: string
   ticketId: number
-  repliedMessageId: number | null
+  repliedMessageId?: number | null | undefined
+  Message?: Prisma.MessageUncheckedCreateNestedManyWithoutRepliedMessageInput | undefined;
 };
 
 function ConvertDate(data: string): string {
@@ -40,12 +41,15 @@ export default function Chat() {
   const navigate = useNavigate();
   const [ticket, setTicket] = useState<TicketMessage>();
   const [description, setDescription] = useState<string>('');
+  const [messages, setMessages] = useState<MessageWithUser[]>([]);
+  const isAdmin = false; // TODO: add request to verify when user is admin
 
   useEffect(() => {
     fetch('/api/tickets/'.concat(id != null ? id : ''))
       .then((_) => _.json())
       .then(setTicket);
-  }, [id]);
+    setMessages(ticket?.Message || []);
+  }, [id, ticket?.Message]);
 
   const AddMessage = () => {
     const message: Prisma.MessageUncheckedCreateInput = {
@@ -63,10 +67,18 @@ export default function Chat() {
       body: JSON.stringify(message),
     })
       .then((_) => _.json());
+
+    setMessages([...messages, message]);
+    setDescription('');
   };
+
+  const backToListPage = () => {
+    if (isAdmin) { navigate('/admin/tickets'); } else { navigate('/user/my-tickets'); }
+  };
+
   return (
     <>
-      <Header typeOfHeader="modify" />
+      <Header typeOfHeader="user" />
       <div className="ticket-chat-page">
         <div className="ticket-chat-page-content">
           <div className="title-content">
@@ -74,12 +86,15 @@ export default function Chat() {
               {' '}
               {ticket?.title}
             </h1>
+            {isAdmin && (
             <select name="status" id="status-select" aria-label="status-select">
               <option disabled defaultValue="">Selecione um status</option>
               <option value="1">Aberto</option>
               <option value="2">Em análise</option>
               <option value="3">Concluído</option>
             </select>
+            )}
+
           </div>
           <div className="message-list">
             <div className="first-message">
@@ -96,13 +111,13 @@ export default function Chat() {
                 </strong>
               </div>
             </div>
-            {ticket?.Message.map((message: MessageWithUser) => (
+            {messages?.map((message: MessageWithUser) => (
               <Message
                 key={message.id}
                 messageContent={message.content}
-                messageCreatedDate={ConvertDate(message.time.toString())}
-                messageAuthorName={message.user.name}
-                messageEmailAuthor={message.user.email}
+                messageCreatedDate={ConvertDate(message?.time?.toString() || '')}
+                messageAuthorName={message?.user?.name || ''}
+                messageEmailAuthor={message?.user?.email || ''}
               />
             ))}
           </div>
@@ -112,6 +127,7 @@ export default function Chat() {
               id="message"
               aria-label="message-send-content"
               onChange={(event) => setDescription(event.target.value)}
+              value={description}
             />
             <div className="button-add-message-container">
               <Button
@@ -122,7 +138,7 @@ export default function Chat() {
               />
               <Button
                 label="Voltar"
-                onClick={() => navigate('/user')}
+                onClick={backToListPage}
                 type="button"
                 buttonClassStyle="button-login button-back-home"
               />

@@ -11,5 +11,5 @@ import { MessageController } from '../../../../libs/message/src/lib/message.cont
   imports: [],
   controllers: [AppController, UserController, TicketsController, MessageController],
   providers: [AppService, UserService, TicketsService, MessageService],
-})
+  })
 export class AppModule { }

@@ -17,7 +17,8 @@ export default function RoutesNavigator() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/user" element={<User />} />
-      <Route path="/user/my-tickets" element={<ListTickets />} />
+      <Route path="/user/my-tickets" element={<ListTickets isAdminRoute={false} />} />
+      <Route path="/admin/tickets" element={<ListTickets isAdminRoute />} />
       <Route path="/user/create-ticket" element={<CreateTicket />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard />} />
