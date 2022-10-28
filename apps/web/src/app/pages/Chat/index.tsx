@@ -42,7 +42,7 @@ export default function Chat() {
   const [ticket, setTicket] = useState<TicketMessage>();
   const [description, setDescription] = useState<string>('');
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const isAdmin = false; // TODO: add request to verify when user is admin
+  const isAdmin = true; // TODO: add request to verify when user is admin
 
   useEffect(() => {
     fetch('/api/tickets/'.concat(id != null ? id : ''))

@@ -61,9 +61,7 @@ export default function Dashboard() {
     } catch (err) {
       console.log(err);
     }
-
-  // })
-  }, [data.chartData]);
+  }, []);
 
   return (
     !loading ? (
