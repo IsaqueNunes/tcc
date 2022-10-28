@@ -2,13 +2,19 @@ import { Module } from '@nestjs/common';
 
 import { UserController, UserService } from '@tcc/user';
 import { TicketsController, TicketsService } from '@tcc/tickets';
-import { MessageService } from 'libs/message/src/lib/message.service';
+import { MessageService, MessageController } from '@tcc/message';
+import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MessageController } from '../../../../libs/message/src/lib/message.controller';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot(),
+    AuthModule,
+    PassportModule.register({ session: true }),
+  ],
   controllers: [AppController, UserController, TicketsController, MessageController],
   providers: [AppService, UserService, TicketsService, MessageService],
   })
