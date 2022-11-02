@@ -1,18 +1,20 @@
+import axios from 'axios';
 import { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
 function useGoogleAuthentication() {
-  const handleSuccess = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+  const handleSuccess = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
     if ('accessToken' in response) {
-      const { accessToken } = response;
-      fetch(`${process.env['NX_REACT_APP_API_URL']}/google-authentication`, {
-        method: 'POST',
-        body: JSON.stringify({
-          token: accessToken,
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      // const { accessToken } = response;
+      // fetch(`${process.env['NX_REACT_APP_API_URL']}/auth/`, {
+      //   method: 'POST',
+      //   body: JSON.stringify({
+      //     token: accessToken,
+      //   }),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // });
+
     }
   };
 

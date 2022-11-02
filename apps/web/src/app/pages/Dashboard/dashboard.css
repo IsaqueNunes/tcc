@@ -54,6 +54,15 @@
   gap: 40px;
 }
 
+.text-with-no-commented-tickets {
+  width: 100%;
+  text-align: center;
+}
+
+.last-ticket-commented {
+  width: 100%;
+}
+
 
 @media (max-width: 900px) {
   .column-top-data {

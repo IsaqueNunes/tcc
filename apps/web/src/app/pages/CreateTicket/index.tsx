@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/no-autofocus */
 import { Prisma, Ticket } from '@prisma/client';
+// import { TypeOfHeader } from 'libs/enum/type-of-header-enum';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
@@ -8,6 +9,11 @@ import './create-ticket.css';
 
 export default function CreateTicket() {
   const navigate = useNavigate();
+  const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
+  const usuario_invalido = !(user_data.email as string).includes('@estudante.ifms.edu.br');
+  if(usuario_invalido) {
+    navigate('/admin/tickets')
+  }
   const [title, setTitle] = useState<string>('');
   const [content, setDescription] = useState<string>('');
   const [tickets, setTickets] = useState<Ticket[]>([]);
@@ -17,7 +23,7 @@ export default function CreateTicket() {
   const ticket: Prisma.TicketUncheckedCreateInput = {
     title,
     content,
-    userId: '156de89d-5458-45c7-9939-170ed851aea2',
+    userId: user_data.id,
   };
 
   const addTicket = () => {
@@ -37,8 +43,9 @@ export default function CreateTicket() {
   };
 
   return (
-    <>
-      <Header typeOfHeader="user" />
+    !usuario_invalido ? (
+      <>
+      <Header typeOfHeader={'user'} />
       <div className="main-ticket-content">
         <h1 className="ticket-create-title">Registrar reclamação</h1>
         <form className="input-group">
@@ -78,6 +85,8 @@ export default function CreateTicket() {
           />
         </div>
       </div>
-    </>
-  );
+    </>)
+      :
+      <></>
+    );
 }

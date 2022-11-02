@@ -9,5 +9,5 @@ import { SessionSerializer } from './utils/serializer';
   imports: [UserModule],
   controllers: [AuthController],
   providers: [AuthService, GoogleStrategy, SessionSerializer],
-})
+  })
 export class AuthModule { }

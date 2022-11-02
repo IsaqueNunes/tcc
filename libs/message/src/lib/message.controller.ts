@@ -3,14 +3,15 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { MessageService } from './message.service';
+import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 
 @Controller('message')
 export class MessageController {
   constructor(private messageService: MessageService) { }
 
   @Post()
-  public create(@Body() { content, userId, ticketId }: Prisma.MessageUncheckedCreateInput) {
-    return this.messageService.create({ content, userId, ticketId: +ticketId });
+  public create(@Body() { content, userId, ticketId, status}: MessageWithStatusDto) {
+    return this.messageService.create({ content, userId, ticketId: +ticketId, status });
   }
 
   @Get(':id')

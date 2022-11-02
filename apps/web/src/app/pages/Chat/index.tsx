@@ -1,4 +1,7 @@
 import { Prisma, User } from '@prisma/client';
+import axios from 'axios';
+import { SearchUserExistsTicketDto } from 'libs/models/search-user-exists-ticket-dto';
+import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
@@ -38,26 +41,57 @@ function ConvertDate(data: string): string {
 
 export default function Chat() {
   const { id } = useParams();
+  const user_data = JSON.parse(localStorage.getItem('authData') || '');
   const navigate = useNavigate();
+  const [canSeeMessage, setCanSeeThisMessage] = useState(true);
+  const [selectedOption, setSelectedOption] = useState<string>('');
   const [ticket, setTicket] = useState<TicketMessage>();
   const [description, setDescription] = useState<string>('');
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const isAdmin = true; // TODO: add request to verify when user is admin
+  const isAdmin = (user_data.email as string).includes('@estudante.ifms.edu.br');
+
+  useEffect(() => {
+    if(!isAdmin) {
+    const userToSearch: SearchUserExistsTicketDto = {
+      email: user_data.email,
+      id: Number(id)
+    }
+      fetch('/api/tickets/can-see-message', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify(userToSearch),
+
+      }).then((_) => _.json())
+      .then((response) => {
+        if(!response) {
+          navigate('/user/my-tickets');
+        } else {
+          setCanSeeThisMessage(true);
+          setSelectedOption(ticket?.status || '');
+        }
+      } )
+  }
+
+  }, [])
 
   useEffect(() => {
     fetch('/api/tickets/'.concat(id != null ? id : ''))
       .then((_) => _.json())
       .then(setTicket);
-    setMessages(ticket?.Message || []);
-  }, [id, ticket?.Message]);
+      setMessages(ticket?.Message || []);
+  }, [id, ticket?.Message, ticket?.status]);
 
   const AddMessage = () => {
-    const message: Prisma.MessageUncheckedCreateInput = {
+    const message: MessageWithStatusDto = {
       content: description,
-      userId: '156de89d-5458-45c7-9939-170ed851aea2',
+      userId: user_data.id,
       repliedMessageId: ticket?.Message.length === 0 ? null
         : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
       ticketId: Number(id),
+      time: new Date(),
+      status: selectedOption
     };
     fetch('/api/message', {
       method: 'POST',
@@ -72,13 +106,18 @@ export default function Chat() {
     setDescription('');
   };
 
+  const setSelectedOptionSelect = (event: any) => {
+    setSelectedOption(event.target.value);
+  };
+
   const backToListPage = () => {
     if (isAdmin) { navigate('/admin/tickets'); } else { navigate('/user/my-tickets'); }
   };
 
   return (
+    canSeeMessage ? (
     <>
-      <Header typeOfHeader="user" />
+      <Header typeOfHeader={'user'} />
       <div className="ticket-chat-page">
         <div className="ticket-chat-page-content">
           <div className="title-content">
@@ -86,14 +125,19 @@ export default function Chat() {
               {' '}
               {ticket?.title}
             </h1>
-            {isAdmin && (
-            <select name="status" id="status-select" aria-label="status-select">
-              <option disabled defaultValue="">Selecione um status</option>
-              <option value="1">Aberto</option>
-              <option value="2">Em análise</option>
-              <option value="3">Concluído</option>
+           <select
+              name="filter"
+              value={selectedOption}
+              onChange={setSelectedOptionSelect}
+              className="filter-button"
+              aria-label="State"
+              id="filter-options"
+              placeholder="Filter options"
+            >
+              <option value="ABERTO">Aberto</option>
+              <option value="EM_ANALISE">Em Análise</option>
+              <option value="FINALIZADO">Concluído</option>
             </select>
-            )}
 
           </div>
           <div className="message-list">
@@ -147,5 +191,6 @@ export default function Chat() {
         </div>
       </div>
     </>
+    ) : <></>
   );
 }

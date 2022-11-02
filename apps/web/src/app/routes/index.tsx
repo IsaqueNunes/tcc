@@ -6,23 +6,33 @@ import Login from '../pages/Login';
 import User from '../pages/User';
 import ListTickets from '../components/ListTickets';
 import CreateTicket from '../pages/CreateTicket';
-// import About from '../components/About';
 import Dashboard from '../pages/Dashboard';
-import Profile from '../pages/Profile';
 import Chat from '../pages/Chat';
+import ProtectedRoute from '../components/ProtectedRoute';
 
 export default function RoutesNavigator() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/user" element={<User />} />
-      <Route path="/user/my-tickets" element={<ListTickets isAdminRoute={false} />} />
-      <Route path="/admin/tickets" element={<ListTickets isAdminRoute />} />
-      <Route path="/user/create-ticket" element={<CreateTicket />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/chat/:id" element={<Chat />} />
+      <Route path='/login' element={<Login/>}/>
+      {/* <Route path='/user' element={<ProtectedRoute/>}>
+        <Route path="/user" element={<User />} />
+      </Route> */}
+      <Route path='/user/my-tickets' element={<ProtectedRoute/>}>
+        <Route path="/user/my-tickets" element={<ListTickets isAdminRoute={false} />} />
+      </Route>
+      <Route path='/admin/tickets' element={<ProtectedRoute/>}>
+        <Route path="/admin/tickets" element={<ListTickets isAdminRoute />} />
+      </Route>
+      <Route path='/user/create-ticket' element={<ProtectedRoute/>}>
+        <Route path="/user/create-ticket" element={<CreateTicket />} />
+      </Route>
+      <Route path='/dashboard' element={<ProtectedRoute/>}>
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Route>
+      <Route path='/chat/:id' element={<ProtectedRoute/>}>
+        <Route path="/chat/:id" element={<Chat />} />
+      </Route>
     </Routes>
   );
 }

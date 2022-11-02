@@ -3,6 +3,7 @@ import {
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { FilterTicketDto } from '../../../models/filter-ticket-dto';
+import { SearchUserExistsTicketDto } from '../../../models/search-user-exists-ticket-dto';
 import { TicketsService } from './tickets.service';
 
 @Controller('tickets')
@@ -37,6 +38,11 @@ export class TicketsController {
   @Post('by-user/:id')
   public findByUser(@Param('id') id: string) {
     return this.ticketsService.findByUser(id);
+  }
+
+  @Post('can-see-message')
+  public verifyIfUserParticipateThisTicket(@Body() {email, id}: SearchUserExistsTicketDto) {
+    return this.ticketsService.verifyIfUserParticipateThisTicket(email, id);
   }
 
   @Get('admin-dashboard-information/:id')

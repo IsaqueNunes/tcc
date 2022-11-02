@@ -10,6 +10,7 @@ import PieChart from '../../components/PieChart';
 import './dashboard.css';
 import { ChartDataDto } from 'libs/models/chart-data-dto';
 import { AdminDashboardInformationDto } from 'libs/models/admin-dashboard-information-dto';
+import { useNavigate } from 'react-router-dom';
 
 export class AdminDashboardClass implements AdminDashboardInformationDto {
   openingTicketsCounting!: number;
@@ -22,6 +23,13 @@ export class AdminDashboardClass implements AdminDashboardInformationDto {
 }
 
 export default function Dashboard() {
+  const navigate = useNavigate();
+  const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
+  const usuario_invalido = !(user_data.email as string).includes('@estudante.ifms.edu.br');
+  if(usuario_invalido) {
+    navigate('/user/my-tickets')
+  }
+
   const [data, setData] = useState<AdminDashboardClass>(new AdminDashboardClass());
   const [userData, setUserData] = useState<any>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -64,15 +72,15 @@ export default function Dashboard() {
   }, []);
 
   return (
-    !loading ? (
+    !loading && !usuario_invalido ? (
       <>
-        <Header typeOfHeader="admin" />
+        <Header typeOfHeader={'admin'} />
         <div className="dashboard-main-content">
           <div className="column-top-data">
             <div className="current-data">
               <h1>Dados Atuais</h1>
-              <h3 className="user-name">Paulo Ricardo</h3>
-              <h4>Paulo.Ricardo@gmail.com</h4>
+              <h3 className="user-name">{user_data.name}</h3>
+              <h4>{user_data.email}</h4>
               <span>Último Acesso em: 16/06/2022 às 14:38</span>
             </div>
             <div className="tickets-opened-card">
@@ -92,16 +100,22 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="last-ticket-commented">
-              <h3>Última reclamação comentada</h3>
-              <Card
-                isFromDashboard
-                titleCard={data?.lastMessageCommented.ticket.title || ''}
-                subtitle=""
-                bodyContent={data?.lastMessageCommented.ticket.content || ''}
-                hexColorStatus="#FAE52D"
-                nameStatus={data?.lastMessageCommented.ticket.status || ''}
-                onClickCard={() => { }}
-              />
+              {data?.lastMessageCommented?.ticket != null ?
+              <>
+                <h3>Última reclamação comentada</h3>
+                <Card
+                  isFromDashboard
+                  titleCard={data?.lastMessageCommented.ticket.title || ''}
+                  subtitle=""
+                  bodyContent={data?.lastMessageCommented.ticket.content || ''}
+                  hexColorStatus="#FAE52D"
+                  nameStatus={data?.lastMessageCommented.ticket.status || ''}
+                  onClickCard={() => { }}
+                  />
+                </>
+                :
+                <h3 className="text-with-no-commented-tickets">Nenhuma reclamação comentada, ainda.</h3>
+              }
             </div>
           </div>
         </div>
@@ -109,11 +123,13 @@ export default function Dashboard() {
           <div style={{ width: '50%' }}>
             <LineChart chartData={userData} />
           </div>
-          <div style={{ width: '30%' }}>
-            <PieChart chartData={userData} />
-          </div>
+          {data?.chartData.length > 0 != null &&
+            <div style={{ width: '30%' }}>
+              <PieChart chartData={userData} />
+            </div>
+          }
         </div>
       </>
-    ) : (<>loading screen</>)
+    ) : (<></>)
   );
 }

@@ -15,9 +15,12 @@ type ListTicketsProps = {
 export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [searchTicket, setSearchTicket] = useState<string>('');
+
   const [selectedOption, setSelectedOption] = useState<'title' | 'content'>('title');
-  const id = '04b3109e-2b82-49fc-b4f4-0f94c5148907';
   const navigate = useNavigate();
+  const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
+  const usuario_administrativo = (user_data.email as string).includes('@ifms.edu.br');
+  const id = user_data.id;
 
   const RedirectToCreateTicket = () => {
     navigate('/user/create-ticket');
@@ -29,7 +32,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   };
 
   useEffect(() => {
-    if (isAdminRoute) {
+    if (isAdminRoute && usuario_administrativo) {
       fetch('/api/tickets')
         .then((_) => _.json())
         .then(setTickets);
@@ -68,7 +71,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
 
   return (
     <section className="user-main-content">
-      <Header typeOfHeader="user" />
+      <Header typeOfHeader={isAdminRoute ? 'admin' : 'user'} />
       <div className="ticket-list-content">
         <div className="ticket-title-content">
           <h1 className="ticket-title">Reclamações</h1>
@@ -87,10 +90,6 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
             <div className="search-button" onClick={searchByTitleOrDescription} role="button" aria-hidden="true">
               <Image source="search.svg" width="20" height="20" nameLazyLoad="search icon" />
             </div>
-            {/* <div className="filter-button">
-              <Image source="filter.svg" width="13" height="10" nameLazyLoad="filter icon" />
-              Filtrar
-            </div> */}
             <select
               name="filter"
               value={selectedOption}

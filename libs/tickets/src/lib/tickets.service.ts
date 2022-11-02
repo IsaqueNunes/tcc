@@ -25,7 +25,7 @@ export class TicketsService {
   }
 
   public changeStatus(id: number, status: string): Promise<Ticket> {
-    if (status === 'FECHADO') {
+    if (status === 'FINALIZADO') {
       return this.prisma.ticket.update({
         where: { id },
         data: {
@@ -37,7 +37,7 @@ export class TicketsService {
 
     return this.prisma.ticket.update({
       where: { id },
-      data: { status },
+      data: { status }
     });
   }
 
@@ -45,6 +45,12 @@ export class TicketsService {
     return this.prisma.ticket.findUnique({
       where: { id },
       include: { Message: { include: { user: true } }, user: true },
+    });
+  }
+
+  public findFirst(id: number): Promise<Ticket> {
+    return this.prisma.ticket.findFirst({
+      where: {id}
     });
   }
 
@@ -74,6 +80,17 @@ export class TicketsService {
         user: { id },
       },
     });
+  }
+
+  public async verifyIfUserParticipateThisTicket(email: string, id: number): Promise<boolean> {
+    const findTicket = await this.prisma.ticket.findFirst({
+      where: {
+        user: { email },
+        id: id
+      }
+    });
+
+    return findTicket !== null;
   }
 
   public async adminDashboardInformation(id: string): Promise<AdminDashboardInformationDto> {

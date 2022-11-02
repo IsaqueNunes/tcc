@@ -7,6 +7,7 @@ import Button from '../Button';
 function AdminHeader() {
   const navigate = useNavigate();
   const Logout = () => {
+    localStorage.removeItem('authData');
     navigate('/');
   };
   const Dashboard = () => {
@@ -51,6 +52,7 @@ function LoginDefaultHeader() {
 function ModifyHeader() {
   const navigate = useNavigate();
   const Logout = () => {
+    localStorage.removeItem('authData');
     navigate('/');
   };
 
@@ -63,7 +65,7 @@ function ModifyHeader() {
         <Image source="main-logo-colored.svg" width="50px" height="50px" nameLazyLoad="Ifms Logo" />
       </div>
       <Row className="list-items">
-        <Link className="list-item" to="/user">Minhas Reclamações</Link>
+        <Link className="list-item" to="/user/my-tickets">Minhas Reclamações</Link>
         <div className="vertical-line" />
         <Link className="list-item" to="/user/create-ticket">Reclamar</Link>
         <Button label="Sair" buttonClassStyle="button-logout" onClick={Logout} type="button" />
@@ -73,7 +75,7 @@ function ModifyHeader() {
 }
 
 type HeaderProps = {
-  typeOfHeader: 'user' | 'default' | 'admin';
+  typeOfHeader: 'user' | 'login' | 'admin';
 };
 
 export default function Header({ typeOfHeader }: HeaderProps) {
@@ -82,7 +84,7 @@ export default function Header({ typeOfHeader }: HeaderProps) {
       return (
         <ModifyHeader />
       );
-    case 'default':
+    case 'login':
       return (
         <LoginDefaultHeader />
       );

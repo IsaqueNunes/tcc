@@ -13,6 +13,10 @@ export class UserService {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
+  public findByEmail(email: string): Promise<User | null> {
+    return this.prisma.user.findUnique({where: { email } });
+  }
+
   public list(): Promise<User[]> {
     return this.prisma.user.findMany();
   }

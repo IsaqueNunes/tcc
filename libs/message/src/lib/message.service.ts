@@ -1,12 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { Message, Prisma, PrismaClient } from '@prisma/client';
+import { TicketsService } from '@tcc/tickets';
+import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 
 @Injectable()
 export class MessageService {
   private prisma = new PrismaClient();
+  constructor(private ticketsService: TicketsService) {
 
-  public create(message: Prisma.MessageUncheckedCreateInput): Promise<Message> {
-    return this.prisma.message.create({ data: { ...message } });
+  }
+
+  public async create(message: MessageWithStatusDto): Promise<Message> {
+    const ticket = await this.ticketsService.findFirst(message.id);
+    console.log(message.status)
+    console.log(ticket.status);
+    if(ticket.status !== message.status) {
+      this.ticketsService.changeStatus(message.ticketId, message.status);
+    }
+    const newMessage: Prisma.MessageUncheckedCreateInput = {
+      content: message.content,
+      repliedMessageId: message.repliedMessageId,
+      ticketId: message.ticketId,
+      time: new Date(),
+      userId: message.userId
+    }
+    return this.prisma.message.create({ data: { ...newMessage } });
   }
 
   public findMessage(id: number) {

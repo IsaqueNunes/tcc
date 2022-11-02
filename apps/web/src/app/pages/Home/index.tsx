@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import './home.css';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
+// import { TypeOfHeader } from 'libs/enum/type-of-header-enum';
 
 export default function Home() {
   const RedirectToIfms = () => {
@@ -13,7 +14,7 @@ export default function Home() {
 
   return (
     <>
-      <Header typeOfHeader="default" />
+      <Header typeOfHeader={'login'} />
       <Row className="background-home">
         <section className="main-content">
           <div className="conhecer-instituicao">

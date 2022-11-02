@@ -11,7 +11,9 @@ export class UserController {
 
   @Post()
   public create(@Body() { name, email }: Prisma.UserCreateInput) {
-    return this.userService.create({ name, email });
+    return this.userService.create({
+      name, email,
+    });
   }
 
   @Get(':id')
