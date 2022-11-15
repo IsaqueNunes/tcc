@@ -1,47 +1,21 @@
 import { Prisma, User } from '@prisma/client';
 import axios from 'axios';
 import { SearchUserExistsTicketDto } from 'libs/models/search-user-exists-ticket-dto';
+import { AuthDataDto } from 'libs/models/auth-data-dto';
+import { MessageWithUser } from 'libs/models/message-with-user';
+import { TicketMessage } from 'libs/models/ticket-message';
 import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import Message from '../../components/Message';
+import { ConvertDate } from '../../util/validate';
 import './chat.css';
-
-type TicketMessage = {
-  id: number
-  title: string
-  content: string
-  status: string
-  createdAt: Date
-  closedAt: Date | null
-  userId: string
-  Message: MessageWithUser[];
-  user: User;
-};
-
-type MessageWithUser = {
-  id?: number | undefined
-  content: string
-  time?: string | Date | undefined;
-  user?: User
-  userId: string
-  ticketId: number
-  repliedMessageId?: number | null | undefined
-  Message?: Prisma.MessageUncheckedCreateNestedManyWithoutRepliedMessageInput | undefined;
-};
-
-function ConvertDate(data: string): string {
-  const date = new Date(data).toLocaleDateString();
-  const time = new Date(data).toLocaleTimeString();
-
-  return `${date} ${time}`;
-}
 
 export default function Chat() {
   const { id } = useParams();
-  const user_data = JSON.parse(localStorage.getItem('authData') || '');
+  const user_data: AuthDataDto = JSON.parse(localStorage.getItem('authData') || '');
   const navigate = useNavigate();
   const [canSeeMessage, setCanSeeThisMessage] = useState(true);
   const [selectedOption, setSelectedOption] = useState<string>('');
@@ -50,8 +24,14 @@ export default function Chat() {
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
   const isAdmin = (user_data.email as string).includes('@estudante.ifms.edu.br');
 
+  function scrollMessageDiv() {
+    const element = document.getElementById('message-list') as HTMLElement;
+    element.scrollTo(
+      {top: element.scrollHeight,
+    behavior: 'auto'});
+  }
+
   useEffect(() => {
-    if(!isAdmin) {
     const userToSearch: SearchUserExistsTicketDto = {
       email: user_data.email,
       id: Number(id)
@@ -69,24 +49,32 @@ export default function Chat() {
           navigate('/user/my-tickets');
         } else {
           setCanSeeThisMessage(true);
-          setSelectedOption(ticket?.status || '');
         }
       } )
-  }
-
   }, [])
 
+  async function GetTickets() {
+    const response = await axios.get('http://localhost:3333/api/tickets/'.concat(id != null ? id : ''));
+    setTicket(response.data);
+    scrollMessageDiv();
+    setSelectedOption(response.data.status);
+    setMessages(response.data.Message);
+  }
+
   useEffect(() => {
-    fetch('/api/tickets/'.concat(id != null ? id : ''))
-      .then((_) => _.json())
-      .then(setTicket);
-      setMessages(ticket?.Message || []);
-  }, [id, ticket?.Message, ticket?.status]);
+    GetTickets();
+  }, []);
+
 
   const AddMessage = () => {
+    let user: User = {
+      id: user_data.id,
+      email: user_data.email,
+      name: user_data.name,
+    }
     const message: MessageWithStatusDto = {
       content: description,
-      userId: user_data.id,
+      user: user,
       repliedMessageId: ticket?.Message.length === 0 ? null
         : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
       ticketId: Number(id),
@@ -104,6 +92,7 @@ export default function Chat() {
 
     setMessages([...messages, message]);
     setDescription('');
+    scrollMessageDiv();
   };
 
   const setSelectedOptionSelect = (event: any) => {
@@ -140,7 +129,6 @@ export default function Chat() {
             </select>
 
           </div>
-          <div className="message-list">
             <div className="first-message">
               <div className="top-content">
                 <div className="name-email">
@@ -155,6 +143,7 @@ export default function Chat() {
                 </strong>
               </div>
             </div>
+          <div className="message-list" id="message-list">
             {messages?.map((message: MessageWithUser) => (
               <Message
                 key={message.id}
@@ -166,27 +155,36 @@ export default function Chat() {
             ))}
           </div>
           <div className="type-new-message-for-response">
-            <textarea
-              name="message"
-              id="message"
-              aria-label="message-send-content"
-              onChange={(event) => setDescription(event.target.value)}
-              value={description}
-            />
-            <div className="button-add-message-container">
-              <Button
-                label="Enviar"
-                onClick={AddMessage}
-                type="button"
-                buttonClassStyle="button-login"
-              />
-              <Button
-                label="Voltar"
-                onClick={backToListPage}
-                type="button"
-                buttonClassStyle="button-login button-back-home"
-              />
-            </div>
+            {ticket?.status === "FINALIZADO" ? (
+                <Button
+                  label="Voltar"
+                  onClick={backToListPage}
+                  type="button"
+                  buttonClassStyle="button-login button-back-home width-100"
+                />
+            ) : (
+              <>
+                <textarea
+                  name="message"
+                  id="message"
+                  aria-label="message-send-content"
+                  onChange={(event) => setDescription(event.target.value)}
+                  value={description} />
+                <div className="button-add-message-container">
+                  <Button
+                    label="Enviar"
+                    onClick={AddMessage}
+                    type="button"
+                    buttonClassStyle="button-login" />
+                  <Button
+                    label="Voltar"
+                    onClick={backToListPage}
+                    type="button"
+                    buttonClassStyle="button-login button-back-home" />
+                </div>
+              </>
+            )
+            }
           </div>
         </div>
       </div>

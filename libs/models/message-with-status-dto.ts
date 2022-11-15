@@ -1,10 +1,10 @@
-import { Prisma } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 
 export type MessageWithStatusDto = {
   id?: number | undefined;
   content: string;
   time?: string | Date | undefined;
-  userId: string;
+  user?: User;
   ticketId: number;
   Message?: Prisma.MessageUncheckedCreateNestedManyWithoutRepliedMessageInput | undefined;
   repliedMessageId?: number | null | undefined;

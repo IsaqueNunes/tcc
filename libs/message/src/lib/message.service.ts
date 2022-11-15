@@ -12,17 +12,15 @@ export class MessageService {
 
   public async create(message: MessageWithStatusDto): Promise<Message> {
     const ticket = await this.ticketsService.findFirst(message.id);
-    console.log(message.status)
-    console.log(ticket.status);
     if(ticket.status !== message.status) {
-      this.ticketsService.changeStatus(message.ticketId, message.status);
+      let ticket = await this.ticketsService.changeStatus(message.ticketId, message.status);
     }
     const newMessage: Prisma.MessageUncheckedCreateInput = {
       content: message.content,
       repliedMessageId: message.repliedMessageId,
       ticketId: message.ticketId,
       time: new Date(),
-      userId: message.userId
+      userId: message.user.id
     }
     return this.prisma.message.create({ data: { ...newMessage } });
   }

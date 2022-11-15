@@ -64,6 +64,10 @@
   background-color: #C82733;
 }
 
+.width-100 {
+  width: 100%;
+}
+
 .button-back-home:hover {
   background-color: #a72b33;
 }

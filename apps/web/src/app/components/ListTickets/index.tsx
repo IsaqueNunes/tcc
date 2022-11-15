@@ -2,11 +2,14 @@ import { Ticket } from '@prisma/client';
 import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { colorStatus, nameStatus }  from 'libs/models/status';
 import Button from '../Button';
 import Card from '../Card';
 import Header from '../Header';
 import Image from '../Image';
 import './list-tickets.css';
+
+type Status = "ABERTO" | "EM_ANALISE" | "FINALIZADO";
 
 type ListTicketsProps = {
   isAdminRoute: boolean,
@@ -110,8 +113,8 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
               key={ticket.id}
               titleCard={ticket.title}
               bodyContent={ticket.content}
-              hexColorStatus="#FAE52D"
-              nameStatus={ticket.status}
+              hexColorStatus={colorStatus[ticket.status as Status]}
+              nameStatus={nameStatus[ticket.status as Status]}
               onClickCard={() => RedirectToTicketContent(ticket.id)}
             />
           ))}

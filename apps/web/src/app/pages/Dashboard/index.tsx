@@ -25,7 +25,7 @@ export class AdminDashboardClass implements AdminDashboardInformationDto {
 export default function Dashboard() {
   const navigate = useNavigate();
   const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
-  const usuario_invalido = !(user_data.email as string).includes('@estudante.ifms.edu.br');
+  const usuario_invalido = !(user_data.email as string).includes('@ifms.edu.br');
   if(usuario_invalido) {
     navigate('/user/my-tickets')
   }
@@ -123,11 +123,11 @@ export default function Dashboard() {
           <div style={{ width: '50%' }}>
             <LineChart chartData={userData} />
           </div>
-          {data?.chartData.length > 0 != null &&
+          {/* {data?.chartData.length > 0 != null &&
             <div style={{ width: '30%' }}>
               <PieChart chartData={userData} />
             </div>
-          }
+          } */}
         </div>
       </>
     ) : (<></>)

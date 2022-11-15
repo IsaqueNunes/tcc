@@ -44,7 +44,14 @@ export class TicketsService {
   public find(id: number): Promise<Ticket> {
     return this.prisma.ticket.findUnique({
       where: { id },
-      include: { Message: { include: { user: true } }, user: true },
+      include: {
+        Message:
+        {
+          include: {
+            user: true
+          }
+        },
+        user: true },
     });
   }
 
@@ -131,7 +138,12 @@ export class TicketsService {
       10: 'Novembro',
       11: 'Dezembro',
     };
-    const ticketList = await this.prisma.ticket.findMany();
+
+    const ticketList = await this.prisma.ticket.findMany({
+
+    });
+
+
     const countingByMonth = new Array<number>(12);
     const chartData: ChartDataDto[] = [];
     for (let i = 0; i < countingByMonth.length; i += 1) {

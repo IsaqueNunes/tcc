@@ -48,7 +48,7 @@
   flex-direction: column;
   margin-top: 30px;
   gap: 40px;
-  height: 50vh;
+  height: 40vh;
   overflow-y: auto;
 }
 
@@ -59,6 +59,7 @@
 .button-add-message-container,
 .type-new-message-for-response {
   display: flex;
+  width: 100%;
 }
 
 .type-new-message-for-response {
@@ -75,4 +76,9 @@
   font-size: 16px;
   height: 100px;
   outline: none;
+}
+
+.align-button-center {
+  display: flex;
+  justify-content: center;
 }
