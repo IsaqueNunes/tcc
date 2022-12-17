@@ -1,17 +1,20 @@
-import { Prisma, User } from '@prisma/client';
-import axios from 'axios';
 import { SearchUserExistsTicketDto } from 'libs/models/search-user-exists-ticket-dto';
 import { AuthDataDto } from 'libs/models/auth-data-dto';
+import { DropdownDto} from 'libs/models/dropdown-dto';
 import { MessageWithUser } from 'libs/models/message-with-user';
 import { TicketMessage } from 'libs/models/ticket-message';
 import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import Button from '../../components/Button';
-import Header from '../../components/Header';
-import Message from '../../components/Message';
 import { ConvertDate } from '../../util/validate';
 import './chat.css';
+import { getData, postData } from '../../services/ApiService';
+import Button from '../../components/Button';
+import Header from '../../components/Header';
+import Select from '../../components/Select';
+import Messages from '../../components/Messages';
+import HeaderMessage from './HeaderMessage';
+import TextArea from '../../components/TextArea';
 
 export default function Chat() {
   const { id } = useParams();
@@ -22,6 +25,8 @@ export default function Chat() {
   const [ticket, setTicket] = useState<TicketMessage>();
   const [description, setDescription] = useState<string>('');
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
+  const optionsToSelect: DropdownDto[] =
+    [{label: 'Aberto', value: 'ABERTO'}, {label: 'Em Análise', value: 'EM_ANALISE'}, {label: 'Concluído', value: 'FINALIZADO'}]
   const isAdmin = (user_data.email as string).includes('tecnico.ifms');
 
   function scrollMessageDiv() {
@@ -32,72 +37,68 @@ export default function Chat() {
   }
 
   useEffect(() => {
-    if(!isAdmin){
-      const userToSearch: SearchUserExistsTicketDto = {
-        email: user_data.email,
-        id: Number(id)
-      }
-        fetch('/api/tickets/can-see-message', {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json;charset=UTF-8',
-          },
-          body: JSON.stringify(userToSearch),
+    async function verifyIfUserCanSeeMessage() {
+      if(!isAdmin) {
+        const userToSearch: SearchUserExistsTicketDto = {
+          email: user_data.email,
+          id: Number(id)
+        }
 
-        }).then((_) => _.json())
-        .then((response) => {
-          if(!response) {
-            navigate('/user/my-tickets');
+        let retorno = await postData('tickets/can-see-message', userToSearch);
+
+        if(!(retorno.data)) {
+          navigate('/user/my-tickets');
           } else {
             setCanSeeThisMessage(true);
           }
-        } )
+      }
     }
-  }, [])
 
-  async function GetTickets() {
-    const response = await axios.get('http://localhost:3333/api/tickets/'.concat(id != null ? id : ''));
-    setTicket(response.data);
-    scrollMessageDiv();
-    setSelectedOption(response.data.status);
-    setMessages(response.data.Message);
-  }
+    verifyIfUserCanSeeMessage();
+  }, []);
 
   useEffect(() => {
+    async function GetTickets() {
+      let retorno = await getData('/tickets/', id);
+      setTicket(retorno.data);
+      scrollMessageDiv();
+      setSelectedOption(retorno.data.status);
+      setMessages(retorno.data.Message);
+    }
+
     GetTickets();
   }, []);
 
 
-  const AddMessage = () => {
+  const AddMessage = async () => {
     if(description !== '') {
-      let user: User = {
-        id: user_data.id,
-        email: user_data.email,
-        name: user_data.name,
-      }
+      const message = createModelMessage();
+
+      await postData('/message', message);
+
+      setMessages([...messages, message]);
+      setDescription('');
+      // scrollMessageDiv();
+    }
+  };
+
+  const createModelMessage = (): MessageWithStatusDto  => {
       const message: MessageWithStatusDto = {
         content: description,
-        user: user,
+        user: {
+          id: user_data.id,
+          email: user_data.email,
+          name: user_data.name,
+        },
         repliedMessageId: ticket?.Message.length === 0 ? null
           : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
         ticketId: Number(id),
         time: new Date(),
         status: selectedOption
       };
-      fetch('/api/message', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        body: JSON.stringify(message),
-      })
-        .then((_) => _.json());
 
-      setMessages([...messages, message]);
-      setDescription('');
-      // scrollMessageDiv();
+      return message;
   }
-  };
 
   const setSelectedOptionSelect = (event: any) => {
     setSelectedOption(event.target.value);
@@ -110,7 +111,9 @@ export default function Chat() {
   return (
     canSeeMessage ? (
     <>
+
       <Header typeOfHeader={'user'} />
+
       <div className="ticket-chat-page">
         <div className="ticket-chat-page-content">
           <div className="title-content">
@@ -120,49 +123,27 @@ export default function Chat() {
             </h1>
             {ticket?.status !== "FINALIZADO" && isAdmin ?
             (
-              <select
-                name="filter"
-                value={selectedOption}
-                onChange={setSelectedOptionSelect}
-                className="filter-button"
-                aria-label="State"
-                id="filter-options"
-                placeholder="Filter options"
-              >
-                <option value="ABERTO">Aberto</option>
-                <option value="EM_ANALISE">Em Análise</option>
-                <option value="FINALIZADO">Concluído</option>
-              </select>
+
+              <Select
+                selectedOption={selectedOption}
+                setSelectedOptionSelect={setSelectedOptionSelect}
+                options={optionsToSelect} />
+
             ) :
             (<></>)
             }
 
           </div>
-            <div className="first-message">
-              <div className="top-content">
-                <div className="name-email">
-                  <h3><strong>{ticket?.user?.name}</strong></h3>
-                  <span>{ticket?.user?.email}</span>
-                </div>
-                <h5 className="no-wrap">{ConvertDate(ticket?.createdAt.toString() as string)}</h5>
-              </div>
-              <div className="body-content">
-                <strong>
-                  {ticket?.content}
-                </strong>
-              </div>
-            </div>
-          <div className="message-list" id="message-list">
-            {messages?.map((message: MessageWithUser) => (
-              <Message
-                key={message.id}
-                messageContent={message.content}
-                messageCreatedDate={ConvertDate(message?.time?.toString() || '')}
-                messageAuthorName={message?.user?.name || ''}
-                messageEmailAuthor={message?.user?.email || ''}
-              />
-            ))}
-          </div>
+
+          <HeaderMessage
+            name={ticket?.user?.name as string}
+            email={ticket?.user?.email as string}
+            data={ConvertDate(ticket?.createdAt.toString() as string)}
+            content={ticket?.content as string}
+          />
+
+          <Messages messages={messages} />
+
           <div className="type-new-message-for-response">
             {ticket?.status === "FINALIZADO" ? (
                 <Button
@@ -173,24 +154,23 @@ export default function Chat() {
                 />
             ) : (
               <>
-                <textarea
-                  name="message"
-                  id="message"
-                  aria-label="message-send-content"
-                  onChange={(event) => setDescription(event.target.value)}
-                  value={description} />
-                <div className="button-add-message-container">
-                  <Button
-                    label="Enviar"
-                    onClick={AddMessage}
-                    type="button"
-                    buttonClassStyle="button-login" />
-                  <Button
-                    label="Voltar"
-                    onClick={backToListPage}
-                    type="button"
-                    buttonClassStyle="button-login button-back-home" />
-                </div>
+
+              <TextArea value={description} onChange={setDescription}  />
+
+              <div className="button-add-message-container">
+                <Button
+                  label="Enviar"
+                  onClick={AddMessage}
+                  type="button"
+                  buttonClassStyle="button-login" />
+
+                <Button
+                  label="Voltar"
+                  onClick={backToListPage}
+                  type="button"
+                  buttonClassStyle="button-login button-back-home" />
+
+              </div>
               </>
             )
             }

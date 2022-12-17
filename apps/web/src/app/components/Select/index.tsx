@@ -2,7 +2,7 @@ import { DropdownDto }  from 'libs/models/dropdown-dto';
 import './select.css'
 
 type Props = {
-    selectedOption: 'title' | 'content';
+    selectedOption: string;
     setSelectedOptionSelect: (event: any) => void;
     options: DropdownDto[];
 }

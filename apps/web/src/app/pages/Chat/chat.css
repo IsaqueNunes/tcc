@@ -21,26 +21,8 @@
   outline: none;
 }
 
-.first-message {
-  padding-top: 30px;
-}
-
 .ticket-chat-page-content {
   width: 100%
-}
-
-.first-message {
-  padding: 10px;
-  border: 1px solid rgba(196, 196, 196, 0.5);
-}
-
-.top-content {
-  display: flex;
-  justify-content: space-between;
-}
-
-.body-content {
-  margin-top: 25px;
 }
 
 .message-list {
