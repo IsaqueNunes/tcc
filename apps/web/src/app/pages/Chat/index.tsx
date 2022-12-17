@@ -22,35 +22,37 @@ export default function Chat() {
   const [ticket, setTicket] = useState<TicketMessage>();
   const [description, setDescription] = useState<string>('');
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const isAdmin = (user_data.email as string).includes('@estudante.ifms.edu.br');
+  const isAdmin = (user_data.email as string).includes('tecnico.ifms');
 
   function scrollMessageDiv() {
-    const element = document.getElementById('message-list') as HTMLElement;
-    element.scrollTo(
-      {top: element.scrollHeight,
-    behavior: 'auto'});
+    // const element = document.getElementById('message-list') as HTMLElement;
+    // element.scrollTo(
+    //   {top: element.scrollHeight,
+    // behavior: 'auto'});
   }
 
   useEffect(() => {
-    const userToSearch: SearchUserExistsTicketDto = {
-      email: user_data.email,
-      id: Number(id)
-    }
-      fetch('/api/tickets/can-see-message', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-        },
-        body: JSON.stringify(userToSearch),
+    if(!isAdmin){
+      const userToSearch: SearchUserExistsTicketDto = {
+        email: user_data.email,
+        id: Number(id)
+      }
+        fetch('/api/tickets/can-see-message', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json;charset=UTF-8',
+          },
+          body: JSON.stringify(userToSearch),
 
-      }).then((_) => _.json())
-      .then((response) => {
-        if(!response) {
-          navigate('/user/my-tickets');
-        } else {
-          setCanSeeThisMessage(true);
-        }
-      } )
+        }).then((_) => _.json())
+        .then((response) => {
+          if(!response) {
+            navigate('/user/my-tickets');
+          } else {
+            setCanSeeThisMessage(true);
+          }
+        } )
+    }
   }, [])
 
   async function GetTickets() {
@@ -67,32 +69,34 @@ export default function Chat() {
 
 
   const AddMessage = () => {
-    let user: User = {
-      id: user_data.id,
-      email: user_data.email,
-      name: user_data.name,
-    }
-    const message: MessageWithStatusDto = {
-      content: description,
-      user: user,
-      repliedMessageId: ticket?.Message.length === 0 ? null
-        : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
-      ticketId: Number(id),
-      time: new Date(),
-      status: selectedOption
-    };
-    fetch('/api/message', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json;charset=UTF-8',
-      },
-      body: JSON.stringify(message),
-    })
-      .then((_) => _.json());
+    if(description !== '') {
+      let user: User = {
+        id: user_data.id,
+        email: user_data.email,
+        name: user_data.name,
+      }
+      const message: MessageWithStatusDto = {
+        content: description,
+        user: user,
+        repliedMessageId: ticket?.Message.length === 0 ? null
+          : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
+        ticketId: Number(id),
+        time: new Date(),
+        status: selectedOption
+      };
+      fetch('/api/message', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json;charset=UTF-8',
+        },
+        body: JSON.stringify(message),
+      })
+        .then((_) => _.json());
 
-    setMessages([...messages, message]);
-    setDescription('');
-    scrollMessageDiv();
+      setMessages([...messages, message]);
+      setDescription('');
+      // scrollMessageDiv();
+  }
   };
 
   const setSelectedOptionSelect = (event: any) => {
@@ -114,19 +118,24 @@ export default function Chat() {
               {' '}
               {ticket?.title}
             </h1>
-           <select
-              name="filter"
-              value={selectedOption}
-              onChange={setSelectedOptionSelect}
-              className="filter-button"
-              aria-label="State"
-              id="filter-options"
-              placeholder="Filter options"
-            >
-              <option value="ABERTO">Aberto</option>
-              <option value="EM_ANALISE">Em Análise</option>
-              <option value="FINALIZADO">Concluído</option>
-            </select>
+            {ticket?.status !== "FINALIZADO" && isAdmin ?
+            (
+              <select
+                name="filter"
+                value={selectedOption}
+                onChange={setSelectedOptionSelect}
+                className="filter-button"
+                aria-label="State"
+                id="filter-options"
+                placeholder="Filter options"
+              >
+                <option value="ABERTO">Aberto</option>
+                <option value="EM_ANALISE">Em Análise</option>
+                <option value="FINALIZADO">Concluído</option>
+              </select>
+            ) :
+            (<></>)
+            }
 
           </div>
             <div className="first-message">

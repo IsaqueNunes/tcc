@@ -120,7 +120,7 @@ export class TicketsService {
 
     const solvedTicketsCounting = await this.prisma.ticket.count({
       where: {
-        status: 'RESOLVIDO',
+        status: 'FINALIZADO',
       },
     });
 

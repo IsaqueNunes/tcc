@@ -35,7 +35,7 @@ export class TicketsController {
     return this.ticketsService.find(+id);
   }
 
-  @Post('by-user/:id')
+  @Get('by-user/:id')
   public findByUser(@Param('id') id: string) {
     return this.ticketsService.findByUser(id);
   }

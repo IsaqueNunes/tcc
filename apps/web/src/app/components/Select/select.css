@@ -1,0 +1,10 @@
+.filter-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(196, 200, 207, 0.5);
+    border-radius: 2px;
+    padding: 0 10px;
+    gap: 10px;
+    cursor: pointer;
+}

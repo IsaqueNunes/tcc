@@ -2,14 +2,16 @@ import { Ticket } from '@prisma/client';
 import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { colorStatus, nameStatus }  from 'libs/models/status';
+import { DropdownDto }  from 'libs/models/dropdown-dto';
 import Button from '../Button';
-import Card from '../Card';
 import Header from '../Header';
 import Image from '../Image';
 import './list-tickets.css';
-
-type Status = "ABERTO" | "EM_ANALISE" | "FINALIZADO";
+import { getData, postData } from '../../services/ApiService';
+import Tickets from './Tickets';
+import Select from '../Select';
+import Input from '../Input';
+import SearchButton from '../SearchButton';
 
 type ListTicketsProps = {
   isAdminRoute: boolean,
@@ -20,52 +22,35 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   const [searchTicket, setSearchTicket] = useState<string>('');
 
   const [selectedOption, setSelectedOption] = useState<'title' | 'content'>('title');
+  const optionsToSelect: DropdownDto[] = [{label: 'Título', value: 'title'}, {label: 'Descrição', value: 'content'}]
   const navigate = useNavigate();
   const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
-  const usuario_administrativo = (user_data.email as string).includes('@ifms.edu.br');
+  const usuario_administrativo = (user_data.email as string).includes('tecnico.ifms');
   const id = user_data.id;
 
   const RedirectToCreateTicket = () => {
     navigate('/user/create-ticket');
   };
 
-  const RedirectToTicketContent = (ticketId: number) => {
-    const ticketIdConverted = ticketId.toString();
-    navigate('/chat/'.concat(ticketIdConverted));
-  };
-
   useEffect(() => {
-    if (isAdminRoute && usuario_administrativo) {
-      fetch('/api/tickets')
-        .then((_) => _.json())
-        .then(setTickets);
-    } else {
-      fetch('/api/tickets/by-user/'.concat(id != null ? id : ''), {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json;charset=UTF-8',
-        },
-      })
-        .then((_) => _.json())
-        .then(setTickets);
+    async function pegarDados() {
+      const ehAdministrativoVendo = isAdminRoute && usuario_administrativo
+      let endPoint = '/tickets' + (ehAdministrativoVendo ? '' : '/by-user/');
+      let retorno = await getData(endPoint, ehAdministrativoVendo ? '' : id);
+      setTickets(retorno.data);
     }
-  }, [isAdminRoute]);
+    pegarDados();
 
-  const searchByTitleOrDescription = () => {
+  }, []);
+
+  const searchByTitleOrDescription = async () => {
     const filterOptions: FilterTicketDto = {
       filter: selectedOption,
       contentToSearch: searchTicket,
     };
-    fetch('/api/tickets/filter', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json;charset=UTF-8',
-      },
-      body:
-        JSON.stringify(filterOptions),
-    })
-      .then((_) => _.json())
-      .then(setTickets);
+    let retorno = await postData('/tickets/filter', filterOptions);
+
+    setTickets(retorno.data);
   };
 
   const setSelectedOptionSelect = (event: any) => {
@@ -74,51 +59,31 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
 
   return (
     <section className="user-main-content">
+
       <Header typeOfHeader={isAdminRoute ? 'admin' : 'user'} />
+
       <div className="ticket-list-content">
         <div className="ticket-title-content">
           <h1 className="ticket-title">Reclamações</h1>
+
           {!isAdminRoute && (
             <Button type="button" onClick={RedirectToCreateTicket} label="Nova Reclamação" buttonClassStyle="button-login ticket" />
           )}
+
         </div>
         <div className="ticket-list-search-content">
-          <input
-            type="search"
-            placeholder="Procure pela sua reclamação"
-            className="input-search"
-            onChange={(event) => setSearchTicket(event.target.value)}
-          />
+
+          <Input value={searchTicket} onChange={setSearchTicket} placeholder={"Procure pela sua reclamação"} />
+
           <div className="buttons-container">
-            <div className="search-button" onClick={searchByTitleOrDescription} role="button" aria-hidden="true">
-              <Image source="search.svg" width="20" height="20" nameLazyLoad="search icon" />
-            </div>
-            <select
-              name="filter"
-              value={selectedOption}
-              onChange={setSelectedOptionSelect}
-              className="filter-button"
-              aria-label="State"
-              id="filter-options"
-              placeholder="Filter options"
-            >
-              <option value="title">Título</option>
-              <option value="content">Descrição</option>
-            </select>
+            <SearchButton onClick={searchByTitleOrDescription}  />
+
+            <Select selectedOption={selectedOption} setSelectedOptionSelect={setSelectedOptionSelect} options={optionsToSelect}  />
+
           </div>
         </div>
-        <div className="list-card">
-          {tickets.map((ticket: Ticket) => (
-            <Card
-              key={ticket.id}
-              titleCard={ticket.title}
-              bodyContent={ticket.content}
-              hexColorStatus={colorStatus[ticket.status as Status]}
-              nameStatus={nameStatus[ticket.status as Status]}
-              onClickCard={() => RedirectToTicketContent(ticket.id)}
-            />
-          ))}
-        </div>
+
+        <Tickets tickets={tickets} />
       </div>
     </section>
   );

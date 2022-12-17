@@ -24,7 +24,7 @@ function GoogleButton() {
       onSuccess={async(credentialResponse: GoogleLoginResponse | GoogleLoginResponseOffline) => {
         if ('accessToken' in credentialResponse) {
           const is_student = (credentialResponse.profileObj.email as string).includes('@estudante.ifms.edu.br')
-          const is_admin = (credentialResponse.profileObj.email).includes('@ifms.edu.br');
+          const is_admin = (credentialResponse.profileObj.email).includes('tecnico.ifms');
 
           if(is_student || is_admin) {
             const response = await axios.post('http://localhost:3333/api/auth/login', {
@@ -32,8 +32,13 @@ function GoogleButton() {
             });
             const data = response.data;
             localStorage.setItem('authData', JSON.stringify(data));
-            navigate('/user/my-tickets');
-            return;
+            if(is_admin) {
+              navigate('/dashboard')
+              return;
+            }  else {
+              navigate('/user/my-tickets');
+              return;
+            }
           }
 
           navigate('/');

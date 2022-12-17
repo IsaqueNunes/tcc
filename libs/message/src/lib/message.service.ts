@@ -6,12 +6,10 @@ import { MessageWithStatusDto } from 'libs/models/message-with-status-dto';
 @Injectable()
 export class MessageService {
   private prisma = new PrismaClient();
-  constructor(private ticketsService: TicketsService) {
-
-  }
+  constructor(private ticketsService: TicketsService) {}
 
   public async create(message: MessageWithStatusDto): Promise<Message> {
-    const ticket = await this.ticketsService.findFirst(message.id);
+    const ticket = await this.ticketsService.findFirst(message.ticketId);
     if(ticket.status !== message.status) {
       let ticket = await this.ticketsService.changeStatus(message.ticketId, message.status);
     }

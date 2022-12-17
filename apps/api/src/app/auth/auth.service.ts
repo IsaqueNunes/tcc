@@ -23,13 +23,13 @@ export class AuthService {
 
   async login({email, name}:{email: string; name: string}): Promise<any>{
     const userExists = await this.usersService.findByEmail(email);
-    if(!userExists) {
+    if(userExists === null) {
       const newUser: Prisma.UserCreateInput = {
         email: email,
         name: name
       }
-      this.usersService.create(newUser);
-      return newUser;
+      let user = this.usersService.create(newUser);
+      return user;
     }
 
     return userExists;

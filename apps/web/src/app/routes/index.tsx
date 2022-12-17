@@ -15,9 +15,6 @@ export default function RoutesNavigator() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path='/login' element={<Login/>}/>
-      {/* <Route path='/user' element={<ProtectedRoute/>}>
-        <Route path="/user" element={<User />} />
-      </Route> */}
       <Route path='/user/my-tickets' element={<ProtectedRoute/>}>
         <Route path="/user/my-tickets" element={<ListTickets isAdminRoute={false} />} />
       </Route>
