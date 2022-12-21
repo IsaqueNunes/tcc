@@ -1,0 +1,21 @@
+.ticket-counting-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 400px;
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.text-card {
+  margin-top: 20px;
+  font-size: 18px
+}
+
+.counting-card {
+  margin-top: 20px;
+  font-size: 30px;
+  font-weight: bold;
+}
