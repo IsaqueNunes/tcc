@@ -1,0 +1,21 @@
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px;
+}
+
+.divider::after,
+.divider::before {
+  content: "";
+  border: 1px solid #c4c4c4;
+  flex: 1;
+}
+
+.divider:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.divider:not(:empty)::after {
+  margin-left: 0.25em;
+}
