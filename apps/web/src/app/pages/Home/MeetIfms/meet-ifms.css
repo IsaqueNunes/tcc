@@ -1,0 +1,28 @@
+.conhecer-instituicao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40% fit-content;
+}
+
+.center-image {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.center-logo-style {
+  text-align: center;
+}
+
+.new-here {
+  width: fit-content;
+  margin-top: 30px;
+  margin-bottom: 10px
+}
+
+@media (max-width: 768px) {
+  .conhecer-instituicao {
+    display: none;
+  }
+}
