@@ -3,6 +3,7 @@
   "projects": {
     "api": "apps/api",
     "message": "libs/message",
+    "mobile": "apps/mobile",
     "tickets": "libs/tickets",
     "user": "libs/user",
     "web": "apps/web"
