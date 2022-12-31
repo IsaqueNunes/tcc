@@ -1,0 +1,1 @@
+yarn nx serve (api) or (web)
