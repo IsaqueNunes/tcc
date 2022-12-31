@@ -1,4 +1,5 @@
 {
+  "name": "message",
   "sourceRoot": "libs/message/src",
   "projectType": "library",
   "targets": {
@@ -11,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/message"],
+      "outputs": ["{workspaceRoot}/coverage/libs/message"],
       "options": {
         "jestConfig": "libs/message/jest.config.ts",
         "passWithNoTests": true

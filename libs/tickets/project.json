@@ -1,4 +1,5 @@
 {
+  "name": "tickets",
   "sourceRoot": "libs/tickets/src",
   "projectType": "library",
   "targets": {
@@ -11,7 +12,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/tickets"],
+      "outputs": ["{workspaceRoot}/coverage/libs/tickets"],
       "options": {
         "jestConfig": "libs/tickets/jest.config.ts",
         "passWithNoTests": true

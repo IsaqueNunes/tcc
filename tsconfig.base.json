@@ -10,28 +10,15 @@
     "importHelpers": true,
     "target": "es2017",
     "module": "esnext",
-    "lib": [
-      "es2017",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2017", "dom", "dom.iterable"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@tcc/message": [
-        "libs/message/src/index.ts"
-      ],
-      "@tcc/tickets": [
-        "libs/tickets/src/index.ts"
-      ],
-      "@tcc/user": [
-        "libs/user/src/index.ts"
-      ]
+      "@tcc/message": ["libs/message/src/index.ts"],
+      "@tcc/tickets": ["libs/tickets/src/index.ts"],
+      "@tcc/user": ["libs/user/src/index.ts"]
     }
   },
-  "exclude": [
-    "node_modules",
-    "tmp"
-  ]
+  "exclude": ["node_modules", "tmp"]
 }
