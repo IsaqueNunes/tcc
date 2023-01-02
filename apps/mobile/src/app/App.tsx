@@ -1,16 +1,12 @@
-/* eslint-disable jsx-a11y/accessible-emoji */
 import React from 'react';
-import {
-  View,
-  Text,
-} from 'react-native';
+import Chat from './pages/Chat';
+import { Routes } from './routes';
 
 export const App = () => {
 
   return (
-    <View>
-      <Text>teste</Text>
-    </View>
+    <Routes />
+    // <Chat />
   );
 };
 

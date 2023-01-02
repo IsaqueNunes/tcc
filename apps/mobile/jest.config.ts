@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'mobile',
   preset: 'react-native',
   resolver: '@nrwl/jest/plugins/resolver',
