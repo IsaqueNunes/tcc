@@ -1,15 +1,17 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const styles = (backgroundColor, width, onlyIcon) => StyleSheet.create({
   buttonContainer: {
-    minWidth: '100%',
-    backgroundColor: 'black',
+    minWidth: width,
+    backgroundColor: backgroundColor,
+    borderWidth: onlyIcon ? 1 : 0,
     alignItems: 'center',
+    flexDirection: 'row',
     justifyContent: 'center',
     borderRadius: 10,
-    height: 40,
+    height: onlyIcon ? 50 : 36,
     alignSelf: 'flex-end',
-    marginTop: 10
+    marginTop: onlyIcon ? 0 : 10
   },
   text: {
     fontSize: 14,

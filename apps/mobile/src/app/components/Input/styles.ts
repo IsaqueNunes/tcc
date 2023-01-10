@@ -1,9 +1,9 @@
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const styles = (width) => StyleSheet.create({
   textInputContainer: {
     marginBottom: 10,
-    width: '100%'
+    width: width
   },
   textInput: {
     borderWidth: 1,

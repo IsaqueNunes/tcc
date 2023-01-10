@@ -16,6 +16,10 @@
     "react-native-screens": "*",
     "react-native-gesture-handler": "*",
     "react-native-safe-area-context": "*",
-    "axios": "*"
+    "axios": "*",
+    "@react-navigation/drawer": "*",
+    "react-native-reanimated": "*",
+    "react-native-vector-icons": "*",
+    "react-native-dropdown-picker": "*"
   }
 }

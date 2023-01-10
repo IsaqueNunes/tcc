@@ -6,13 +6,13 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   logoContainer: {
-    flex: 0.3,
+    flex: 0.35,
     paddingTop: 30,
     alignItems: 'center',
     justifyContent: 'center',
   },
   inputsContainer:{
-    flex: 0.4,
+    flex: 0.45,
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center'
