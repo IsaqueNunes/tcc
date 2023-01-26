@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Chat from '../pages/Chat';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import Dashboard from '../pages/Dashboard';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -35,11 +36,12 @@ function LoggedRoutes() {
           <Icon style={{ paddingLeft: 10, color: 'black' }}
             onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())}
             name="menu"
-
             size={30} />
-        )
+        ),
       }}
+      initialRouteName="Dashboard"
     >
+      <Drawer.Screen name="Dashboard" options={{ title: 'Dashboard' }} component={Dashboard} />
       <Drawer.Screen name="Home" options={{ title: 'Reclamações' }} component={Home} />
       <Drawer.Screen name="Chat" options={{ title: 'Mensagens' }} component={Chat} />
     </Drawer.Navigator>

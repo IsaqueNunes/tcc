@@ -20,6 +20,8 @@
     "@react-navigation/drawer": "*",
     "react-native-reanimated": "*",
     "react-native-vector-icons": "*",
-    "react-native-dropdown-picker": "*"
+    "react-native-dropdown-picker": "*",
+    "@prisma/client": "*",
+    "victory-native": "*"
   }
 }
