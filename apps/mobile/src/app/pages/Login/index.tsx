@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { KeyboardAvoidingView, Platform, View, Text } from "react-native";
+import { KeyboardAvoidingView, Platform, View, Text, Alert } from "react-native";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import Logo from "../../components/Logo";

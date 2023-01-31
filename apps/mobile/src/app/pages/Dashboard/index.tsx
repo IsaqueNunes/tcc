@@ -31,12 +31,14 @@ export default function Dashboard() {
 
           <ChartTicketsByMonth chartData={data.chartData} />
 
-          <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 20 }}>
+          <View style={styles.ticketCountingContainer}>
             <CardCounting label="Reclamações em Aberto" counting={data.openingTicketsCounting} />
             <CardCounting label="Reclamações Resolvidas" counting={data.solvedTicketsCounting} />
           </View>
 
-          <View style={{ paddingHorizontal: 20, alignItems: 'center', justifyContent: 'center' }}>
+          <View style={styles.lastTicketCommentedContainer}>
+            <Text style={styles.lastTicketCommentedTitle}>Última reclamação comentada</Text>
+
             <Ticket
               content={data.lastMessageCommented.ticket.content}
               id={data.lastMessageCommented.ticket.id.toString()}
