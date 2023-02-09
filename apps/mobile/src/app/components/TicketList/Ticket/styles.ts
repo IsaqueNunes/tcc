@@ -1,20 +1,20 @@
 import { StyleSheet } from "react-native";
 import { commonStyles } from "../../../styles/styles";
 
-export const styles = StyleSheet.create({
+export const styles = (statusColor, firstTicket) => StyleSheet.create({
   ticketContainer: {
     width: '100%',
     borderRadius: 4,
-    borderLeftColor: 'red',
+    borderLeftColor: statusColor,
     padding: 10,
-    marginTop: 20,
+    marginTop: firstTicket ? 0 : 20,
     marginBottom: 5,
     flexDirection: 'column',
     ...commonStyles.defaultShadow,
     borderLeftWidth: 4,
 
   },
-  ticketMessageContainer:{
+  ticketMessageContainer: {
   },
   ticketTitle: {
     ...commonStyles.titleBlack,
@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   statusColor: {
     height: 10,
     width: 10,
-    backgroundColor: 'red',
+    backgroundColor: statusColor,
     marginRight: 5,
     borderRadius: 50,
   },

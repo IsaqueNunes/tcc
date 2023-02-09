@@ -9,6 +9,7 @@ import { commonStyles } from "../../styles/styles";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { styles } from "./styles";
 import { getData, postData } from "../../services/ApiService";
+import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 
 
 export default function Home() {
@@ -31,7 +32,7 @@ export default function Home() {
     getTickets();
   }, []);
 
-  const [searchTicket, setSearchTicket] = useState<string>('');
+  const [searchTicket, setSearchTicket] = useState<FormValidatorDto>(new FormValidatorDto());
 
   return (
     <View style={styles.homeContainer}>
@@ -62,9 +63,7 @@ export default function Home() {
           />
 
         </View>
-
         <TicketList tickets={tickets} />
-
       </View>
     </View>
   )

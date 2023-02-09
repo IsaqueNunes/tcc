@@ -6,14 +6,15 @@ import Logo from "../../components/Logo";
 import { styles } from './styles';
 import { commonStyles } from '../../styles/styles';
 import { useNavigation } from "@react-navigation/native";
+import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 
 export default function Login() {
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [username, setUsername] = useState<FormValidatorDto>(new FormValidatorDto());
+  const [password, setPassword] = useState<FormValidatorDto>(new FormValidatorDto());
   const navigator = useNavigation<any>();
 
   const validateLogin = () => {
-    navigator.navigate('Logged', { screen: 'Home' });
+    navigator.navigate('Logged', { screen: 'Dashboard' });
   }
 
   return (

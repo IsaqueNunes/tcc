@@ -15,5 +15,16 @@ export const commonStyles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 2,
     elevation: 2,
+  },
+  labelInput: {
+    color: 'black',
+    alignSelf: 'flex-start',
+    fontSize: 16,
+  },
+  input: {
+    borderWidth: 1,
+    alignSelf: 'stretch',
+    borderRadius: 10,
+    paddingLeft: 10
   }
 });

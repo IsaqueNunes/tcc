@@ -12,11 +12,21 @@ type Props = {
   icon?: string,
   onlyIcon?: boolean,
   width?: string,
-  navigation?: string
+  navigation?: string,
+  margin?: {}
 }
 
-export default function Button({ label, onClick, navigation = '', icon = '', onlyIcon = false, backgroundColor = 'black', width = '100%' }: Props) {
-  const style = styles(backgroundColor, width, onlyIcon);
+export default function Button({
+  label,
+  onClick,
+  navigation = '',
+  icon = '',
+  onlyIcon = false,
+  backgroundColor = 'black',
+  width = '100%',
+  margin = {}
+}: Props) {
+  const style = styles(backgroundColor, width, onlyIcon, margin);
   const navigate = useNavigation<any>();
 
   return (

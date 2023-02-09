@@ -51,18 +51,21 @@ export class TicketsService {
             user: true
           }
         },
-        user: true },
+        user: true
+      },
     });
   }
 
   public findFirst(id: number): Promise<Ticket> {
     return this.prisma.ticket.findFirst({
-      where: {id}
+      where: { id }
     });
   }
 
   public list(): Promise<Ticket[]> {
-    return this.prisma.ticket.findMany();
+    return this.prisma.ticket.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
   public filterTicketsByFilterChoosed(

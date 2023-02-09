@@ -6,13 +6,14 @@ type Props = {
 }
 
 export default function TicketList({ tickets }: Props) {
-  const renderItem = ({ item }) => (
-    <Ticket id={item.id} title={item.title} content={item.content} status={item.status} />
+  const renderItem = ({ item, index }) => (
+    <Ticket id={item.id} title={item.title} content={item.content} status={item.status} isFirstTicket={index === 0} />
   );
 
 
   return (
     <FlatList
+      style={{ marginTop: 20, height: '75%' }}
       data={tickets}
       renderItem={renderItem}
       keyExtractor={item => item.id}

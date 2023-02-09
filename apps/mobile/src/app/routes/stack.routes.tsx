@@ -7,6 +7,7 @@ import Chat from '../pages/Chat';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
+import CreateTicket from '../pages/CreateTicket';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -44,6 +45,7 @@ function LoggedRoutes() {
       <Drawer.Screen name="Dashboard" options={{ title: 'Dashboard' }} component={Dashboard} />
       <Drawer.Screen name="Home" options={{ title: 'Reclamações' }} component={Home} />
       <Drawer.Screen name="Chat" options={{ title: 'Mensagens' }} component={Chat} />
+      <Drawer.Screen name="CreateTicket" options={{ title: 'Criar Reclamação' }} component={CreateTicket} />
     </Drawer.Navigator>
   )
 }
