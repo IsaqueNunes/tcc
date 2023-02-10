@@ -4,7 +4,7 @@ import { commonStyles } from "../../styles/styles";
 const common = StyleSheet.create({
   textArea: {
     ...commonStyles.input,
-    height: 200,
+    height: 150,
     textAlignVertical: 'top',
   }
 })

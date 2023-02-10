@@ -28,6 +28,11 @@ export default function Button({
 }: Props) {
   const style = styles(backgroundColor, width, onlyIcon, margin);
   const navigate = useNavigation<any>();
+  // const buttonStyle = {
+  //   'default': style.buttonContainer,
+  //   'blue': {},
+  //   'red': {}
+  // }
 
   return (
     <TouchableOpacity style={style.buttonContainer} onPress={navigation ? navigate.navigate(navigation) : onClick}>

@@ -1,3 +1,4 @@
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 
@@ -15,16 +16,25 @@ let colorFromStatus = {
   'FINALIZADO': '#93FA2D'
 }
 
-export default function Ticket({ title, content, status, isFirstTicket = false }: TicketProps) {
+export default function Ticket({ id, title, content, status, isFirstTicket = false }: TicketProps) {
+  const navigation = useNavigation<any>();
+
   function createStatus(): string {
     const newStatusMessage = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
     return newStatusMessage.replace('_', ' ');
   }
 
+  function redirectToChatTicket() {
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'Chat', params: { id } }]
+    }))
+  }
+
   const style = styles(colorFromStatus[status], isFirstTicket);
 
   return (
-    <TouchableOpacity style={style.ticketContainer}>
+    <TouchableOpacity style={style.ticketContainer} onPress={redirectToChatTicket}>
       <View style={style.ticketMessageContainer}>
         <Text style={style.ticketTitle}>{title}</Text>
       </View>
