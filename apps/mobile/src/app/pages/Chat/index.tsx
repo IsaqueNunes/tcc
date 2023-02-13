@@ -1,16 +1,14 @@
 import {
   Alert,
-  FlatList,
-  KeyboardAvoidingView,
-  Platform,
+  Keyboard,
+  SafeAreaView,
   Text, View
 } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from './styles';
-import Input from '../../components/Input';
-import { useEffect, useState } from 'react';
-import { getData } from '../../services/ApiService';
+import { useEffect, useRef, useState } from 'react';
+import { getData, postData } from '../../services/ApiService';
 import { MessageWithUser } from '../../models/Chat/message-with-user';
 import { TicketMessage } from '../../models/Chat/ticket-message';
 import { commonStyles } from '../../styles/styles';
@@ -18,7 +16,9 @@ import Message from '../../components/Messages/Message';
 import Messages from '../../components/Messages';
 import TextArea from '../../components/TextArea';
 import { FormValidatorDto } from '../../models/FormValidator/FormValidatorDto';
-import Button from '../../components/Button';
+import GroupButton from './GroupButton';
+import { MessageWithStatusDto } from '../../models/Chat/message-with-status-dto';
+import Select from '../../components/Select';
 
 type ParamList = {
   params: {
@@ -27,27 +27,34 @@ type ParamList = {
 };
 
 export default function Chat() {
-  const navigator = useNavigation();
   const route = useRoute<RouteProp<ParamList, 'params'>>();
   const { id } = route.params;
   const [ticket, setTicket] = useState<TicketMessage>();
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
+  const [status, setStatus] = useState<string>();
+  const [scrollToLastMessage, setScrollToLastMessage] = useState<boolean>(false);
   const [messageContent, setMessageContent] = useState<FormValidatorDto>(new FormValidatorDto());
+  const items = [{ label: 'Aberto', value: 'ABERTO' }, { label: 'Em Análise', value: 'EM_ANALISE' }, { label: 'Concluído', value: 'FINALIZADO' }]
 
   useEffect(() => {
     async function loadMessageScreen() {
       let retorno = await getData('/tickets/', id);
       setTicket(retorno.data);
       setMessages(retorno.data.Message);
+      setStatus(retorno.data.status)
     }
 
     loadMessageScreen();
   }, []);
 
-  function sendMessage() {
+  async function validateToSendMessage() {
     if (messageFieldIsNotEmpty()) {
-      // TODO: send message to backend and add it to message useState list
+      setMessageContent({ ...messageContent, isValid: true, value: '' });
+      setScrollToLastMessage(true);
+      Keyboard.dismiss();
+      await sendMessage();
     } else {
+      setScrollToLastMessage(false);
       Alert.alert('É necessário informar o conteúdo da mensagem para enviá-la.')
     }
   }
@@ -60,31 +67,64 @@ export default function Chat() {
     return messageContentIsNotEmpty;
   }
 
-  function backToLastPage() {
-    navigator.goBack();
+  async function sendMessage() {
+    const message = createModelMessage();
+
+    await postData('/message', message);
+
+    setMessages([...messages, message]);
+  }
+
+  const createModelMessage = (): MessageWithStatusDto => {
+    const message: MessageWithStatusDto = {
+      content: messageContent.value,
+      user: {
+        id: ticket?.userId,
+        email: ticket?.user.email,
+        name: ticket?.user.name,
+      },
+      repliedMessageId: ticket?.Message.length === 0 ? null
+        : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
+      ticketId: Number(id),
+      time: new Date(),
+      status: status
+    };
+
+    return message;
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.mainContent}>
-      <Text style={commonStyles.titleBlack}>{ticket?.title}</Text>
+    <SafeAreaView
+      style={styles.mainContent}
+    >
 
-      <Message
-        username={ticket?.user?.name}
-        email={ticket?.user?.email}
-        data={ticket?.createdAt.toLocaleString()}
-        content={ticket?.content}
-        isMainMessage
-      />
+      <View style={[styles.messageDisplayContainer, { flex: status === 'FINALIZADO' ? 9 : 7 }]}>
 
-      <Messages messages={messages} />
+        <Text style={commonStyles.titleBlack}>{ticket?.title}</Text>
 
-      <TextArea label={''} value={messageContent} setValue={setMessageContent} />
+        <Message
+          username={ticket?.user?.name}
+          email={ticket?.user?.email}
+          data={ticket?.createdAt.toLocaleString()}
+          content={ticket?.content}
+          isMainMessage
+        />
 
-      <View style={{ flex: 1, flexDirection: 'row', marginTop: 50, justifyContent: 'space-between' }}>
-        <Button label={'Enviar'} width='45%' backgroundColor='#3B7DED' onClick={sendMessage} />
-        <Button label={'Voltar'} width='45%' backgroundColor='#C82733' onClick={backToLastPage} />
+        <Messages messages={messages} />
       </View>
-    </KeyboardAvoidingView>
+
+      {status &&
+        <View style={[styles.sendMessageDisplayContainer, { flex: status === 'FINALIZADO' ? 1 : 3 }]}>
+          {status !== 'FINALIZADO' &&
+            <View>
+              <Select items={items} value={status} setValue={setStatus} />
+              <TextArea label={''} value={messageContent} setValue={setMessageContent} />
+            </View>
+          }
+
+          <GroupButton isFinishedStatus={status === 'FINALIZADO'} sendMessage={validateToSendMessage} />
+        </View>
+      }
+    </SafeAreaView>
   )
 }

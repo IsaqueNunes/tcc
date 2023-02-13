@@ -2,6 +2,15 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   mainContent: {
-    margin: 20,
+    flex: 1,
+    marginHorizontal: 20
+  },
+  messageDisplayContainer: {
+    marginTop: 20
+  },
+  sendMessageDisplayContainer: {
+    flex: 3,
+    marginTop: 40,
+    justifyContent: 'center',
   }
 })

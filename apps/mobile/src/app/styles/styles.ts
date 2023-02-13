@@ -5,7 +5,7 @@ export const commonStyles = StyleSheet.create({
     color: 'black'
   },
   titleBlack: {
-    fontSize: 22,
+    fontSize: 18,
     color: 'black',
     fontWeight: 'bold'
   },

@@ -17,7 +17,7 @@ export default function TextArea({ label, value, setValue }: Props) {
       <TextInput
         style={value.isValid ? style.textAreaInput : style.textAreaInputWithError}
         multiline={true}
-        numberOfLines={4}
+        numberOfLines={2}
         value={value.value}
         onChangeText={(text) => setValue({ ...value, value: text })} />
     </View>
