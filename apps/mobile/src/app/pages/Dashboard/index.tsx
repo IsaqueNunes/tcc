@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView } from "react-native";
 import { VictoryLabel, VictoryPie } from "victory-native";
 import CardCounting from "../../components/CardCounting";
-import Ticket from "../../components/TicketList/Ticket";
+import Ticket from "../../components/Tickets/Ticket";
 import { AdminDashboardDto } from "../../models/Dashboard/AdminDashboardDto";
 import { getData } from "../../services/ApiService";
 import ChartTicketsByMonth from "./ChartTicketsByMonth";

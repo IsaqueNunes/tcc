@@ -1,4 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
+import React from "react";
 import { Text } from "react-native";
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -26,21 +27,16 @@ export default function Button({
   width = '100%',
   margin = {}
 }: Props) {
-  const style = styles(backgroundColor, width, onlyIcon, margin);
+  const style = styles(backgroundColor, width, onlyIcon, margin, icon);
   const navigate = useNavigation<any>();
-  // const buttonStyle = {
-  //   'default': style.buttonContainer,
-  //   'blue': {},
-  //   'red': {}
-  // }
 
   return (
     <TouchableOpacity style={style.buttonContainer} onPress={navigation ? navigate.navigate(navigation) : onClick}>
-      {icon &&
-        <Icon name={icon} size={24} color="black" />
-      }
       {!onlyIcon &&
         <Text style={style.text}>{label}</Text>
+      }
+      {icon !== '' &&
+        <Icon name={icon} size={24} color={onlyIcon ? 'black' : 'white'} />
       }
     </TouchableOpacity>
   )

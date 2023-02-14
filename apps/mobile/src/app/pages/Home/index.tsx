@@ -1,70 +1,41 @@
-import { DrawerActions, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { View, Text } from "react-native";
 import Button from "../../components/Button";
-import Input from "../../components/Input";
-import TicketList from "../../components/TicketList";
-import { TicketProps } from "../../components/TicketList/Ticket";
+import Ticket from "../../components/Tickets/Ticket";
+import { greetingToTimeOfDay } from "../../shared/util/validator";
 import { commonStyles } from "../../styles/styles";
-import DropDownPicker from 'react-native-dropdown-picker';
-import { styles } from "./styles";
-import { getData, postData } from "../../services/ApiService";
-import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
+import CardsCounting from "./CardsCounting";
+import { common, styles } from "./styles";
 
 
 export default function Home() {
-  const navigation = useNavigation();
-  const [tickets, setTickets] = useState<TicketProps[]>([]);
+  const hasNotCommentedYet = true;
+  const navigation = useNavigation<any>();
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState('title');
-  const [items, setItems] = useState([
-    { label: 'Título', value: 'title' },
-    { label: 'Descrição', value: 'content' }
-  ]);
-
-  useEffect(() => {
-    async function getTickets() {
-      let retorno = await getData('/tickets', '');
-      setTickets(retorno.data);
-    }
-
-    getTickets();
-  }, []);
-
-  const [searchTicket, setSearchTicket] = useState<FormValidatorDto>(new FormValidatorDto());
-
+  function navigateToCreateTicket() {
+    navigation.navigate('CreateTicket');
+  }
   return (
     <View style={styles.homeContainer}>
-      <View style={{ marginTop: 10 }}>
+      <Text style={styles.greetingTitle}>{greetingToTimeOfDay() + ', Rafael'}</Text>
 
-        <Input label={""} value={searchTicket} setValue={setSearchTicket} placeholder={'Pesquisar por'} />
+      <Text style={[commonStyles.titleBlack, { marginBottom: 20 }]}>Suas reclamações...</Text>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+      <CardsCounting />
 
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder={''}
-            zIndex={1000}
-            containerStyle={{ width: '75%' }}
-          />
+      <Text style={styles.lastTicketCommented}>Última reclamação comentada</Text>
 
-          <Button
-            label={""}
-            icon={"search1"}
-            backgroundColor="transparent"
-            width="20%"
-            onlyIcon
-          />
+      {hasNotCommentedYet ? (
+        <View>
+          <Text style={common.size12}>Nenhuma reclamação comentada ainda</Text>
 
+          <Text style={styles.createNewTicketMessage}>Deseja criar uma reclamação?</Text>
+
+          <Button label={"Criar"} icon={'arrowright'} onClick={navigateToCreateTicket} />
         </View>
-        <TicketList tickets={tickets} />
-      </View>
+      ) : (
+        <Ticket id={""} title={""} content={""} status={""} />
+      )}
     </View>
   )
 }

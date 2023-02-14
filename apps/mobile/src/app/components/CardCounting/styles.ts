@@ -7,7 +7,7 @@ export const style = StyleSheet.create({
     ...commonStyles.defaultShadow,
     alignItems: 'center',
     borderRadius: 5,
-    width: '40%',
+    width: 150,
     marginBottom: 10,
   },
   label: {

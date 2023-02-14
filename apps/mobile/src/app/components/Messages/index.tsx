@@ -6,7 +6,7 @@ type MessagesProp = {
   messages: MessageWithUser[]
 }
 
-export default function Messages({ messages, }: MessagesProp) {
+export default function Messages({ messages }: MessagesProp) {
   const renderItem = ({ item, index }) => (
     <Message key={index} username={item.user.name} email={item.user.email} data={item.time.toLocaleString()} content={item.content} />
   );

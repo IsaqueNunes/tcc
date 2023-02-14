@@ -22,3 +22,27 @@ export function convertDate(data: string): string {
 }
 
 
+
+export function greetingToTimeOfDay() {
+  const brazilHour: number = currentTimeFromBrazil().getHours();
+
+  if (brazilHour >= 6 && brazilHour <= 12) {
+    return 'Bom dia';
+  } else if (brazilHour >= 12 && brazilHour <= 18) {
+    return 'Boa tarde';
+  } else {
+    return 'Boa noite';
+  }
+}
+
+export function currentTimeFromBrazil(): Date {
+  var date = new Date();
+  var utcTime = date.getTime() + (date.getTimezoneOffset() * 60000);
+  var timeOffsetFromBrazil = -4;
+
+  const brazilTime: Date = new Date(utcTime + (3600000 * timeOffsetFromBrazil));
+
+  return brazilTime;
+}
+
+

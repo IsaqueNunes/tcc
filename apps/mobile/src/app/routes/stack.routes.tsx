@@ -4,10 +4,11 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Chat from '../pages/Chat';
-import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import CreateTicket from '../pages/CreateTicket';
+import TicketList from '../components/TicketList';
+import Home from '../pages/Home';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -43,7 +44,8 @@ function LoggedRoutes() {
       initialRouteName="Dashboard"
     >
       <Drawer.Screen name="Dashboard" options={{ title: 'Dashboard' }} component={Dashboard} />
-      <Drawer.Screen name="Home" options={{ title: 'Reclamações' }} component={Home} />
+      <Drawer.Screen name="Home" options={{ title: 'Início' }} component={Home} />
+      <Drawer.Screen name="TicketList" options={{ title: 'Reclamações' }} component={TicketList} />
       <Drawer.Screen name="Chat" options={{ title: 'Mensagens' }} component={Chat} />
       <Drawer.Screen name="CreateTicket" options={{ title: 'Criar Reclamação' }} component={CreateTicket} />
     </Drawer.Navigator>

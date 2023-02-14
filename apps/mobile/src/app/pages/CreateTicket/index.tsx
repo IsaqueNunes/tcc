@@ -32,7 +32,7 @@ export default function CreateTicket() {
       clearInputs();
       navigation.dispatch(CommonActions.reset({
         index: 0,
-        routes: [{ name: 'Home' }]
+        routes: [{ name: 'TicketList' }]
       }))
       Alert.alert('Reclamação criada com sucesso.');
     } else {
