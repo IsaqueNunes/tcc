@@ -32,8 +32,8 @@ export default function Dashboard() {
           <ChartTicketsByMonth chartData={data.chartData} />
 
           <View style={styles.ticketCountingContainer}>
-            <CardCounting label="Reclamações em Aberto" counting={data.openingTicketsCounting} />
-            <CardCounting label="Reclamações Resolvidas" counting={data.solvedTicketsCounting} />
+            <CardCounting label="Em Aberto" counting={data.openingTicketsCounting.toString()} />
+            <CardCounting label="Resolvidas" counting={data.solvedTicketsCounting.toString()} />
           </View>
 
           <View style={styles.lastTicketCommentedContainer}>

@@ -32,7 +32,12 @@ export class TicketsController {
 
   @Get(':id')
   public find(@Param('id') id: string) {
-    return this.ticketsService.find(+id);
+    return this.ticketsService.find(Number(id));
+  }
+
+  @Get('tickets-by-filter/:filter')
+  public getTicketsByFilter(@Param('filter') filter: string) {
+    return this.ticketsService.getTicketsByFilter(filter);
   }
 
   @Get('by-user/:id')
@@ -40,8 +45,13 @@ export class TicketsController {
     return this.ticketsService.findByUser(id);
   }
 
+  @Get('user-ticket-information/:id')
+  public findUserInformationsById(@Param('id') id: string) {
+    return this.ticketsService.userInformation(id);
+  }
+
   @Post('can-see-message')
-  public verifyIfUserParticipateThisTicket(@Body() {email, id}: SearchUserExistsTicketDto) {
+  public verifyIfUserParticipateThisTicket(@Body() { email, id }: SearchUserExistsTicketDto) {
     return this.ticketsService.verifyIfUserParticipateThisTicket(email, id);
   }
 

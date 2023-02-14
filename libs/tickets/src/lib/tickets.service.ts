@@ -4,6 +4,8 @@ import {
 } from '@prisma/client';
 import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
 import { AdminDashboardInformationDto } from 'libs/models/admin-dashboard-information-dto';
+import { UserInformationDto } from 'libs/models/user-information-dto';
+import { DropdownDto } from 'libs/models/dropdown-dto';
 import { ChartDataDto } from 'libs/models/chart-data-dto';
 
 @Injectable()
@@ -54,6 +56,17 @@ export class TicketsService {
         user: true
       },
     });
+  }
+
+  public async getTicketsByFilter(filter: string): Promise<Ticket[]> {
+    const ticketsFiltered = await this.prisma.ticket.findMany({
+      orderBy: { createdAt: 'desc' },
+      where: {
+        status: filter
+      }
+    });
+
+    return ticketsFiltered;
   }
 
   public findFirst(id: number): Promise<Ticket> {
@@ -173,5 +186,58 @@ export class TicketsService {
     };
 
     return returnedData;
+  }
+
+  public async userInformation(id: string): Promise<UserInformationDto> {
+    const createdTicketCounting = await this.prisma.ticket.count({
+      where: {
+        userId: id
+      },
+    });
+    const openingTicketsCounting = await this.prisma.ticket.count({
+      where: {
+        status: 'ABERTO',
+        userId: id
+      },
+    });
+
+    const inProgressTicketCounting = await this.prisma.ticket.count({
+      where: {
+        status: 'EM_ANALISE',
+        userId: id
+      },
+    });
+
+    const solvedTicketsCounting = await this.prisma.ticket.count({
+      where: {
+        status: 'FINALIZADO',
+        userId: id
+      },
+    });
+
+    const lastMessageCommented = await this.prisma.message.findFirst({
+      include: {
+        ticket: true,
+      },
+      where: { user: { id } },
+      orderBy: {
+        time: 'desc',
+      },
+      take: 1,
+    });
+
+    const cardsCounting: DropdownDto[] = [
+      { label: 'Criadas', value: createdTicketCounting.toString() },
+      { label: 'Em Aberto', value: openingTicketsCounting.toString() },
+      { label: 'Em Progresso', value: inProgressTicketCounting.toString() },
+      { label: 'Resolvidas', value: solvedTicketsCounting.toString() },
+    ]
+
+    const data: UserInformationDto = {
+      cardsCounting,
+      lastMessageCommented
+    }
+
+    return data;
   }
 }

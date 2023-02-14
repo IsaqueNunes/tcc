@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from "@react-navigation/native";
+import { DrawerActions, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import Button from "../../components/Button";
@@ -11,9 +11,16 @@ import { getData, postData } from "../../services/ApiService";
 import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import Tickets from "../../components/Tickets";
 
+type ParamList = {
+  params: {
+    filter: string
+  }
+}
 
 export default function TicketList() {
   const navigation = useNavigation();
+  const route = useRoute<RouteProp<ParamList, 'params'>>();
+  const { filter } = route.params;
   const [tickets, setTickets] = useState<TicketProps[]>([]);
 
   const [open, setOpen] = useState(false);
@@ -25,8 +32,14 @@ export default function TicketList() {
 
   useEffect(() => {
     async function getTickets() {
-      let retorno = await getData('/tickets', '');
-      setTickets(retorno.data);
+      setTickets([]);
+      if (filter) {
+        let retorno = await getData('/tickets/tickets-by-filter/', filter);
+        setTickets(retorno.data);
+      } else {
+        let retorno = await getData('/tickets', '');
+        setTickets(retorno.data);
+      }
     }
 
     getTickets();

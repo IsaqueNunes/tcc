@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
   lastTicketCommented: {
     fontWeight: 'bold',
     fontSize: 16,
-    marginVertical: 20,
+    marginVertical: 15,
     ...commonStyles.textBlack
   },
   createNewTicketMessage: {
