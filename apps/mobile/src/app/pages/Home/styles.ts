@@ -9,7 +9,7 @@ export const common = StyleSheet.create({
 
 export const styles = StyleSheet.create({
   homeContainer: {
-    padding: 40,
+    padding: 20,
   },
   greetingTitle: {
     ...commonStyles.titleBlack,

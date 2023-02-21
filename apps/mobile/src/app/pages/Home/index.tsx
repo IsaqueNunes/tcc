@@ -1,3 +1,4 @@
+import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { useNavigation } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
@@ -14,10 +15,12 @@ import { common, styles } from "./styles";
 
 export default function Home() {
   const [userInformation, setUserInformation] = useState<UserInformationDto>();
+  const [user, setUser] = useState<User>();
   const navigation = useNavigation<any>();
 
   useEffect(() => {
     async function getDataFromUser() {
+      setUser(await GoogleSignin.getCurrentUser())
       let retorno = await getData('/tickets/user-ticket-information/', '83d931d4-3f38-4f88-ab17-8fc7ffbfda9a');
       const responseDatabase: UserInformationDto = retorno.data;
       setUserInformation(responseDatabase);
@@ -31,7 +34,7 @@ export default function Home() {
   }
   return (
     <View style={styles.homeContainer}>
-      <Text style={styles.greetingTitle}>{greetingToTimeOfDay() + ', Rafael'}</Text>
+      <Text style={styles.greetingTitle}>{`${greetingToTimeOfDay()}, ${user?.user?.name}`}</Text>
 
       <Text style={[commonStyles.titleBlack, { marginBottom: 20 }]}>Suas reclamações...</Text>
 
@@ -41,21 +44,23 @@ export default function Home() {
 
       <Text style={styles.lastTicketCommented}>Última reclamação comentada</Text>
       {userInformation &&
-        !(userInformation?.lastMessageCommented) ? (
-        <View>
-          <Text style={common.size12}>Nenhuma reclamação comentada ainda</Text>
+        (
+          userInformation?.lastMessageCommented === null ? (
+            <View>
+              <Text style={common.size12}>Nenhuma reclamação comentada ainda</Text>
 
-          <Text style={styles.createNewTicketMessage}>Deseja criar uma reclamação?</Text>
+              <Text style={styles.createNewTicketMessage}>Deseja criar uma reclamação?</Text>
 
-          <Button label={"Criar"} icon={'arrowright'} onClick={navigateToCreateTicket} />
-        </View>
-      ) : (
-        <Ticket
-          id={userInformation?.lastMessageCommented?.ticketId.toString()}
-          title={userInformation?.lastMessageCommented?.ticket.title}
-          content={userInformation?.lastMessageCommented?.ticket.content}
-          status={userInformation?.lastMessageCommented?.ticket.status} />
-      )
+              <Button label={"Criar"} icon={'arrowright'} onClick={navigateToCreateTicket} />
+            </View>
+          ) : (
+            <Ticket
+              id={userInformation?.lastMessageCommented?.ticketId.toString()}
+              title={userInformation?.lastMessageCommented?.ticket.title}
+              content={userInformation?.lastMessageCommented?.ticket.content}
+              status={userInformation?.lastMessageCommented?.ticket.status} />
+          )
+        )
       }
 
     </View>

@@ -20,7 +20,7 @@ type ParamList = {
 export default function TicketList() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<ParamList, 'params'>>();
-  const { filter } = route.params;
+  // const { filter } = route.params;
   const [tickets, setTickets] = useState<TicketProps[]>([]);
 
   const [open, setOpen] = useState(false);
@@ -32,9 +32,8 @@ export default function TicketList() {
 
   useEffect(() => {
     async function getTickets() {
-      setTickets([]);
-      if (filter) {
-        let retorno = await getData('/tickets/tickets-by-filter/', filter);
+      if (route.params?.filter) {
+        let retorno = await getData('/tickets/tickets-by-filter/', route.params?.filter);
         setTickets(retorno.data);
       } else {
         let retorno = await getData('/tickets', '');

@@ -1,3 +1,6 @@
+import { User } from "@react-native-google-signin/google-signin";
+import { STUDENT_EMAIL_VALID, ADMIN_EMAIL_VALID } from './constants';
+
 type Field = {
   fieldContent: string,
   fieldName: string
@@ -43,6 +46,17 @@ export function currentTimeFromBrazil(): Date {
   const brazilTime: Date = new Date(utcTime + (3600000 * timeOffsetFromBrazil));
 
   return brazilTime;
+}
+
+
+export function userIsValid(user: User): { hasError: boolean; text: string } {
+  if (user.user.email.includes(STUDENT_EMAIL_VALID)) {
+    return { hasError: false, text: 'Home' };
+  } else if (user.user.email.includes(ADMIN_EMAIL_VALID)) {
+    return { hasError: false, text: 'Dashboard' };
+  } else {
+    return { hasError: true, text: 'A conta escolhida não é válida, Tente novamente.' }
+  }
 }
 
 

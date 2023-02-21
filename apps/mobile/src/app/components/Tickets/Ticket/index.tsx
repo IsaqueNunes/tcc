@@ -20,8 +20,8 @@ export default function Ticket({ id, title, content, status, isFirstTicket = fal
   const navigation = useNavigation<any>();
 
   function createStatus(): string {
-    const newStatusMessage = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
-    return newStatusMessage.replace('_', ' ');
+    const newStatusMessage = (status?.charAt(0).toUpperCase() + status?.slice(1).toLowerCase()).replaceAll('_', ' ');
+    return newStatusMessage;
   }
 
   function redirectToChatTicket() {

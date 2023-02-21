@@ -9,7 +9,7 @@ export const styles = (backgroundColor, width, onlyIcon, margin, icon) => StyleS
     flexDirection: 'row',
     justifyContent: icon !== '' ? 'space-between' : 'center',
     borderRadius: 10,
-    height: onlyIcon ? 50 : 36,
+    height: onlyIcon ? 50 : 46,
     paddingHorizontal: icon !== '' ? 40 : 0,
     marginTop: onlyIcon ? 0 : margin.marginTop ? 30 : 10
   },

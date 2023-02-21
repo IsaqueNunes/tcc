@@ -38,6 +38,6 @@ export const styles = (statusColor, firstTicket) => StyleSheet.create({
     width: 10,
     backgroundColor: statusColor,
     marginRight: 5,
-    borderRadius: 50,
+    borderRadius: 10,
   },
 });
