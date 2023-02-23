@@ -9,9 +9,10 @@ type Props = {
 }
 
 export default function GroupButton({ sendMessage, isFinishedStatus = false }: Props) {
-  const navigation = useNavigation();
-  function backToLastPage() {
-    navigation.goBack();
+  const navigation = useNavigation<any>();
+
+  async function backToLastPage() {
+    navigation.navigate('TicketList');
   }
 
   return (

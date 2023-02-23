@@ -7,13 +7,27 @@ import { AdminDashboardInformationDto } from 'libs/models/admin-dashboard-inform
 import { UserInformationDto } from 'libs/models/user-information-dto';
 import { DropdownDto } from 'libs/models/dropdown-dto';
 import { ChartDataDto } from 'libs/models/chart-data-dto';
+import { SearchTicketDto } from 'libs/models/search-ticket-dto';
+import { CreateTicketDto } from 'libs/models/create-ticket-dto';
 
 @Injectable()
 export class TicketsService {
   private prisma = new PrismaClient();
 
-  public create(ticket: Prisma.TicketUncheckedCreateInput): Promise<Ticket> {
-    return this.prisma.ticket.create({ data: { ...ticket } });
+  public async create(ticket: CreateTicketDto): Promise<Ticket> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: ticket.email
+      }
+    })
+
+    const finalTicket: Prisma.TicketUncheckedCreateInput = {
+      content: ticket.content,
+      title: ticket.title,
+      userId: user.id
+    }
+
+    return this.prisma.ticket.create({ data: { ...finalTicket } });
   }
 
   public update(
@@ -58,15 +72,32 @@ export class TicketsService {
     });
   }
 
-  public async getTicketsByFilter(filter: string): Promise<Ticket[]> {
-    const ticketsFiltered = await this.prisma.ticket.findMany({
-      orderBy: { createdAt: 'desc' },
+  public async getTicketsByFilter(searchFilter: SearchTicketDto): Promise<Ticket[]> {
+    let tickets: Ticket[] = [];
+    const user = await this.prisma.user.findFirst({
       where: {
-        status: filter
+        email: searchFilter.emailFromUser
       }
-    });
+    })
 
-    return ticketsFiltered;
+    if (searchFilter.emailFromUser.includes('@estudante.ifms.edu.br')) {
+      const ticketsFiltered = await this.prisma.ticket.findMany({
+        orderBy: { createdAt: 'desc' },
+        where: {
+          userId: user.id
+        }
+      });
+      tickets.push(...ticketsFiltered);
+    } else {
+      const ticketsFiltered = await this.prisma.ticket.findMany();
+      tickets.push(...ticketsFiltered);
+    }
+
+    if (searchFilter.filter !== '') {
+      tickets = tickets.filter(ticket => ticket.status === searchFilter.filter);
+    }
+
+    return tickets;
   }
 
   public findFirst(id: number): Promise<Ticket> {
@@ -81,18 +112,24 @@ export class TicketsService {
     });
   }
 
-  public filterTicketsByFilterChoosed(
-    { filter, contentToSearch }: FilterTicketDto,
-  ): PrismaPromise<Ticket[]> {
-    if (contentToSearch === '') {
-      return this.prisma.ticket.findMany();
-    }
+  public async filterTicketsByFilterChoosed(
+    { filter, contentToSearch, userEmail }: FilterTicketDto,
+  ): Promise<Ticket[]> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: userEmail
+      }
+    })
+
     return this.prisma.ticket.findMany({
       where: {
-        [filter]: {
-          contains: contentToSearch,
-          mode: 'insensitive',
-        },
+        ...(contentToSearch !== '' ? {
+          [filter]: {
+            contains: contentToSearch,
+            mode: 'insensitive',
+          },
+        } : {}),
+        ...(userEmail.includes("@estudante.ifms.edu.br") ? { userId: user.id } : {})
       },
     });
   }
@@ -188,30 +225,33 @@ export class TicketsService {
     return returnedData;
   }
 
-  public async userInformation(id: string): Promise<UserInformationDto> {
+  public async userInformation(email: string): Promise<UserInformationDto> {
+    const currentUser = await this.prisma.user.findFirst({
+      where: { email: email }
+    })
     const createdTicketCounting = await this.prisma.ticket.count({
       where: {
-        userId: id
+        userId: currentUser.id
       },
     });
     const openingTicketsCounting = await this.prisma.ticket.count({
       where: {
         status: 'ABERTO',
-        userId: id
+        userId: currentUser.id
       },
     });
 
     const inProgressTicketCounting = await this.prisma.ticket.count({
       where: {
         status: 'EM_ANALISE',
-        userId: id
+        userId: currentUser.id
       },
     });
 
     const solvedTicketsCounting = await this.prisma.ticket.count({
       where: {
         status: 'FINALIZADO',
-        userId: id
+        userId: currentUser.id
       },
     });
 
@@ -219,7 +259,7 @@ export class TicketsService {
       include: {
         ticket: true,
       },
-      where: { user: { id } },
+      where: { user: { id: currentUser.id } },
       orderBy: {
         time: 'desc',
       },

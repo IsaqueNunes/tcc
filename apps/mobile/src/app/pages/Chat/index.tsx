@@ -19,6 +19,8 @@ import { FormValidatorDto } from '../../models/FormValidator/FormValidatorDto';
 import GroupButton from './GroupButton';
 import { MessageWithStatusDto } from '../../models/Chat/message-with-status-dto';
 import Select from '../../components/Select';
+import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
+import { ADMIN_EMAIL_VALID } from '../../shared/util/constants';
 
 type ParamList = {
   params: {
@@ -31,6 +33,7 @@ export default function Chat() {
   const { id } = route.params;
   const [ticket, setTicket] = useState<TicketMessage>();
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
+  const [userIsAdmin, setUserIsAdmin] = useState<boolean>();
   const [status, setStatus] = useState<string>();
   const [scrollToLastMessage, setScrollToLastMessage] = useState<boolean>(false);
   const [messageContent, setMessageContent] = useState<FormValidatorDto>(new FormValidatorDto());
@@ -40,6 +43,9 @@ export default function Chat() {
     async function loadMessageScreen() {
       let retorno = await getData('/tickets/', id);
       setTicket(retorno.data);
+      const user = (await GoogleSignin.getCurrentUser()).user;
+      const isAdminEmail = user.email.includes(ADMIN_EMAIL_VALID);
+      setUserIsAdmin(isAdminEmail);
       setMessages(retorno.data.Message);
       setStatus(retorno.data.status)
     }
@@ -115,9 +121,11 @@ export default function Chat() {
 
       {status &&
         <View style={[styles.sendMessageDisplayContainer, { flex: status === 'FINALIZADO' ? 1 : 3 }]}>
+          {userIsAdmin &&
+            <Select items={items} value={status} setValue={setStatus} />
+          }
           {status !== 'FINALIZADO' &&
             <View>
-              <Select items={items} value={status} setValue={setStatus} />
               <TextArea label={''} value={messageContent} setValue={setMessageContent} />
             </View>
           }

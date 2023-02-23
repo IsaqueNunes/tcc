@@ -96,6 +96,14 @@ function LoggedRoutes() {
         initialRouteName={isNormalUser ? 'Home' : 'Dashboard'}
       >
         <Drawer.Screen
+          name="Home"
+          options={{
+            title: 'Início', drawerItemStyle: { display: isNormalUser ? 'flex' : 'none' },
+            drawerIcon: ({ color }) => (<Ionicons name='home-outline' color={color} size={22} />)
+          }}
+          component={Home}
+        />
+        <Drawer.Screen
           name="Dashboard"
           options={{
             title: 'Dashboard', drawerItemStyle: { display: isNormalUser ? 'none' : 'flex' },
@@ -104,14 +112,6 @@ function LoggedRoutes() {
           component={Dashboard}
         />
 
-        <Drawer.Screen
-          name="Home"
-          options={{
-            title: 'Início', drawerItemStyle: { display: isNormalUser ? 'flex' : 'none' },
-            drawerIcon: ({ color }) => (<Ionicons name='home-outline' color={color} size={22} />)
-          }}
-          component={Home}
-        />
 
         <Drawer.Screen
           name="TicketList"
@@ -132,6 +132,7 @@ function LoggedRoutes() {
           name="CreateTicket"
           options={{
             title: 'Criar Reclamação',
+            drawerItemStyle: { display: isNormalUser ? 'flex' : 'none' },
             drawerIcon: ({ color }) => (<AntDesign name='form' color={color} size={22} />)
           }}
           component={CreateTicket}

@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { View, Text } from 'react-native'
 import { convertDate } from '../../../shared/util/validator'
 import { commonStyles } from '../../../styles/styles'
@@ -11,7 +12,7 @@ export type MessageProps = {
   isMainMessage?: boolean
 }
 
-export default function Message({ username, email, data, content, isMainMessage = false }: MessageProps) {
+function Message({ username, email, data, content, isMainMessage = false }: MessageProps) {
   return (
     <View style={isMainMessage ? style.ticketContentMessageContainer : style.ticketLowerMessageContainer}>
       <View>
@@ -27,3 +28,5 @@ export default function Message({ username, email, data, content, isMainMessage 
     </View>
   )
 }
+
+export default memo(Message);

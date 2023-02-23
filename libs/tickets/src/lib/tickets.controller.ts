@@ -4,20 +4,22 @@ import {
 import { Prisma } from '@prisma/client';
 import { FilterTicketDto } from '../../../models/filter-ticket-dto';
 import { SearchUserExistsTicketDto } from '../../../models/search-user-exists-ticket-dto';
+import { SearchTicketDto } from '../../../models/search-ticket-dto';
 import { TicketsService } from './tickets.service';
+import { CreateTicketDto } from 'libs/models/create-ticket-dto';
 
 @Controller('tickets')
 export class TicketsController {
   constructor(private ticketsService: TicketsService) { }
 
   @Post()
-  public create(@Body() { title, content, userId }: Prisma.TicketUncheckedCreateInput) {
-    return this.ticketsService.create({ title, content, userId });
+  public create(@Body() { title, content, email }: CreateTicketDto) {
+    return this.ticketsService.create({ title, content, email });
   }
 
   @Post('filter')
-  public filterTicketsByFilterChoosed(@Body() { filter, contentToSearch }: FilterTicketDto) {
-    return this.ticketsService.filterTicketsByFilterChoosed({ filter, contentToSearch });
+  public filterTicketsByFilterChoosed(@Body() { filter, contentToSearch, userEmail }: FilterTicketDto) {
+    return this.ticketsService.filterTicketsByFilterChoosed({ filter, contentToSearch, userEmail });
   }
 
   @Put(':id')
@@ -35,9 +37,9 @@ export class TicketsController {
     return this.ticketsService.find(Number(id));
   }
 
-  @Get('tickets-by-filter/:filter')
-  public getTicketsByFilter(@Param('filter') filter: string) {
-    return this.ticketsService.getTicketsByFilter(filter);
+  @Post('tickets-by-filter')
+  public getTicketsByFilter(@Body() searchFilter: SearchTicketDto) {
+    return this.ticketsService.getTicketsByFilter(searchFilter);
   }
 
   @Get('by-user/:id')
@@ -45,9 +47,9 @@ export class TicketsController {
     return this.ticketsService.findByUser(id);
   }
 
-  @Get('user-ticket-information/:id')
-  public findUserInformationsById(@Param('id') id: string) {
-    return this.ticketsService.userInformation(id);
+  @Get('user-ticket-information/:email')
+  public findUserInformationsById(@Param('email') email: string) {
+    return this.ticketsService.userInformation(email);
   }
 
   @Post('can-see-message')

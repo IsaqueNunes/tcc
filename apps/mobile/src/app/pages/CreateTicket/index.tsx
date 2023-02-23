@@ -61,7 +61,7 @@ export default function CreateTicket() {
   }
 
   return (
-    <View style={{ margin: 40 }}>
+    <View style={{ margin: 20 }}>
       <Text style={[commonStyles.textBlack, styles.titleText]}>Cadastrar</Text>
 
       <Input label={"Título"} value={title} setValue={setTitle} />

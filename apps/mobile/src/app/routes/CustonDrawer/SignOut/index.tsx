@@ -1,5 +1,5 @@
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { TouchableOpacity, View, Text } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { style } from "./styles";
@@ -9,7 +9,10 @@ export default function SignOut() {
 
   async function logOut() {
     await GoogleSignin.signOut();
-    navigation.navigate('Login');
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'Login' }]
+    }))
   }
 
   return (

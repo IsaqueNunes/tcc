@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Text } from "react-native";
 import { TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/AntDesign';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import { styles } from "./styles";
 
@@ -36,7 +36,7 @@ export default function Button({
         <Text style={style.text}>{label}</Text>
       }
       {icon !== '' &&
-        <Icon name={icon} size={24} color={onlyIcon ? 'black' : 'white'} />
+        <AntDesign name={'search1'} size={24} color={onlyIcon ? 'black' : 'white'} />
       }
     </TouchableOpacity>
   )

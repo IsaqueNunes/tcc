@@ -20,8 +20,9 @@ export default function Home() {
 
   useEffect(() => {
     async function getDataFromUser() {
-      setUser(await GoogleSignin.getCurrentUser())
-      let retorno = await getData('/tickets/user-ticket-information/', '83d931d4-3f38-4f88-ab17-8fc7ffbfda9a');
+      const currentUser = await GoogleSignin.getCurrentUser();
+      setUser(currentUser)
+      let retorno = await getData('/tickets/user-ticket-information/', currentUser.user.email);
       const responseDatabase: UserInformationDto = retorno.data;
       setUserInformation(responseDatabase);
     }
@@ -30,6 +31,7 @@ export default function Home() {
   }, []);
 
   function navigateToCreateTicket() {
+
     navigation.navigate('CreateTicket');
   }
   return (

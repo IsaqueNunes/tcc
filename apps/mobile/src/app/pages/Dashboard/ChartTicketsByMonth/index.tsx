@@ -1,11 +1,12 @@
 import { ChartDataDto } from "libs/models/chart-data-dto"
-import { VictoryLabel, VictoryPie } from "victory-native"
+import { VictoryPie } from "victory-native"
 
 type Props = {
   chartData: ChartDataDto[]
 }
 
 export default function ChartTicketsByMonth({ chartData }: Props) {
+  console.log('teste');
   return (
     <VictoryPie
       data={chartData.filter(item => item.ticketCounting > 0)}

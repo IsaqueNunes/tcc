@@ -2,7 +2,7 @@ import { Ticket } from '@prisma/client';
 import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { DropdownDto }  from 'libs/models/dropdown-dto';
+import { DropdownDto } from 'libs/models/dropdown-dto';
 import Button from '../Button';
 import Header from '../Header';
 import Image from '../Image';
@@ -22,7 +22,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   const [searchTicket, setSearchTicket] = useState<string>('');
 
   const [selectedOption, setSelectedOption] = useState<'title' | 'content'>('title');
-  const optionsToSelect: DropdownDto[] = [{label: 'Título', value: 'title'}, {label: 'Descrição', value: 'content'}]
+  const optionsToSelect: DropdownDto[] = [{ label: 'Título', value: 'title' }, { label: 'Descrição', value: 'content' }]
   const navigate = useNavigate();
   const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
   const usuario_administrativo = (user_data.email as string).includes('tecnico.ifms');
@@ -47,6 +47,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
     const filterOptions: FilterTicketDto = {
       filter: selectedOption,
       contentToSearch: searchTicket,
+      userEmail: user_data.email
     };
     let retorno = await postData('/tickets/filter', filterOptions);
 
@@ -76,9 +77,9 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
           <Input value={searchTicket} onChange={setSearchTicket} placeholder={"Procure pela sua reclamação"} />
 
           <div className="buttons-container">
-            <SearchButton onClick={searchByTitleOrDescription}  />
+            <SearchButton onClick={searchByTitleOrDescription} />
 
-            <Select selectedOption={selectedOption} setSelectedOptionSelect={setSelectedOptionSelect} options={optionsToSelect}  />
+            <Select selectedOption={selectedOption} setSelectedOptionSelect={setSelectedOptionSelect} options={optionsToSelect} />
 
           </div>
         </div>
