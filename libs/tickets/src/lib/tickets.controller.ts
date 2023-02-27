@@ -42,9 +42,9 @@ export class TicketsController {
     return this.ticketsService.getTicketsByFilter(searchFilter);
   }
 
-  @Get('by-user/:id')
-  public findByUser(@Param('id') id: string) {
-    return this.ticketsService.findByUser(id);
+  @Get('by-user/:email')
+  public findByUser(@Param('email') email: string) {
+    return this.ticketsService.findByUser(email);
   }
 
   @Get('user-ticket-information/:email')

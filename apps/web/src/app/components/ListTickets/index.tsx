@@ -3,15 +3,15 @@ import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DropdownDto } from 'libs/models/dropdown-dto';
+import { User, IsAdmin } from '../../util/constants';
+import { getData, postData } from '../../services/ApiService';
 import Button from '../Button';
 import Header from '../Header';
-import Image from '../Image';
-import './list-tickets.css';
-import { getData, postData } from '../../services/ApiService';
 import Tickets from './Tickets';
 import Select from '../Select';
 import Input from '../Input';
 import SearchButton from '../SearchButton';
+import './list-tickets.css';
 
 type ListTicketsProps = {
   isAdminRoute: boolean,
@@ -24,9 +24,6 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   const [selectedOption, setSelectedOption] = useState<'title' | 'content'>('title');
   const optionsToSelect: DropdownDto[] = [{ label: 'Título', value: 'title' }, { label: 'Descrição', value: 'content' }]
   const navigate = useNavigate();
-  const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
-  const usuario_administrativo = (user_data.email as string).includes('tecnico.ifms');
-  const id = user_data.id;
 
   const RedirectToCreateTicket = () => {
     navigate('/user/create-ticket');
@@ -34,9 +31,9 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
 
   useEffect(() => {
     async function pegarDados() {
-      const ehAdministrativoVendo = isAdminRoute && usuario_administrativo
+      const ehAdministrativoVendo = isAdminRoute && IsAdmin
       let endPoint = '/tickets' + (ehAdministrativoVendo ? '' : '/by-user/');
-      let retorno = await getData(endPoint, ehAdministrativoVendo ? '' : id);
+      let retorno = await getData(endPoint, ehAdministrativoVendo ? '' : User.email);
       setTickets(retorno.data);
     }
     pegarDados();
@@ -47,7 +44,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
     const filterOptions: FilterTicketDto = {
       filter: selectedOption,
       contentToSearch: searchTicket,
-      userEmail: user_data.email
+      userEmail: User.email
     };
     let retorno = await postData('/tickets/filter', filterOptions);
 
@@ -67,9 +64,9 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
         <div className="ticket-title-content">
           <h1 className="ticket-title">Reclamações</h1>
 
-          {!isAdminRoute && (
+          {!isAdminRoute &&
             <Button type="button" onClick={RedirectToCreateTicket} label="Nova Reclamação" buttonClassStyle="button-login ticket" />
-          )}
+          }
 
         </div>
         <div className="ticket-list-search-content">
@@ -77,6 +74,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
           <Input value={searchTicket} onChange={setSearchTicket} placeholder={"Procure pela sua reclamação"} />
 
           <div className="buttons-container">
+
             <SearchButton onClick={searchByTitleOrDescription} />
 
             <Select selectedOption={selectedOption} setSelectedOptionSelect={setSelectedOptionSelect} options={optionsToSelect} />
@@ -85,6 +83,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
         </div>
 
         <Tickets tickets={tickets} />
+
       </div>
     </section>
   );

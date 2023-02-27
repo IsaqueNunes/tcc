@@ -134,10 +134,10 @@ export class TicketsService {
     });
   }
 
-  public findByUser(id: string): Promise<Ticket[]> {
+  public findByUser(email: string): Promise<Ticket[]> {
     return this.prisma.ticket.findMany({
       where: {
-        user: { id },
+        user: { email },
       },
     });
   }
