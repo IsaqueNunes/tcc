@@ -1,16 +1,18 @@
 import { Message, Ticket } from '@prisma/client';
 import { useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import './dashboard.css';
 import { ChartDataDto } from 'libs/models/chart-data-dto';
 import { AdminDashboardInformationDto } from 'libs/models/admin-dashboard-information-dto';
 import { useNavigate } from 'react-router-dom';
 import { getData } from '../../services/ApiService';
+import { User, IsAdmin } from '../../util/constants';
+
+import Header from '../../components/Header';
 import CurrentData from './CurrentData';
 import CountingCard from './CountingCard';
 import LastTicketCommented from './LastTicketCommented';
 import Charts from './Charts';
 
+import './dashboard.css';
 export class AdminDashboardClass implements AdminDashboardInformationDto {
   openingTicketsCounting!: number;
 
@@ -23,10 +25,8 @@ export class AdminDashboardClass implements AdminDashboardInformationDto {
 
 export default function Dashboard() {
   const navigate = useNavigate();
-  const user_data: any = JSON.parse(localStorage.getItem('authData') || '');
-  const usuario_invalido = !(user_data.email as string).includes('tecnico.ifms');
 
-  if (usuario_invalido) {
+  if (!IsAdmin) {
     navigate('/user/my-tickets')
   }
 
@@ -36,7 +36,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function getDataFromDashboard() {
-      let retorno = await getData('/tickets/admin-dashboard-information/', user_data.id);
+      let retorno = await getData('/tickets/admin-dashboard-information/', User.id);
       const responseDatabase: AdminDashboardClass = retorno.data;
       setData(responseDatabase);
       setLoading(false);
@@ -67,13 +67,13 @@ export default function Dashboard() {
   }, []);
 
   return (
-    !loading && !usuario_invalido ? (
+    !loading && !IsAdmin ? (
       <>
         <Header typeOfHeader={'admin'} />
         <div className="dashboard-main-content">
           <div className="column-top-data">
 
-            <CurrentData name={user_data.name} email={user_data.email} />
+            <CurrentData name={User.name} email={User.email} />
 
             <CountingCard label={'Reclamações em Aberto'} counting={data?.openingTicketsCounting.toString()} />
 
