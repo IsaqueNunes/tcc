@@ -40,9 +40,9 @@ export class TicketsService {
     });
   }
 
-  public changeStatus(id: number, status: string): Promise<Ticket> {
+  public changeStatus(id: number, status: string) {
     if (status === 'FINALIZADO') {
-      return this.prisma.ticket.update({
+      this.prisma.ticket.update({
         where: { id },
         data: {
           status,
@@ -51,7 +51,7 @@ export class TicketsService {
       });
     }
 
-    return this.prisma.ticket.update({
+    this.prisma.ticket.update({
       where: { id },
       data: { status }
     });
@@ -131,6 +131,7 @@ export class TicketsService {
         } : {}),
         ...(userEmail.includes("@estudante.ifms.edu.br") ? { userId: user.id } : {})
       },
+      orderBy: { createdAt: 'desc' },
     });
   }
 
@@ -139,6 +140,9 @@ export class TicketsService {
       where: {
         user: { email },
       },
+      orderBy: {
+        createdAt: 'desc'
+      }
     });
   }
 

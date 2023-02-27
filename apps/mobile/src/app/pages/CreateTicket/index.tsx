@@ -1,10 +1,12 @@
 import { Prisma } from "@prisma/client";
+import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { View, Text, Alert } from "react-native";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
+import { CreateTicketDto } from "../../models/CreateTicket/CreateTicketDto";
 import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import { postData } from "../../services/ApiService";
 import { createErrorMessage } from "../../shared/util/validator";
@@ -16,15 +18,25 @@ export default function CreateTicket() {
   const [title, setTitle] = useState<FormValidatorDto>(new FormValidatorDto());
   const [content, setContent] = useState<FormValidatorDto>(new FormValidatorDto());
   const navigation = useNavigation();
+  const [user, setUser] = useState<User>();
+
+  useEffect(() => {
+    async function getCurrentLoggedUser() {
+      const currentUser = await GoogleSignin.getCurrentUser();
+      setUser(currentUser);
+    }
+
+    getCurrentLoggedUser();
+  });
 
   async function createTicket() {
     const inputsValidation = validateInputs();
 
     if (inputsValidation.allFieldsAreValid) {
-      const ticket: Prisma.TicketUncheckedCreateInput = {
+      const ticket: CreateTicketDto = {
         title: title.value,
         content: content.value,
-        userId: '46ed718f-8030-4872-a8a6-8f2930ae35e9',
+        email: user.user.email
       };
 
       await postData('/tickets', ticket);

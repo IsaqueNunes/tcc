@@ -8,6 +8,7 @@ import Header from '../../components/Header';
 import Input from '../../components/Input';
 import TextArea from '../../components/TextArea';
 import './create-ticket.css';
+import { CreateTicketDto } from '../../models/CreateTicket/createTicketDto';
 
 export default function CreateTicket() {
   const navigate = useNavigate();
@@ -25,10 +26,10 @@ export default function CreateTicket() {
   }, []);
 
   const addTicket = async () => {
-    const ticket: Prisma.TicketUncheckedCreateInput = {
+    const ticket: CreateTicketDto = {
       title,
       content,
-      userId: User.id,
+      email: User.email,
     };
 
     await postData('/tickets', ticket);

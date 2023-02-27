@@ -4,7 +4,7 @@ export type MessageWithStatusDto = {
   id?: number | undefined;
   content: string;
   time?: string | Date | undefined;
-  user?: User;
+  userEmail: string;
   ticketId: number;
   Message?: Prisma.MessageUncheckedCreateNestedManyWithoutRepliedMessageInput | undefined;
   repliedMessageId?: number | null | undefined;

@@ -15,7 +15,6 @@ export default function Select({ selectedOption, setSelectedOptionSelect, option
       onChange={setSelectedOptionSelect}
       className="filter-button"
       aria-label="State"
-      id="filter-options"
     >
       {options.map((option: DropdownDto, index) => (
         <option key={index} value={option.value}>{option.label}</option>

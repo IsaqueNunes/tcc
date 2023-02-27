@@ -10,8 +10,8 @@ export class MessageController {
   constructor(private messageService: MessageService) { }
 
   @Post()
-  public create(@Body() { content, user, ticketId, status}: MessageWithStatusDto) {
-    return this.messageService.create({ content, user, ticketId: +ticketId, status });
+  public create(@Body() { content, userEmail, ticketId, status }: MessageWithStatusDto) {
+    return this.messageService.create({ content, userEmail, ticketId: +ticketId, status });
   }
 
   @Get(':id')

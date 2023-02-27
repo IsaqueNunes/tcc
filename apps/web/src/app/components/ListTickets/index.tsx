@@ -31,9 +31,9 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
 
   useEffect(() => {
     async function pegarDados() {
-      const ehAdministrativoVendo = isAdminRoute && IsAdmin
-      let endPoint = '/tickets' + (ehAdministrativoVendo ? '' : '/by-user/');
-      let retorno = await getData(endPoint, ehAdministrativoVendo ? '' : User.email);
+      let endPoint = '/tickets' + (IsAdmin ? '' : '/by-user/');
+      let body = IsAdmin ? '' : User.email
+      let retorno = await getData(endPoint, body);
       setTickets(retorno.data);
     }
     pegarDados();
@@ -58,13 +58,13 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   return (
     <section className="user-main-content">
 
-      <Header typeOfHeader={isAdminRoute ? 'admin' : 'user'} />
+      <Header typeOfHeader={IsAdmin ? 'admin' : 'user'} />
 
       <div className="ticket-list-content">
         <div className="ticket-title-content">
           <h1 className="ticket-title">Reclamações</h1>
 
-          {!isAdminRoute &&
+          {!IsAdmin &&
             <Button type="button" onClick={RedirectToCreateTicket} label="Nova Reclamação" buttonClassStyle="button-login ticket" />
           }
 

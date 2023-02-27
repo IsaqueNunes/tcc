@@ -33,9 +33,9 @@ export default function Chat() {
   const { id } = route.params;
   const [ticket, setTicket] = useState<TicketMessage>();
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
+  const [user, setUser] = useState<User>();
   const [userIsAdmin, setUserIsAdmin] = useState<boolean>();
   const [status, setStatus] = useState<string>();
-  const [scrollToLastMessage, setScrollToLastMessage] = useState<boolean>(false);
   const [messageContent, setMessageContent] = useState<FormValidatorDto>(new FormValidatorDto());
   const items = [{ label: 'Aberto', value: 'ABERTO' }, { label: 'Em Análise', value: 'EM_ANALISE' }, { label: 'Concluído', value: 'FINALIZADO' }]
 
@@ -43,8 +43,9 @@ export default function Chat() {
     async function loadMessageScreen() {
       let retorno = await getData('/tickets/', id);
       setTicket(retorno.data);
-      const user = (await GoogleSignin.getCurrentUser()).user;
-      const isAdminEmail = user.email.includes(ADMIN_EMAIL_VALID);
+      const user = await GoogleSignin.getCurrentUser();
+      const isAdminEmail = user.user.email.includes(ADMIN_EMAIL_VALID);
+      setUser(user);
       setUserIsAdmin(isAdminEmail);
       setMessages(retorno.data.Message);
       setStatus(retorno.data.status)
@@ -56,11 +57,9 @@ export default function Chat() {
   async function validateToSendMessage() {
     if (messageFieldIsNotEmpty()) {
       setMessageContent({ ...messageContent, isValid: true, value: '' });
-      setScrollToLastMessage(true);
       Keyboard.dismiss();
       await sendMessage();
     } else {
-      setScrollToLastMessage(false);
       Alert.alert('É necessário informar o conteúdo da mensagem para enviá-la.')
     }
   }
@@ -84,11 +83,7 @@ export default function Chat() {
   const createModelMessage = (): MessageWithStatusDto => {
     const message: MessageWithStatusDto = {
       content: messageContent.value,
-      user: {
-        id: ticket?.userId,
-        email: ticket?.user.email,
-        name: ticket?.user.name,
-      },
+      userEmail: user.user.email,
       repliedMessageId: ticket?.Message.length === 0 ? null
         : ticket?.Message[(ticket?.Message?.length || 1) - 1].id,
       ticketId: Number(id),
