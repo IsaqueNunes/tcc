@@ -8,11 +8,6 @@ import CardHeader from './CardHeader';
 import CardBody from './CardBody';
 
 export default function Login() {
-  const navigate = useNavigate();
-  const CheckLogin = () => {
-    const isAdmin = false;
-    navigate(isAdmin ? 'admin/tickets' : '/user/my-tickets');
-  };
 
   return (
     <section className="login-content">
