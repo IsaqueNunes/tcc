@@ -14,6 +14,7 @@ import { greetingToTimeOfDay } from "../../shared/util/validator";
 import { commonStyles } from "../../styles/styles";
 import CardsCounting from "./CardsCounting";
 import { common, styles } from "./styles";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 export default function Home() {
@@ -56,7 +57,10 @@ export default function Home() {
 
               <Text style={styles.createNewTicketMessage}>Deseja criar uma reclamação?</Text>
 
-              <Button label={"Criar"} icon={'arrowright'} onClick={navigateToCreateTicket} />
+              <Button onPress={navigateToCreateTicket}>
+                <Text style={commonStyles.text}>Criar</Text>
+                <AntDesign name="arrowright" size={24} />
+              </Button>
             </View>
           ) : (
             <Ticket

@@ -80,7 +80,9 @@ export default function CreateTicket() {
 
       <TextArea label={"Explique-nos o que aconteceu"} value={content} setValue={setContent} />
 
-      <Button label={"Criar"} margin={{ marginTop: 40 }} onClick={createTicket} />
+      <Button style={{ marginTop: 40 }} onPress={createTicket}>
+        <Text style={commonStyles.text}>Criar</Text>
+      </Button>
     </View>
   )
 }

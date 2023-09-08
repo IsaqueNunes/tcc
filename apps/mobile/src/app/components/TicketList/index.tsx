@@ -12,6 +12,7 @@ import Tickets from "../../components/Tickets";
 import { SearchTicketDto } from "../../models/ListTicket/SearchTicketDto";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { FilterTicketDto } from "../../models/ListTicket/FilterTicketDto";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 type ParamList = {
   params: {
@@ -79,14 +80,10 @@ export default function TicketList() {
             containerStyle={{ width: '75%' }}
           />
 
-          <Button
-            label={""}
-            icon={"dashboard"}
-            backgroundColor="transparent"
-            width="20%"
-            onClick={searchTickets}
-            onlyIcon
-          />
+
+          <Button style={{ width: '20%', backgroundColor: 'rgba(192,192,192,0.25)', justifyContent: 'center' }} onPress={searchTickets}>
+            <AntDesign name={'search1'} size={24} color={'black'} />
+          </Button>
 
         </View>
         <Tickets tickets={tickets} />

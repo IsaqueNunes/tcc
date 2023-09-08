@@ -10,6 +10,7 @@ import Link from "../../components/Link";
 
 import { styles } from './styles';
 import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
+import { commonStyles } from "../../styles/styles";
 
 export default function Login() {
   const [username, setUsername] = useState<FormValidatorDto>(new FormValidatorDto());
@@ -31,7 +32,9 @@ export default function Login() {
 
         <Input label={"Senha"} value={password} setValue={setPassword} />
 
-        <Button label={'Entrar'} onClick={() => Alert.alert('Funcionalidade em construção...')} />
+        <Button onPress={() => Alert.alert('Funcionalidade em construção...')}>
+          <Text style={commonStyles.text}>Entrar</Text>
+        </Button>
 
         <Link label={"Esqueceu a senha?"} textColor={'#c4c4c4'} />
 

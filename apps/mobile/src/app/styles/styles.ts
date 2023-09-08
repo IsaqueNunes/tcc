@@ -26,5 +26,9 @@ export const commonStyles = StyleSheet.create({
     alignSelf: 'stretch',
     borderRadius: 10,
     paddingLeft: 10
-  }
+  },
+  text: {
+    fontSize: 14,
+    color: 'white'
+  },
 });

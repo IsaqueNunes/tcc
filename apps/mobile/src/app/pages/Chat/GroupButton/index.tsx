@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
-import { View } from "react-native";
+import { View, Text } from "react-native";
 import Button from "../../../components/Button";
+import { commonStyles } from "../../../styles/styles";
 import { style } from "./styles";
 
 type Props = {
@@ -17,11 +18,17 @@ export default function GroupButton({ sendMessage, isFinishedStatus = false }: P
 
   return (
     isFinishedStatus ? (
-      <Button label={'Voltar'} width='100%' backgroundColor='#C82733' onClick={backToLastPage} />
+      <Button style={{ backgroundColor: '#C82733' }} onPress={backToLastPage}>
+        <Text style={commonStyles.text}>Voltar</Text>
+      </Button>
     ) : (
       <View style={style.groupButtonContainer}>
-        <Button label={'Enviar'} width='45%' backgroundColor='#3B7DED' onClick={sendMessage} />
-        <Button label={'Voltar'} width='45%' backgroundColor='#C82733' onClick={backToLastPage} />
+        <Button style={{ backgroundColor: '#3B7DED', width: '40%' }} onPress={sendMessage}>
+          <Text style={commonStyles.text}>Enviar</Text>
+        </Button>
+        <Button style={{ backgroundColor: '#C82733', width: '40%' }} onPress={backToLastPage}>
+          <Text style={commonStyles.text}>Voltar</Text>
+        </Button>
       </View>
     )
   )
