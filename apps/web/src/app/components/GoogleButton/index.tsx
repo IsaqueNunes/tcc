@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 function GoogleButton() {
   const clientId = process.env['NX_REACT_APP_GOOGLE_AUTH_CLIENT_ID'] || '';
+  console.log(clientId)
   const navigate = useNavigate();
   useEffect(() => {
     function start() {
@@ -21,21 +22,21 @@ function GoogleButton() {
     <GoogleLogin
       clientId={clientId}
       buttonText="Entrar com o E-mail institucional"
-      onSuccess={async(credentialResponse: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+      onSuccess={async (credentialResponse: GoogleLoginResponse | GoogleLoginResponseOffline) => {
         if ('accessToken' in credentialResponse) {
           const is_student = (credentialResponse.profileObj.email as string).includes('@estudante.ifms.edu.br')
           const is_admin = (credentialResponse.profileObj.email).includes('tecnico.ifms');
 
-          if(is_student || is_admin) {
+          if (is_student || is_admin) {
             const response = await axios.post('http://localhost:3333/api/auth/login', {
-            token: credentialResponse.tokenId
+              token: credentialResponse.tokenId
             });
             const data = response.data;
             localStorage.setItem('authData', JSON.stringify(data));
-            if(is_admin) {
+            if (is_admin) {
               navigate('/dashboard')
               return;
-            }  else {
+            } else {
               navigate('/user/my-tickets');
               return;
             }

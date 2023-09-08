@@ -1,12 +1,15 @@
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { error } from "console";
 import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
 import Button from "../../components/Button";
 import Ticket from "../../components/Tickets/Ticket";
 import { DropdownDto } from "../../models/DropdownDto";
 import { UserInformationDto } from "../../models/UserHome/UserHomeDto";
-import { getData } from "../../services/ApiService";
+import api from "../../services/api";
+import { getData, postData } from "../../services/ApiService";
 import { greetingToTimeOfDay } from "../../shared/util/validator";
 import { commonStyles } from "../../styles/styles";
 import CardsCounting from "./CardsCounting";

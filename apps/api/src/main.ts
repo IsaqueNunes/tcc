@@ -15,7 +15,8 @@ async function bootstrap() {
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.enableCors({
-    origin: 'http://localhost:4200'
+    origin: '*',
+    optionsSuccessStatus: 200
   });
 
   app.use(
