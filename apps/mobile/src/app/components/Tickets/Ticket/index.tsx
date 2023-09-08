@@ -19,7 +19,6 @@ let colorFromStatus = {
 
 const Ticket = ({ id, title, content, status, isFirstTicket = false }: TicketProps) => {
   const navigation = useNavigation();
-  console.log(title)
 
   function createStatus(): string {
     const newStatusMessage = (status?.charAt(0).toUpperCase() + status?.slice(1).toLowerCase()).replaceAll('_', ' ');

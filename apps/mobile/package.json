@@ -23,6 +23,7 @@
     "react-native-dropdown-picker": "*",
     "@prisma/client": "*",
     "victory-native": "*",
-    "@react-native-google-signin/google-signin": "*"
+    "@react-native-google-signin/google-signin": "*",
+    "react-query": "*"
   }
 }

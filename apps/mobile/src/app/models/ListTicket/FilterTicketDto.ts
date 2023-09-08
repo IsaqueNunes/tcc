@@ -1,5 +1,7 @@
+import { FilterDto } from "./FilterDto"
+
 export type FilterTicketDto = {
-  filter: 'title' | 'content'
+  filter: FilterDto,
   contentToSearch: string
   userEmail: string
 }
