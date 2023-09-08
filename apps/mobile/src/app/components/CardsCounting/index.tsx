@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { FlatList } from "react-native-gesture-handler";
-import CardCounting from "../../../components/CardCounting";
-import { DropdownDto } from "../../../models/DropdownDto";
+import CardCounting from "../CardCounting";
+import { DropdownDto } from "../../models/DropdownDto";
 
 type Props = {
   countingData: DropdownDto[]

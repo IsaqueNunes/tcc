@@ -12,7 +12,7 @@ import api from "../../services/api";
 import { getData, postData } from "../../services/ApiService";
 import { greetingToTimeOfDay } from "../../shared/util/validator";
 import { commonStyles } from "../../styles/styles";
-import CardsCounting from "./CardsCounting";
+import CardsCounting from "../../components/CardsCounting";
 import { common, styles } from "./styles";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
