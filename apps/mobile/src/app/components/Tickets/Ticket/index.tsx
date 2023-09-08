@@ -1,4 +1,5 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { memo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import { styles } from "./styles";
 
@@ -16,8 +17,9 @@ let colorFromStatus = {
   'FINALIZADO': '#93FA2D'
 }
 
-export default function Ticket({ id, title, content, status, isFirstTicket = false }: TicketProps) {
+const Ticket = ({ id, title, content, status, isFirstTicket = false }: TicketProps) => {
   const navigation = useNavigation();
+  console.log(title)
 
   function createStatus(): string {
     const newStatusMessage = (status?.charAt(0).toUpperCase() + status?.slice(1).toLowerCase()).replaceAll('_', ' ');
@@ -48,3 +50,4 @@ export default function Ticket({ id, title, content, status, isFirstTicket = fal
     </TouchableOpacity>
   )
 }
+export default memo(Ticket);

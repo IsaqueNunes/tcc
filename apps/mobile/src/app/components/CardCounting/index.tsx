@@ -1,5 +1,5 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { style } from './styles';
 
 type Props = {

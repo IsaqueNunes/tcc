@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 function GoogleButton() {
   const clientId = process.env['NX_REACT_APP_GOOGLE_AUTH_CLIENT_ID'] || '';
-  console.log(clientId)
   const navigate = useNavigate();
   useEffect(() => {
     function start() {

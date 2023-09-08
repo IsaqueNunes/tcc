@@ -6,7 +6,6 @@ type Props = {
 }
 
 export default function ChartTicketsByMonth({ chartData }: Props) {
-  console.log('teste');
   return (
     <VictoryPie
       data={chartData.filter(item => item.ticketCounting > 0)}

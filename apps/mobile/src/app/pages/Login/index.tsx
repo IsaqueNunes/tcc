@@ -36,7 +36,7 @@ export default function Login() {
           <Text style={commonStyles.text}>Entrar</Text>
         </Button>
 
-        <Link label={"Esqueceu a senha?"} textColor={'#c4c4c4'} />
+        <Link label={"Esqueceu a senha?"} textColor={'#c4c4c4'} onClick={() => { }} />
 
         <Separator textInsideLines={"Ou"} />
 
@@ -44,7 +44,7 @@ export default function Login() {
 
         <View style={styles.textRegisterAccountContainer}>
           <Text style={styles.textRegisterAccount}>Não tem uma conta ainda?</Text>
-          <Link label={"Cadastre-se."} />
+          <Link label={"Cadastre-se."} onClick={() => { }} />
         </View>
 
       </View>

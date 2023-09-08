@@ -13,6 +13,7 @@ export type MessageProps = {
 }
 
 function Message({ username, email, data, content, isMainMessage = false }: MessageProps) {
+
   return (
     <View style={isMainMessage ? style.ticketContentMessageContainer : style.ticketLowerMessageContainer}>
       <View>
