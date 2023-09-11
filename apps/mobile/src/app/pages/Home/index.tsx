@@ -7,11 +7,13 @@ import CardsCounting from "../../components/CardsCounting";
 import { styles } from "./styles";
 import NotFoundTicket from "../../components/NotTicketFound";
 import { useQuery } from "react-query";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { useUserContext } from "../../context/UserContext";
 
 export default function Home() {
+  const { user } = useUserContext();
   const { data, isLoading } = useQuery('userInformations', async () => {
-    const currentUser = await GoogleSignin.getCurrentUser();
-    const response = await getData('/tickets/user-ticket-information/', currentUser.user.email);
+    const response = await getData('/tickets/user-ticket-information/', user.userData.user.email);
     return response;
   });
 

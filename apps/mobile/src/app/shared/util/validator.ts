@@ -1,4 +1,5 @@
 import { User } from "@react-native-google-signin/google-signin";
+import { TypeOfUser } from "../../models/enums/TypeOfUser";
 import { STUDENT_EMAIL_VALID, ADMIN_EMAIL_VALID } from './constants';
 
 type Field = {
@@ -57,6 +58,14 @@ export function userIsValid(user: User): { hasError: boolean; text: string } {
   } else {
     return { hasError: true, text: 'A conta escolhida não é válida, Tente novamente.' }
   }
+}
+
+export function getTypeOfUser(usersEmail: string) {
+  if (usersEmail.includes(STUDENT_EMAIL_VALID)) {
+    return TypeOfUser.CommonUser
+  }
+
+  return TypeOfUser.Admin
 }
 
 

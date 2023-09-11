@@ -24,6 +24,7 @@
     "@prisma/client": "*",
     "victory-native": "*",
     "@react-native-google-signin/google-signin": "*",
-    "react-query": "*"
+    "react-query": "*",
+    "react-native-mmkv": "*"
   }
 }

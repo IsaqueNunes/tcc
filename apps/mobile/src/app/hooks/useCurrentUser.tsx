@@ -1,19 +1,26 @@
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { useEffect, useState } from "react";
+import { TypeOfUser } from "../models/enums/TypeOfUser";
+import { UserDto } from "../models/UserHome/UserDto";
+import { getTypeOfUser } from "../shared/util/validator";
 
 export default function useCurrentUser() {
-  const [user, setUser] = useState<User>();
-  const [loadingUser, setLoadingUser] = useState(false);
+  const [user, setUser] = useState<UserDto>({ loadingUser: true, userData: undefined, typeOfUser: TypeOfUser.None });
   useEffect(() => {
     async function getCurrentUser() {
-      setLoadingUser(true);
       const currentUser = await GoogleSignin.getCurrentUser();
-      setUser(currentUser);
-      setLoadingUser(false);
+      setUser({
+        userData: currentUser,
+        loadingUser: false,
+        typeOfUser:
+          currentUser ?
+            getTypeOfUser(currentUser.user.email) :
+            TypeOfUser.None
+      });
     }
 
     getCurrentUser();
   }, []);
 
-  return { user, loadingUser }
+  return { user }
 }
