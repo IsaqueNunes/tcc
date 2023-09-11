@@ -1,24 +1,12 @@
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
-import { useNavigation } from "@react-navigation/native";
-import axios from "axios";
-import { error } from "console";
-import { useEffect, useState } from "react";
 import { View, Text } from "react-native";
-import Button from "../../components/Button";
 import Ticket from "../../components/Tickets/Ticket";
-import { DropdownDto } from "../../models/DropdownDto";
-import { UserInformationDto } from "../../models/UserHome/UserHomeDto";
-import api from "../../services/api";
-import { getData, postData } from "../../services/ApiService";
-import { greetingToTimeOfDay } from "../../shared/util/validator";
+import { getData } from "../../services/ApiService";
 import { commonStyles } from "../../styles/styles";
 import CardsCounting from "../../components/CardsCounting";
-import { common, styles } from "./styles";
+import { styles } from "./styles";
 import NotFoundTicket from "../../components/NotTicketFound";
-import useCurrentUser from "../../hooks/useCurrentUser";
 import { useQuery } from "react-query";
-
-
 
 export default function Home() {
   const { data, isLoading } = useQuery('userInformations', async () => {
