@@ -14,64 +14,40 @@ import { greetingToTimeOfDay } from "../../shared/util/validator";
 import { commonStyles } from "../../styles/styles";
 import CardsCounting from "../../components/CardsCounting";
 import { common, styles } from "./styles";
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import NotFoundTicket from "../../components/NotTicketFound";
+import useCurrentUser from "../../hooks/useCurrentUser";
+import { useQuery } from "react-query";
+
 
 
 export default function Home() {
-  const [userInformation, setUserInformation] = useState<UserInformationDto>();
-  const [user, setUser] = useState<User>();
-  const navigation = useNavigation<any>();
+  const { data, isLoading } = useQuery('userInformations', async () => {
+    const currentUser = await GoogleSignin.getCurrentUser();
+    const response = await getData('/tickets/user-ticket-information/', currentUser.user.email);
+    return response;
+  });
 
-  useEffect(() => {
-    async function getDataFromUser() {
-      const currentUser = await GoogleSignin.getCurrentUser();
-      setUser(currentUser)
-      let retorno = await getData('/tickets/user-ticket-information/', currentUser.user.email);
-      const responseDatabase: UserInformationDto = retorno.data;
-      setUserInformation(responseDatabase);
-    }
+  if (isLoading) return <></>
 
-    getDataFromUser();
-  }, []);
-
-  function navigateToCreateTicket() {
-
-    navigation.navigate('CreateTicket');
-  }
   return (
     <View style={styles.homeContainer}>
-      <Text style={styles.greetingTitle}>{`${greetingToTimeOfDay()}, ${user?.user?.name}`}</Text>
-
       <Text style={[commonStyles.titleBlack, { marginBottom: 20 }]}>Suas reclamações...</Text>
 
-      {userInformation?.cardsCounting &&
-        <CardsCounting countingData={userInformation.cardsCounting} />
-      }
+      <CardsCounting countingData={data?.data?.cardsCounting} />
 
       <Text style={styles.lastTicketCommented}>Última reclamação comentada</Text>
-      {userInformation &&
-        (
-          userInformation?.lastMessageCommented === null ? (
-            <View>
-              <Text style={common.size12}>Nenhuma reclamação comentada ainda</Text>
 
-              <Text style={styles.createNewTicketMessage}>Deseja criar uma reclamação?</Text>
-
-              <Button onPress={navigateToCreateTicket}>
-                <Text style={commonStyles.text}>Criar</Text>
-                <AntDesign name="arrowright" size={24} />
-              </Button>
-            </View>
-          ) : (
-            <Ticket
-              id={userInformation?.lastMessageCommented?.ticketId.toString()}
-              title={userInformation?.lastMessageCommented?.ticket.title}
-              content={userInformation?.lastMessageCommented?.ticket.content}
-              status={userInformation?.lastMessageCommented?.ticket.status} />
-          )
+      {
+        data?.data?.lastMessageCommented === null ? (
+          <NotFoundTicket />
+        ) : (
+          <Ticket
+            id={data?.data?.lastMessageCommented?.ticketId.toString()}
+            title={data?.data?.lastMessageCommented?.ticket.title}
+            content={data?.data?.lastMessageCommented?.ticket.content}
+            status={data?.data?.lastMessageCommented?.ticket.status} />
         )
       }
-
     </View>
   )
 }

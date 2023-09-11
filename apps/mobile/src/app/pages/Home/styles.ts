@@ -22,11 +22,4 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
     ...commonStyles.textBlack
   },
-  createNewTicketMessage: {
-    ...common.size12,
-    fontWeight: 'bold',
-    color: 'black',
-    marginBottom: 10
-
-  }
 });
