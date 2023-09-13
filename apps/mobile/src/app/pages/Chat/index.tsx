@@ -7,7 +7,7 @@ import {
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from './styles';
-import { useEffect, useRef, useState } from 'react';
+import { BaseSyntheticEvent, useEffect, useRef, useState } from 'react';
 import { getData, postData } from '../../services/ApiService';
 import { MessageWithUser } from '../../models/Chat/message-with-user';
 import { TicketMessage } from '../../models/Chat/ticket-message';
@@ -21,6 +21,7 @@ import { MessageWithStatusDto } from '../../models/Chat/message-with-status-dto'
 import Select from '../../components/Select';
 import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
 import { ADMIN_EMAIL_VALID } from '../../shared/util/constants';
+import { ArrayPath, DeepPartial, DefaultValues, ErrorOption, Field, FieldArray, FieldError, FieldErrors, FieldValues, FormState, Path, RegisterOptions, SubmitErrorHandler, SubmitHandler, useForm, UseFormRegisterReturn } from 'react-hook-form';
 
 type ParamList = {
   params: {
@@ -38,6 +39,7 @@ export default function Chat() {
   const [status, setStatus] = useState<string>();
   const [messageContent, setMessageContent] = useState<FormValidatorDto>(new FormValidatorDto());
   const items = [{ label: 'Aberto', value: 'ABERTO' }, { label: 'Em Análise', value: 'EM_ANALISE' }, { label: 'Concluído', value: 'FINALIZADO' }]
+  const { control } = useForm();
 
   useEffect(() => {
     async function loadMessageScreen() {
@@ -121,7 +123,7 @@ export default function Chat() {
           }
           {status !== 'FINALIZADO' &&
             <View>
-              <TextArea label={''} value={messageContent} setValue={setMessageContent} />
+              <TextArea label={''} value={messageContent} setValue={setMessageContent} control={control} id={'text'} />
             </View>
           }
 

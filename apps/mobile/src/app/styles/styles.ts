@@ -25,7 +25,8 @@ export const commonStyles = StyleSheet.create({
     borderWidth: 1,
     alignSelf: 'stretch',
     borderRadius: 10,
-    paddingLeft: 10
+    paddingLeft: 10,
+    backgroundColor: 'white'
   },
   text: {
     fontSize: 14,

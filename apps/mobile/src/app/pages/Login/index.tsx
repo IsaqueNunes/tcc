@@ -11,10 +11,12 @@ import Link from "../../components/Link";
 import { styles } from './styles';
 import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import { commonStyles } from "../../styles/styles";
+import { useForm } from "react-hook-form";
 
 export default function Login() {
   const [username, setUsername] = useState<FormValidatorDto>(new FormValidatorDto());
   const [password, setPassword] = useState<FormValidatorDto>(new FormValidatorDto());
+  const { control } = useForm();
 
   return (
     <SafeAreaView style={styles.loginContainer}>
@@ -26,11 +28,11 @@ export default function Login() {
 
       <View style={styles.inputsContainer}>
 
-        <Input label={"Nome de Usuário"} value={username} setValue={setUsername} />
+        <Input label={"Nome de Usuário"} value={username} setValue={setUsername} control={control} id={"username"} />
 
         <View style={{ marginTop: 20 }} />
 
-        <Input label={"Senha"} value={password} setValue={setPassword} />
+        <Input label={"Senha"} value={password} setValue={setPassword} control={control} id={"password"} />
 
         <Button onPress={() => Alert.alert('Funcionalidade em construção...')}>
           <Text style={commonStyles.text}>Entrar</Text>

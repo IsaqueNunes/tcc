@@ -14,7 +14,14 @@ import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { FilterTicketDto } from "../../models/ListTicket/FilterTicketDto";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { FilterDto } from "../../models/ListTicket/FilterDto";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { ArrayPath, DeepPartial, DefaultValues, ErrorOption, Field, FieldArray, FieldError, FieldErrors, FieldValues, FormState, Path, RegisterOptions, SubmitErrorHandler, SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
+import { SearchValidationSchema } from '../../shared/util/yupResolvers';
+import { InferType } from "yup";
+import { yupResolver } from '@hookform/resolvers/yup/dist/yup.js';
+import { useTicketListData } from "../../hooks/useTicketListData";
+import Select from "../Select";
+import ErrorMessage from "../ErrorMessage";
 
 type ParamList = {
   params: {
@@ -22,77 +29,56 @@ type ParamList = {
   }
 }
 
+export type SearchValidationSchema = InferType<typeof SearchValidationSchema>;
+
 export default function TicketList() {
   const route = useRoute<RouteProp<ParamList, 'params'>>();
-  const [inputForm, setInputForm] = useState<FormValidatorDto>(new FormValidatorDto());
-  const user = GoogleSignin.getCurrentUser();
+  const { getValues, control, formState: { errors }, handleSubmit } = useForm<SearchValidationSchema>({ resolver: yupResolver(SearchValidationSchema) });
 
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<FilterDto>('title');
-  const [items, setItems] = useState([
-    { label: 'Título', value: 'title' },
-    { label: 'Descrição', value: 'content' }
-  ]);
-  const { data, isLoading, refetch } = useQuery('getTicketList', async () => {
-    if (inputForm.value === '') {
-      const listAll = await getInitialData();
-      return listAll.data;
-    }
-
-    const listByFilter = await getDataByFilter();
-    return listByFilter.data;
-  })
-
-  const getInitialData = async () => {
-    const searchTicket: SearchTicketDto = {
-      filter: route.params?.filter ?? '',
-      emailFromUser: (await user).user.email
-    }
-
-    const result = await postData('/tickets/tickets-by-filter/', searchTicket);
-    return result;
-  };
-
-  const getDataByFilter = async () => {
-    const filterOptions: FilterTicketDto = {
-      filter: value,
-      contentToSearch: inputForm.value,
-      userEmail: (await user).user.email
-    };
-    const result = await postData('/tickets/filter', filterOptions);
-    return result;
-  };
-
-  if (isLoading) return (<></>);
+  const { data, isLoading, refetch } = useTicketListData({ filter: route.params?.filter ?? getValues().filter, search: getValues().search });
 
   return (
     <View style={styles.homeContainer}>
       <View style={{ marginTop: 10 }}>
 
-        <Input label={""} value={inputForm} setValue={setInputForm} placeholder={'Pesquisar por'} />
+        <Input
+          label={""}
+          value={""}
+          placeholder={'Ex: Programas faltando'}
+          control={control}
+          error={errors?.search !== undefined}
+          id={"search"}
+        />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        {errors?.search && (
+          <ErrorMessage message={errors.search.message} />
+        )}
 
-          <DropDownPicker
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={setValue}
-            setItems={setItems}
-            placeholder={''}
-            zIndex={1000}
-            containerStyle={{ width: '75%' }}
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10, }}>
+
+          <Select
+            items={[
+              { label: 'Título', value: 'title' },
+              { label: 'Descrição', value: 'content' }
+            ]}
+            name={"filter"}
+            control={control}
+            error={errors?.filter !== undefined}
           />
-          {/* Move this component */}
 
 
-          <Button style={{ width: '20%', backgroundColor: 'rgba(192,192,192,0.25)', justifyContent: 'center' }} onPress={() => refetch()}>
+          <Button style={{ width: '20%', backgroundColor: 'white', justifyContent: 'center', borderWidth: 1 }} onPress={handleSubmit(refetch)}>
             <AntDesign name={'search1'} size={24} color={'black'} />
           </Button>
 
         </View>
-        <Tickets tickets={data} />
+        {errors?.filter && (
+          <ErrorMessage message={errors.filter.message} />
+        )}
+        {!isLoading && (
+          <Tickets tickets={data.data} />
+        )}
       </View>
     </View>
   )

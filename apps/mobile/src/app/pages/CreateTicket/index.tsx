@@ -1,7 +1,8 @@
 import { Prisma } from "@prisma/client";
 import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { View, Text, Alert } from "react-native";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -19,6 +20,7 @@ export default function CreateTicket() {
   const [content, setContent] = useState<FormValidatorDto>(new FormValidatorDto());
   const navigation = useNavigation();
   const [user, setUser] = useState<User>();
+  const { control, handleSubmit } = useForm();
 
   useEffect(() => {
     async function getCurrentLoggedUser() {
@@ -28,6 +30,10 @@ export default function CreateTicket() {
 
     getCurrentLoggedUser();
   });
+
+  const onSubmit = (data: any) => {
+    console.log(data)
+  }
 
   async function createTicket() {
     const inputsValidation = validateInputs();
@@ -76,13 +82,14 @@ export default function CreateTicket() {
     <View style={{ margin: 20 }}>
       <Text style={[commonStyles.textBlack, styles.titleText]}>Cadastrar</Text>
 
-      <Input label={"Título"} value={title} setValue={setTitle} />
+      <Input label={"Título"} value={title} setValue={setTitle} control={control} id={"title"} />
 
-      <TextArea label={"Explique-nos o que aconteceu"} value={content} setValue={setContent} />
+      <TextArea label={"Explique-nos o que aconteceu"} value={content} setValue={setContent} control={control} id={"content"} />
 
-      <Button style={{ marginTop: 40 }} onPress={createTicket}>
+      <Button style={{ marginTop: 40 }} onPress={handleSubmit(onSubmit)}>
         <Text style={commonStyles.text}>Criar</Text>
       </Button>
     </View>
   )
 }
+

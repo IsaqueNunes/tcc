@@ -25,6 +25,8 @@
     "victory-native": "*",
     "@react-native-google-signin/google-signin": "*",
     "react-query": "*",
-    "react-native-mmkv": "*"
+    "react-hook-form": "*",
+    "yup": "*",
+    "@hookform/resolvers": "*"
   }
 }

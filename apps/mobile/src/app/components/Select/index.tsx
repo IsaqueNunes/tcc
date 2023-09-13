@@ -1,32 +1,41 @@
 import { useEffect, useState } from "react"
+import { Control, useController } from "react-hook-form";
 import DropDownPicker from "react-native-dropdown-picker"
 
 type Props = {
   items: any[],
-  value: string,
-  setValue: (value: string) => void
+  name: string,
+  defaultValue?: string
+  control: Control,
+  error?: boolean
 }
 
-export default function Select({ items, value }: Props) {
+export default function Select({ items, name, defaultValue, control, error = false }: Props) {
   const [open, setOpen] = useState<boolean>();
-  const [itemsUpdated, setItems] = useState<any>(items);
-  const [valueUpdated, setValue] = useState<string>(value);
 
-  useEffect(() => {
-    setValue(value);
-  }, [value])
+  const { field } = useController({
+    name,
+    defaultValue,
+    control
+  })
+
+  function test(value: any) {
+    const name = value();
+    field.onChange(name);
+  }
 
   return (
     <DropDownPicker
       open={open}
-      value={valueUpdated}
+      value={field.value}
       items={items}
       setOpen={setOpen}
-      setValue={setValue}
-      setItems={setItems}
-      placeholder={''}
+      setValue={test}
+      setItems={() => { }}
+      placeholder="Escolha um filtro"
       zIndex={1000}
-      containerStyle={{ width: '100%' }}
+      containerStyle={{ width: '75%', marginBottom: 5 }}
+      style={{ borderColor: error ? 'red' : 'black' }}
     />
   )
 }
