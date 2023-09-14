@@ -5,15 +5,15 @@ import { commonStyles } from "../../styles/styles";
 import { styles } from './styles'
 
 type Props = {
-  label: string,
-  value: string,
+  label?: string,
+  value?: string,
   placeholder?: string,
   control: Control,
   id: string,
   error?: boolean
 }
 
-export default function Input({ value, label, placeholder = '', control, id, error = false }: Props) {
+export default function Input({ value = '', label = '', placeholder = '', control, id, error = false }: Props) {
   const { field } = useController({
     control,
     defaultValue: value,

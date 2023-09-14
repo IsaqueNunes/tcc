@@ -1,29 +1,28 @@
 import { Control, useController } from "react-hook-form";
 import { View, Text, TextInput } from "react-native"
-import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import { commonStyles } from "../../styles/styles";
 import { style } from "./styles";
 
 type Props = {
+  defaultValue?: string,
+  errors?: boolean,
   label: string,
-  value: FormValidatorDto,
   control: Control,
   id: string,
-  setValue: (value: FormValidatorDto) => void
 }
 
-export default function TextArea({ label, value, setValue, control, id }: Props) {
+export default function TextArea({ defaultValue = '', errors = false, label, control, id }: Props) {
   const { field } = useController({
     control,
     name: id,
-    defaultValue: value
+    defaultValue: defaultValue
   })
   return (
     <View style={style.textAreaContainer}>
       <Text style={commonStyles.labelInput}>{label}</Text>
 
       <TextInput
-        style={value.isValid ? style.textAreaInput : style.textAreaInputWithError}
+        style={errors ? style.textAreaInputWithError : style.textAreaInput}
         multiline={true}
         numberOfLines={2}
         value={field.value}

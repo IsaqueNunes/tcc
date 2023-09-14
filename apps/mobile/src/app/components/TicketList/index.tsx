@@ -1,21 +1,11 @@
-import { DrawerActions, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useCallback, useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { View } from "react-native";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
-import { TicketProps } from "../../components/Tickets/Ticket";
-import DropDownPicker from 'react-native-dropdown-picker';
 import { styles } from "./styles";
-import { getData, postData } from "../../services/ApiService";
-import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import Tickets from "../../components/Tickets";
-import { SearchTicketDto } from "../../models/ListTicket/SearchTicketDto";
-import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { FilterTicketDto } from "../../models/ListTicket/FilterTicketDto";
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { FilterDto } from "../../models/ListTicket/FilterDto";
-import { useMutation, useQuery } from "react-query";
-import { ArrayPath, DeepPartial, DefaultValues, ErrorOption, Field, FieldArray, FieldError, FieldErrors, FieldValues, FormState, Path, RegisterOptions, SubmitErrorHandler, SubmitHandler, useForm, UseFormRegisterReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { SearchValidationSchema } from '../../shared/util/yupResolvers';
 import { InferType } from "yup";
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup.js';
@@ -40,10 +30,7 @@ export default function TicketList() {
   return (
     <View style={styles.homeContainer}>
       <View style={{ marginTop: 10 }}>
-
         <Input
-          label={""}
-          value={""}
           placeholder={'Ex: Programas faltando'}
           control={control}
           error={errors?.search !== undefined}

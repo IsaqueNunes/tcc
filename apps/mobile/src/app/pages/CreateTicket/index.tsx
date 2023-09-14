@@ -1,92 +1,77 @@
-import { Prisma } from "@prisma/client";
-import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { BaseSyntheticEvent, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import { View, Text, Alert } from "react-native";
+import { InferType } from "yup";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import TextArea from "../../components/TextArea";
 import { CreateTicketDto } from "../../models/CreateTicket/CreateTicketDto";
-import { FormValidatorDto } from "../../models/FormValidator/FormValidatorDto";
 import { postData } from "../../services/ApiService";
-import { createErrorMessage } from "../../shared/util/validator";
+import { CreateTicketValidationSchema } from "../../shared/util/yupResolvers";
 import { commonStyles } from "../../styles/styles";
+import ErrorMessage from '../../components/ErrorMessage';
 
 import { styles } from './styles';
 
+type CreateTicketSchemaType = InferType<typeof CreateTicketValidationSchema>;
+
 export default function CreateTicket() {
-  const [title, setTitle] = useState<FormValidatorDto>(new FormValidatorDto());
-  const [content, setContent] = useState<FormValidatorDto>(new FormValidatorDto());
   const navigation = useNavigation();
-  const [user, setUser] = useState<User>();
-  const { control, handleSubmit } = useForm();
-
-  useEffect(() => {
-    async function getCurrentLoggedUser() {
-      const currentUser = await GoogleSignin.getCurrentUser();
-      setUser(currentUser);
-    }
-
-    getCurrentLoggedUser();
+  const { control, handleSubmit, setValue, formState: { errors }, clearErrors } = useForm<CreateTicketSchemaType>({
+    resolver: yupResolver(CreateTicketValidationSchema)
   });
 
-  const onSubmit = (data: any) => {
-    console.log(data)
+  const onError = (errors: FieldErrors<CreateTicketSchemaType>) => {
+    console.log(errors);
   }
 
-  async function createTicket() {
-    const inputsValidation = validateInputs();
+  async function onSubmit(data: CreateTicketSchemaType) {
+    const ticket: CreateTicketDto = {
+      title: data.title,
+      content: data.content,
+      email: 'rafael.veiga@estudante.ifms.edu.br'
+    };
+    // implementation error
 
-    if (inputsValidation.allFieldsAreValid) {
-      const ticket: CreateTicketDto = {
-        title: title.value,
-        content: content.value,
-        email: user.user.email
-      };
+    await postData('/tickets', ticket);
 
-      await postData('/tickets', ticket);
-
-      clearInputs();
-      navigation.dispatch(CommonActions.reset({
-        index: 0,
-        routes: [{ name: 'TicketList' }]
-      }))
-      Alert.alert('Reclamação criada com sucesso.');
-    } else {
-      Alert.alert(inputsValidation.messageIfHasError);
-    }
+    clearInputs();
+    navigateToTicketList();
   }
 
   function clearInputs() {
-    setTitle({ ...title, value: '', isValid: true });
-    setContent({ ...content, value: '', isValid: true });
+    clearErrors("root");
+    setValue("title", "")
+    setValue("content", "")
   }
 
-  function validateInputs(): { allFieldsAreValid: boolean, messageIfHasError: string } {
-    const titleIsNotEmpty = title.value !== '';
-    const contentIsNotEmpty = content.value !== '';
-    const allFieldsAreValid = titleIsNotEmpty && contentIsNotEmpty;
-
-    setTitle({ ...title, isValid: titleIsNotEmpty });
-    setContent({ ...content, isValid: contentIsNotEmpty });
-
-    const messageIfHasError = createErrorMessage(
-      [{ fieldName: 'título', fieldContent: title.value },
-      { fieldName: 'conteúdo', fieldContent: content.value }]);
-
-    return { allFieldsAreValid, messageIfHasError };
+  function navigateToTicketList() {
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [{ name: 'TicketList' }]
+    }));
   }
 
   return (
     <View style={{ margin: 20 }}>
       <Text style={[commonStyles.textBlack, styles.titleText]}>Cadastrar</Text>
 
-      <Input label={"Título"} value={title} setValue={setTitle} control={control} id={"title"} />
+      <View style={{ marginVertical: 5 }}>
+        <Input label={"Título"} control={control} id={"title"} error={errors?.title !== undefined} />
+        {errors?.title && (
+          <ErrorMessage message={errors.title.message} />
+        )}
+      </View>
 
-      <TextArea label={"Explique-nos o que aconteceu"} value={content} setValue={setContent} control={control} id={"content"} />
+      <View style={{ marginVertical: 5 }}>
+        <TextArea label={"Explique-nos o que aconteceu"} control={control} id={"content"} errors={errors?.content !== undefined} />
+        {errors?.content && (
+          <ErrorMessage message={errors.content.message} />
+        )}
+      </View>
 
-      <Button style={{ marginTop: 40 }} onPress={handleSubmit(onSubmit)}>
+      <Button style={{ marginTop: 40 }} onPress={handleSubmit(onSubmit, onError)}>
         <Text style={commonStyles.text}>Criar</Text>
       </Button>
     </View>

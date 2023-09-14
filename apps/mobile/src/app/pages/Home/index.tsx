@@ -1,4 +1,3 @@
-import { GoogleSignin, User } from "@react-native-google-signin/google-signin";
 import { View, Text } from "react-native";
 import Ticket from "../../components/Tickets/Ticket";
 import { getData } from "../../services/ApiService";

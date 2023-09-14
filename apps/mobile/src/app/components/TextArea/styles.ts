@@ -6,6 +6,7 @@ const common = StyleSheet.create({
     ...commonStyles.input,
     backgroundColor: 'white',
     textAlignVertical: 'top',
+    minHeight: 150,
   }
 })
 
