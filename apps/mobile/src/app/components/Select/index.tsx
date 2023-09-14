@@ -11,6 +11,7 @@ type Props = {
 }
 
 export default function Select({ items, name, defaultValue, control, error = false }: Props) {
+  console.log(defaultValue)
   const [open, setOpen] = useState<boolean>();
 
   const { field } = useController({

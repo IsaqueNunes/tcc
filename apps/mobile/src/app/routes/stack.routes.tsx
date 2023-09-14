@@ -13,8 +13,8 @@ export function StackRoutes() {
   const { navigate } = useNavigation<any>();
   useEffect(() => {
     async function verifyIfUserIsLogged() {
-      const user = GoogleSignin.getCurrentUser();
-      if (user) {
+      const user = await GoogleSignin.getCurrentUser();
+      if (user !== null) {
         navigate('logged')
         return;
       }

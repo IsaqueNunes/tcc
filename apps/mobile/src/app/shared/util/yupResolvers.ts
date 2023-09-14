@@ -9,3 +9,8 @@ export const CreateTicketValidationSchema = yup.object().shape({
   title: yup.string().required('É necessário informar o título da reclamação.'),
   content: yup.string().required('É necessário informar o conteúdo da reclamação. É por meio dela que compreenderemos o seu problema.')
 })
+
+export const SendMessageValidationSchema = yup.object().shape({
+  content: yup.string().required(),
+  status: yup.string()
+})
