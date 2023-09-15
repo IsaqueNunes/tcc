@@ -8,6 +8,7 @@ import { getDashboardData } from "../../services/UserService";
 import { styles } from "./styles";
 
 export default function Dashboard() {
+  // implementation error
   const { data, isLoading } = useQuery('dashboardInformation', async () => await getDashboardData('46ed718f-8030-4872-a8a6-8f2930ae35e9'))
 
   return (
