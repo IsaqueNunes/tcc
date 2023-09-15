@@ -15,10 +15,10 @@ export default function RoutesNavigator() {
       <Route path="/" element={<Home />} />
       <Route path='/login' element={<Login />} />
       <Route path='/user/my-tickets' element={<ProtectedRoute />}>
-        <Route path="/user/my-tickets" element={<ListTickets isAdminRoute={false} />} />
+        <Route path="/user/my-tickets" element={<ListTickets />} />
       </Route>
       <Route path='/admin/tickets' element={<ProtectedRoute />}>
-        <Route path="/admin/tickets" element={<ListTickets isAdminRoute />} />
+        <Route path="/admin/tickets" element={<ListTickets />} />
       </Route>
       <Route path='/user/create-ticket' element={<ProtectedRoute />}>
         <Route path="/user/create-ticket" element={<CreateTicket />} />

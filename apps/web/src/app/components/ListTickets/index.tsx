@@ -1,9 +1,9 @@
 import { Ticket } from '@prisma/client';
 import { FilterTicketDto } from 'libs/models/filter-ticket-dto';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DropdownDto } from 'libs/models/dropdown-dto';
-import { User, IsAdmin } from '../../util/constants';
+import { User, IsAdmin, getUser } from '../../util/constants';
 import { getData, postData } from '../../services/ApiService';
 import Button from '../Button';
 import Header from '../Header';
@@ -13,13 +13,10 @@ import Input from '../Input';
 import SearchButton from '../SearchButton';
 import './list-tickets.css';
 
-type ListTicketsProps = {
-  isAdminRoute: boolean,
-};
-
-export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
+export default function ListTickets() {
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [searchTicket, setSearchTicket] = useState<string>('');
+  const user = useMemo(() => getUser(), []);
 
   const [selectedOption, setSelectedOption] = useState<'title' | 'content'>('title');
   const optionsToSelect: DropdownDto[] = [{ label: 'Título', value: 'title' }, { label: 'Descrição', value: 'content' }]
@@ -32,7 +29,7 @@ export default function ListTickets({ isAdminRoute }: ListTicketsProps) {
   useEffect(() => {
     async function pegarDados() {
       let endPoint = '/tickets' + (IsAdmin ? '' : '/by-user/');
-      let body = IsAdmin ? '' : User.email
+      let body = IsAdmin ? '' : user.email
       let retorno = await getData(endPoint, body);
       setTickets(retorno.data);
     }

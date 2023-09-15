@@ -12,5 +12,5 @@ export const CreateTicketValidationSchema = yup.object().shape({
 
 export const SendMessageValidationSchema = yup.object().shape({
   content: yup.string().required(),
-  status: yup.string()
+  status: yup.string().required()
 })

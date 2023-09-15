@@ -1,31 +1,25 @@
 import {
-  Alert,
-  Keyboard,
   SafeAreaView,
   Text, View
 } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { RouteProp } from '@react-navigation/native';
 import { styles } from './styles';
-import { BaseSyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { getData, postData } from '../../services/ApiService';
-import { MessageWithUser } from '../../models/Chat/message-with-user';
+import { useMemo, } from 'react';
 import { TicketMessage } from '../../models/Chat/ticket-message';
 import { commonStyles } from '../../styles/styles';
 import Message from '../../components/Messages/Message';
 import Messages from '../../components/Messages';
-import TextArea from '../../components/TextArea';
-import { FormValidatorDto } from '../../models/FormValidator/FormValidatorDto';
+import Input from '../../components/Input';
 import GroupButton from './GroupButton';
 import { MessageWithStatusDto } from '../../models/Chat/message-with-status-dto';
 import Select from '../../components/Select';
-import { GoogleSignin, User } from '@react-native-google-signin/google-signin';
-import { ADMIN_EMAIL_VALID } from '../../shared/util/constants';
-import { ArrayPath, DeepPartial, DefaultValues, ErrorOption, Field, FieldArray, FieldError, FieldErrors, FieldValues, FormState, Path, RegisterOptions, SubmitErrorHandler, SubmitHandler, useForm, UseFormRegisterReturn } from 'react-hook-form';
+import { FieldErrors, useForm } from 'react-hook-form';
 import { addMessage, getChatInformation } from '../../services/ChatService';
 import { yupResolver } from '@hookform/resolvers/yup/dist/yup';
 import { SendMessageValidationSchema } from '../../shared/util/yupResolvers';
 import { InferType } from 'yup';
+import { useQuery } from 'react-query';
 
 type ParamList = {
   params: {
@@ -37,32 +31,25 @@ type SendMessageValidationType = InferType<typeof SendMessageValidationSchema>;
 
 export default function Chat() {
   const route = useRoute<RouteProp<ParamList, 'params'>>();
+  console.log('teste')
   const { id } = route.params;
-  const [ticket, setTicket] = useState<TicketMessage>();
-  const [messages, setMessages] = useState<MessageWithUser[]>([]);
-  const [userIsAdmin, setUserIsAdmin] = useState<boolean>(true);
-  const [status, setStatus] = useState<string>();
   const items = useMemo(() =>
     [{ label: 'Aberto', value: 'ABERTO' }, { label: 'Em Análise', value: 'EM_ANALISE' }, { label: 'Concluído', value: 'FINALIZADO' }],
     []);
-  const { control, handleSubmit } = useForm<SendMessageValidationType>({
+  const { control, handleSubmit, setValue, watch, formState: { errors } } = useForm<SendMessageValidationType>({
     resolver: yupResolver(SendMessageValidationSchema),
     defaultValues: { content: '', status: '' }
   });
 
-  useEffect(() => {
-    async function loadMessageScreen() {
-      let retorno = await getChatInformation(id);
-      setTicket(retorno.data);
-      const user = await GoogleSignin.getCurrentUser();
-      const isAdminEmail = user.user.email.includes(ADMIN_EMAIL_VALID);
-      setUserIsAdmin(isAdminEmail);
-      setMessages(retorno.data.Message);
-      setStatus(retorno.data.status)
-    }
+  const { data, isLoading, refetch } = useQuery<TicketMessage, Error>('getChatMessage', async () => {
+    const response = await getChatInformation(id);
 
-    loadMessageScreen();
-  }, []);
+    if (response.status !== 200)
+      throw new Error("Failed to fetch!");
+
+    setValue('status', response.data.status)
+    return await response.data;
+  });
 
   const onError = (error: FieldErrors<SendMessageValidationType>) => {
     console.log(error)
@@ -72,62 +59,63 @@ export default function Chat() {
 
     await addMessage(message);
 
-    setMessages([...messages, message]);
+    setValue("content", "")
+
+    refetch();
   }
 
-  const createModelMessage = (data: SendMessageValidationType) => {
-    console.log(ticket?.Message[ticket?.Message.length - 1].id)
+  const createModelMessage = (formData: SendMessageValidationType) => {
     // implementation error
     const message: MessageWithStatusDto = {
-      content: data.content,
+      content: formData.content,
       userEmail: 'rafael.veiga@estudante.ifms.edu.br',
-      repliedMessageId: isNotFirstMessage() ? ticket?.Message[ticket?.Message.length - 1].id : null,
+      repliedMessageId: isNotFirstMessage() ? data?.Message[data?.Message.length - 1].id : null,
       ticketId: Number(id),
       time: new Date(),
-      status: data.status || status
+      status: formData.status
     };
 
     return message;
   }
 
   const isNotFirstMessage = () => {
-    return ticket?.Message.length !== 0;
+    return data?.Message.length !== 0;
   }
 
   return (
-    <SafeAreaView
-      style={styles.mainContent}
-    >
+    !isLoading ? (
+      <SafeAreaView
+        style={styles.mainContent}>
+        <View style={[styles.messageDisplayContainer, { flex: watch("status") === "FINALIZADO" ? 9 : 8 }]}>
 
-      <View style={[styles.messageDisplayContainer, { flex: status === 'FINALIZADO' ? 9 : 7 }]}>
 
-        <Text style={commonStyles.titleBlack}>{ticket?.title}</Text>
+          <Text style={commonStyles.titleBlack}>{data?.title}</Text>
 
-        <Message
-          username={ticket?.user?.name}
-          email={ticket?.user?.email}
-          data={ticket?.createdAt.toLocaleString()}
-          content={ticket?.content}
-          isMainMessage
-        />
+          <Message
+            username={data?.user?.name}
+            email={data?.user?.email}
+            data={data?.createdAt.toLocaleString()}
+            content={data?.content}
+            isMainMessage
+          />
 
-        <Messages messages={messages} />
-      </View>
+          <Messages messages={data.Message} />
+        </View>
 
-      {status &&
-        <View style={[styles.sendMessageDisplayContainer, { flex: status === 'FINALIZADO' ? 1 : 3 }]}>
-          {userIsAdmin &&
-            <Select items={items} defaultValue={status} name={'status'} control={control} />
+        <View style={[styles.sendMessageDisplayContainer, { flex: watch("status") === "FINALIZADO" ? 1 : 2 }]}>
+          {/* implementation error of Admin */}
+          {false &&
+            <Select items={items} defaultValue={watch("status")} name={'status'} control={control} />
           }
-          {status !== 'FINALIZADO' &&
+          {watch("status") !== 'FINALIZADO' &&
             <View>
-              <TextArea label={''} control={control} id={'content'} />
+              <Input control={control} id={'content'} error={errors.content !== undefined} />
             </View>
           }
 
-          <GroupButton isFinishedStatus={status === 'FINALIZADO'} sendMessage={handleSubmit(sendMessage, onError)} />
+          <GroupButton isFinishedStatus={watch("status") === 'FINALIZADO'} sendMessage={handleSubmit(sendMessage, onError)} />
         </View>
-      }
-    </SafeAreaView>
+      </SafeAreaView>
+    ) : (<></>)
   )
 }
