@@ -6,10 +6,11 @@ import CardsCounting from "../../components/CardsCounting";
 import { styles } from "./styles";
 import NotFoundTicket from "../../components/NotTicketFound";
 import { useQuery } from "react-query";
+import { getCommonUserInformation } from "../../services/TicketService";
 
 export default function Home() {
   const { data, isLoading } = useQuery('userInformations', async () => {
-    const response = await getData('/tickets/user-ticket-information/', 'rafael.veiga@estudante.ifms.edu.br');
+    const response = await getCommonUserInformation('rafael.veiga@estudante.ifms.edu.br');
     // implementation error
     return response;
   });

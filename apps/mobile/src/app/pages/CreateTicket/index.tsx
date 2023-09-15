@@ -13,6 +13,7 @@ import { commonStyles } from "../../styles/styles";
 import ErrorMessage from '../../components/ErrorMessage';
 
 import { styles } from './styles';
+import { createTicket } from "../../services/TicketService";
 
 type CreateTicketSchemaType = InferType<typeof CreateTicketValidationSchema>;
 
@@ -34,7 +35,7 @@ export default function CreateTicket() {
     };
     // implementation error
 
-    await postData('/tickets', ticket);
+    await createTicket(ticket);
 
     clearInputs();
     navigateToTicketList();

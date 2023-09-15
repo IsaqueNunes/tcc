@@ -4,6 +4,7 @@ import { FilterDto } from '../models/ListTicket/FilterDto';
 import { FilterTicketDto } from '../models/ListTicket/FilterTicketDto';
 import { SearchTicketDto } from '../models/ListTicket/SearchTicketDto';
 import { postData } from '../services/ApiService';
+import { getDataFromFilterInTicketList, getInitialDataFromTicketList } from '../services/TicketService';
 
 const getInitialData = async ({ filter }: { filter: string }) => {
   const searchTicket: SearchTicketDto = {
@@ -11,7 +12,7 @@ const getInitialData = async ({ filter }: { filter: string }) => {
     emailFromUser: 'rafael.veiga@estudante.ifms.edu.br'
   }
   // implementation error
-  const result = await postData('/tickets/tickets-by-filter/', searchTicket);
+  const result = await getInitialDataFromTicketList(searchTicket);
   return result;
 };
 
@@ -27,7 +28,7 @@ const getDataByFilter = async ({ search, filter }: SearchValidationSchema) => {
     userEmail: 'rafael.veiga@estudante.ifms.edu.br'
   };
   // implementation error
-  const result = await postData('/tickets/filter', filterOptions);
+  const result = await getDataFromFilterInTicketList(filterOptions);
   return result;
 };
 

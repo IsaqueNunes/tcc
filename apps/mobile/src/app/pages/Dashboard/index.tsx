@@ -2,13 +2,13 @@ import React from "react";
 import { View, Text, ScrollView } from "react-native";
 import { useQuery } from "react-query";
 import CardCounting from "../../components/CardCounting";
+import ChartTicketsByMonth from "../../components/ChartTicketsByMonth";
 import Ticket from "../../components/Tickets/Ticket";
-import { getData } from "../../services/ApiService";
-import ChartTicketsByMonth from "./ChartTicketsByMonth";
+import { getDashboardData } from "../../services/UserService";
 import { styles } from "./styles";
 
 export default function Dashboard() {
-  const { data, isLoading } = useQuery('dashboardInformation', async () => await getData('/tickets/admin-dashboard-information/', '46ed718f-8030-4872-a8a6-8f2930ae35e9'))
+  const { data, isLoading } = useQuery('dashboardInformation', async () => await getDashboardData('46ed718f-8030-4872-a8a6-8f2930ae35e9'))
 
   return (
     <View>
